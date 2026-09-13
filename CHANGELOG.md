@@ -4,4 +4,4 @@
 
 ### Minor Changes
 
-- 1e1fb0e: First release: plugin `64x-lunicorn` with the `write-commit-message` skill and validator rules SK001–SK013.
+- 521ba9e: First release: plugin `64x-lunicorn` with the `write-commit-message` skill and validator rules SK001–SK013.
