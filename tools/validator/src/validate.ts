@@ -5,6 +5,7 @@ import { sk002 } from "./rules/sk002.ts";
 import { sk003 } from "./rules/sk003.ts";
 import { sk004 } from "./rules/sk004.ts";
 import { sk005 } from "./rules/sk005.ts";
+import { sk006 } from "./rules/sk006.ts";
 
 export interface Finding {
   rule: string;
@@ -14,7 +15,7 @@ export interface Finding {
   message: string;
 }
 
-const rules: Rule[] = [sk001, sk002, sk003, sk004, sk005];
+const rules: Rule[] = [sk001, sk002, sk003, sk004, sk005, sk006];
 
 export function validate(root: string): Finding[] {
   const repo = loadRepo(root);

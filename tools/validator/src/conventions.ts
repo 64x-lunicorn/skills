@@ -9,3 +9,19 @@ export const MIN_DESCRIPTION_WORDS = 12;
 
 /** SK004: Anfänge, die nicht in dritter Person mit dem Anwendungsfall führen. Groß-/Kleinschreibung egal. */
 export const FORBIDDEN_DESCRIPTION_STARTS = ["this skill", "dieser skill", "dieses skill", "i ", "you "];
+
+/** SK006: erlaubte Verben als erstes Namenssegment. Wächst per TDD, nie auf Vorrat. */
+export const SKILL_NAME_VERBS = [
+  "design",
+  "diagnose",
+  "implement",
+  "plan",
+  "refactor",
+  "research",
+  "resolve",
+  "review",
+  "run",
+  "test",
+  "triage",
+  "write",
+];
