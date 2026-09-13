@@ -11,11 +11,13 @@ Claude Code plugin `64x-lunicorn`. Terms live in `CONTEXT.md`, decisions in `doc
 - **Progressive disclosure.** Everything not needed on every invocation goes into a reference file.
 - **Duplication in prose is not a smell.** DRY does not apply here. A shared paragraph in two skills is cheaper than a pointer that costs a load step and is sometimes ignored.
 - **Project boundary.** Only what applies across projects goes into this repo. Project-specific material stays in that project's `.claude/`.
-- **When changing a `SKILL.md`**, always invoke `writing-for-agents`; for creating skills and evals, `skill-creator`.
+- **When changing a `SKILL.md`**, always invoke `write-skill`. New skills are created through `/64x-lunicorn:harvest-skill`, which wraps `skill-creator` with this repo's rules; `skill-creator` is never used on its own. No `mattpocock-skills` (ADR 0004).
 - **Validator rules are born through TDD.** A new convention means: fixture, test, red, rule, green. Never the rule first.
 - **English throughout.** Code, docs, messages and commits are English. Entries in `inbox.md` keep the language the correction was given in.
 
 ## New skill
+
+`harvest-skill` walks these steps; they are listed here so a change without it still meets them.
 
 1. Directory `skills/<category>/<verb>-<noun>/` with a `SKILL.md`.
 2. Add the path to `skills` in `.claude-plugin/plugin.json`.

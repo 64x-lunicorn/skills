@@ -40,8 +40,8 @@ waits in the inbox, word for word.
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds one skill today;
-> more arrive as they are harvested.
+> This collection is young and grows slowly on purpose. It holds three skills today,
+> two of them for creating the rest; more arrive as they are harvested.
 
 ## How it works
 
@@ -71,7 +71,9 @@ Skills trigger on their own when a request matches their description, or run as
 
 | Skill | Invocation | What it does |
 | :--- | :--- | :--- |
+| [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
+| [`write-skill`](skills/engineering/write-skill/SKILL.md) | model-invoked | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
 
 ## The validator
 
@@ -95,7 +97,7 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | :--- | :--- |
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
 | [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID. |
-| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, and why there is no meta skill yet. |
+| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, and why skills are created with own skills only. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |

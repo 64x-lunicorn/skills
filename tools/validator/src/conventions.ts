@@ -47,6 +47,7 @@ export const ALLOWED_FRONTMATTER_FIELDS = [
 export const SKILL_NAME_VERBS = [
   "design",
   "diagnose",
+  "harvest",
   "implement",
   "plan",
   "refactor",

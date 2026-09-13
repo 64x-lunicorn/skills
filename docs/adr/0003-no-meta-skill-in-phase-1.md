@@ -1,6 +1,6 @@
 # 0003 — No meta skill in phase 1
 
-Status: accepted, 2026-09-13
+Status: superseded by [0004](0004-own-skill-creation-instead-of-mattpocock.md), 2026-09-13
 
 ## Context
 
