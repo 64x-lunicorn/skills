@@ -3,6 +3,7 @@
   "owner": {
     "name": "64x-lunicorn"
   },
+  "description": "Claude-Code-Plugin als installierbarer Marketplace",
   "plugins": [
     {
       "name": "64x-lunicorn",

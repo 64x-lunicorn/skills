@@ -13,9 +13,12 @@
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "validate": "node tools/validator/src/cli.ts ."
+    "validate": "node tools/validator/src/cli.ts .",
+    "changeset": "changeset",
+    "version": "changeset version && node tools/release/sync-plugin-version.ts"
   },
   "devDependencies": {
+    "@changesets/cli": "^3.0.2",
     "@types/node": "^26.5.1",
     "@vitest/coverage-v8": "^5.0.0",
     "typescript": "^7.0.2",
