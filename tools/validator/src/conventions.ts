@@ -37,6 +37,9 @@ export const ALLOWED_FRONTMATTER_FIELDS = [
   "user-invocable",
 ];
 
+/** SK008: Kategorie, deren Skills nur Daniel zieht, nie das Modell. */
+export const ORCHESTRATION_CATEGORY = "orchestration";
+
 /** SK006: erlaubte Verben als erstes Namenssegment. Wächst per TDD, nie auf Vorrat. */
 export const SKILL_NAME_VERBS = [
   "design",
