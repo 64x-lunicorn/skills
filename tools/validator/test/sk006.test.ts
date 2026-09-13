@@ -40,4 +40,8 @@ describe("SK006: skill name lowercase, hyphenated, verb-noun", () => {
   it("accepts harvest as the verb of the skill-creating orchestrator", () => {
     expect(validate(fixture("sk006/pass-harvest"))).toEqual([]);
   });
+
+  it("accepts verify as the verb of the source-checking skill", () => {
+    expect(validate(fixture("sk006/pass-verify"))).toEqual([]);
+  });
 });

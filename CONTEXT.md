@@ -14,6 +14,12 @@
 
 **Inbox**: `inbox.md`, the harvest backlog. Corrections are recorded verbatim with a counter.
 
+**Research object**: directory `research/NNNN-<slug>/` holding one idea, domain or technical. Never implementable; it reaches implementation only by promotion (ADR 0005).
+
+**Research status**: `seed → exploring → concluded → promoted | parked | rejected`. Parked and rejected objects are kept.
+
+**Promotion**: a research object passes the quality gates and becomes an epic or spec. The object is frozen and linked both ways.
+
 **Gate A**: the validator. Deterministic, no API, blocks the merge.
 
 **Gate B**: the eval runner from phase 2 on. Non-deterministic, costs tokens, not blocking at first.

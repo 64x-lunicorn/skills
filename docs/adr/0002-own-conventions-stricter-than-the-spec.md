@@ -46,7 +46,7 @@ Deliberately excluded:
 
 - **user-invoked**: `disable-model-invocation: true`. All other skills are model-invoked.
 - **Category**: first level under `skills/`. Only `orchestration` has its own rule (SK008).
-- **Verb allowlist (SK006)**: `design`, `diagnose`, `harvest`, `implement`, `plan`, `refactor`, `research`, `resolve`, `review`, `run`, `test`, `triage`, `write`. A new verb is added through TDD when a harvested skill needs it. `harvest` was added on 2026-09-13 for `harvest-skill` (ADR 0004).
+- **Verb allowlist (SK006)**: `design`, `diagnose`, `harvest`, `implement`, `plan`, `refactor`, `research`, `resolve`, `review`, `run`, `test`, `triage`, `verify`, `write`. A new verb is added through TDD when a harvested skill needs it. `harvest` was added on 2026-09-13 for `harvest-skill` (ADR 0004). `verify` was added on 2026-09-13 for `verify-claims` (ADR 0005).
 
 ### Decisions from the bootstrap (2026-09-13)
 
