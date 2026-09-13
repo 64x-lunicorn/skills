@@ -15,7 +15,7 @@ export const sk011: Rule = (repo) => {
     if (!skillMd || !isUserInvoked(skillMd)) return [];
     return proseLines(skillMd).flatMap(({ text, line }) =>
       [...text.matchAll(COMMAND)]
-        .filter(([, prefix, target]) => prefix === undefined || prefix === repo.pluginName)
+        .filter(([, prefix, target]) => prefix === undefined || prefix === repo.manifest?.name)
         .filter(([, , target]) => target !== source && userInvoked.has(target!))
         .map(([command, , target]) => ({
           rule: "SK011",

@@ -26,15 +26,24 @@ export interface Field {
   line: number;
 }
 
+export const MANIFEST_PATH = ".claude-plugin/plugin.json";
+
+export interface Manifest {
+  /** Präfix der Kommandos: `/<name>:<skill>`. */
+  name?: string;
+  /** Einträge aus `skills`, wie sie in der Datei stehen. */
+  skills: string[];
+  lines: string[];
+}
+
 export interface Repo {
   root: string;
-  /** `name` aus `.claude-plugin/plugin.json`, das Präfix der Kommandos. */
-  pluginName?: string;
+  manifest?: Manifest;
   skillDirs: SkillDir[];
 }
 
 export function loadRepo(root: string): Repo {
-  return { root, pluginName: readManifest(root)?.name, skillDirs: findSkillDirs(root) };
+  return { root, manifest: readManifest(root), skillDirs: findSkillDirs(root) };
 }
 
 /** user-invoked heißt: das Modell darf den Skill nicht selbst ziehen. */
@@ -42,10 +51,17 @@ export function isUserInvoked(skillMd: SkillMd): boolean {
   return skillMd.fields?.get("disable-model-invocation")?.value === true;
 }
 
-function readManifest(root: string): { name?: string } | undefined {
-  const file = path.join(root, ".claude-plugin", "plugin.json");
+function readManifest(root: string): Manifest | undefined {
+  const file = path.join(root, MANIFEST_PATH);
   if (!fs.existsSync(file)) return undefined;
-  return JSON.parse(fs.readFileSync(file, "utf8"));
+  const text = fs.readFileSync(file, "utf8");
+  const data = JSON.parse(text) as { name?: string; skills?: unknown };
+  const skills = Array.isArray(data.skills) ? data.skills : [data.skills];
+  return {
+    name: data.name,
+    skills: skills.filter((entry): entry is string => typeof entry === "string"),
+    lines: text.split(/\r?\n/),
+  };
 }
 
 function findSkillDirs(root: string): SkillDir[] {
