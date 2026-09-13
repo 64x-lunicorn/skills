@@ -37,6 +37,9 @@ export const ALLOWED_FRONTMATTER_FIELDS = [
   "user-invocable",
 ];
 
+/** SK009: darüber gehört Inhalt in eine Referenzdatei neben der SKILL.md. */
+export const MAX_BODY_LINES = 200;
+
 /** SK008: Kategorie, deren Skills nur Daniel zieht, nie das Modell. */
 export const ORCHESTRATION_CATEGORY = "orchestration";
 
