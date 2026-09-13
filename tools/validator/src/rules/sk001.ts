@@ -2,7 +2,7 @@ import type { Rule } from "./rule.ts";
 
 export const sk001: Rule = (repo) =>
   repo.skillDirs
-    .filter((dir) => !dir.hasSkillMd)
+    .filter((dir) => !dir.skillMd)
     .map((dir) => ({
       rule: "SK001",
       path: dir.path,
