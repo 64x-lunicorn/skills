@@ -68,7 +68,7 @@ git remote set-url origin git@github-64x:64x-lunicorn/skills.git
 git push -u origin main
 ```
 
-The push runs `ci.yml` once, so GitHub knows the `validate` and `test` checks, and `release.yml` creates tag and release `v0.1.0`.
+CI does not run on this push: `ci.yml` only builds pull requests into `main`. `release.yml` does run and publishes `v0.1.0`, because that version has no release yet.
 
 ## 3. Merge settings
 
@@ -80,9 +80,11 @@ gh repo edit 64x-lunicorn/skills --enable-squash-merge --enable-merge-commit=fal
 
 ## 4. Ruleset for `main`
 
-No direct pushes, PR required, no force push, no deletion, linear history, signed commits only, status checks `validate` and `test` required.
+No direct pushes, PR required, no force push, no deletion, linear history, signed commits only, and the `CI gate` check required.
 
-`required_approving_review_count` is 0: the repo has exactly one human, and GitHub does not let anyone approve their own PR. The PR is still mandatory so the validator runs.
+`CI gate` is the last job in `ci.yml`. It depends on every other job and fails unless all of them succeeded, so it is the only check the ruleset needs: adding or renaming a check in the matrix never touches branch protection. `integration_id` 15368 is GitHub Actions, so only a check reported by a workflow run can satisfy it, not a commit status set through the API.
+
+`required_approving_review_count` is 0: the repo has exactly one human, and GitHub does not let anyone approve their own PR. The PR is still mandatory so the gate runs.
 
 ```bash
 gh api -X POST repos/64x-lunicorn/skills/rulesets --input - <<'EOF'
@@ -111,7 +113,8 @@ gh api -X POST repos/64x-lunicorn/skills/rulesets --input - <<'EOF'
       "type": "required_status_checks",
       "parameters": {
         "strict_required_status_checks_policy": true,
-        "required_status_checks": [{ "context": "validate" }, { "context": "test" }]
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [{ "context": "CI gate", "integration_id": 15368 }]
       }
     }
   ]
@@ -123,14 +126,28 @@ EOF
 
 ```bash
 gh api repos/64x-lunicorn/skills/rulesets --jq '.[].name'
-git switch -c chore/protection-check && git commit --allow-empty -m "chore: check branch protection" && git push -u origin HEAD
-git push origin HEAD:main
 ```
 
-The last push must be rejected. Then delete the branch again:
+A direct push must be rejected:
 
 ```bash
-git switch main && git branch -D chore/protection-check && git push origin --delete chore/protection-check
+git switch -c chore/protection-check && git commit --allow-empty -m "chore: check branch protection" && git push origin HEAD:main
+```
+
+The same branch as a pull request must run the matrix and end in a green `CI gate`:
+
+```bash
+git push -u origin HEAD && gh pr create --fill --base main
+```
+
+```bash
+gh pr checks --watch
+```
+
+Close the pull request without merging and delete the branch:
+
+```bash
+gh pr close --delete-branch && git switch main && git branch -D chore/protection-check
 ```
 
 ## Release flow
@@ -138,5 +155,5 @@ git switch main && git branch -D chore/protection-check && git push origin --del
 `release.yml` needs no secret and no PAT:
 
 1. On a branch, run `npm run version`. It consumes the changesets, writes `CHANGELOG.md` and sets the version in `package.json` and `.claude-plugin/plugin.json`.
-2. Open a PR, wait for green CI, squash merge.
-3. On `main`, `release.yml` sees a version without a tag and creates tag `v<version>` and the GitHub release.
+2. Open a PR, wait for a green `CI gate`, squash merge.
+3. On `main`, `release.yml` sees a version without a release and creates the release together with its tag `v<version>` on the merged commit.

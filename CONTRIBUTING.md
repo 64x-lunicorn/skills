@@ -39,8 +39,10 @@ npm run coverage
 
 `validate` runs the validator against the repository, `typecheck` runs the
 TypeScript compiler without emitting, and `coverage` runs the test suite with a
-100 % line and function threshold. The `validate` and `test` jobs in
-[`ci.yml`](.github/workflows/ci.yml) are required status checks on `main`.
+100 % line and function threshold. [`ci.yml`](.github/workflows/ci.yml) runs
+them as a matrix on every pull request into `main`, together with a workflow
+lint and a secret scan, and ends in the `CI gate` job. That gate is the only
+required status check.
 
 Documentation-only changes do not need a test run. Verify links and examples
 instead.

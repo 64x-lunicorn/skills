@@ -1,7 +1,8 @@
 <!--
-CI runs the validator, the TypeScript type check and the test suite with a
-100 % line and function coverage gate. Run `npm run validate`, `npm run typecheck`
-and `npm run coverage` before pushing to get the same answer without a round trip.
+CI runs the validator, the TypeScript type check, the tests on Node 24 and 26,
+a workflow lint and a secret scan, and ends in the CI gate. Run
+`npm run validate`, `npm run typecheck` and `npm run coverage` before pushing
+to get the same answer without a round trip.
 -->
 
 ## What and why

@@ -1,35 +1,162 @@
+# The quality gate. It runs on every pull request into main and ends in one
+# job, "CI gate", which is the only check the branch ruleset requires.
+#
+# Design notes:
+#   * Builds only on pull requests into main. main itself only receives
+#     squash merges of pull requests that already passed this gate.
+#   * The checks run as one matrix, so adding a check is one matrix entry and
+#     never an edit to branch protection.
+#   * Least privilege: no token permissions by default, each job grants the
+#     minimum it needs.
+#   * Third-party actions are pinned to a commit SHA. A tag is a moving
+#     pointer; a SHA is not. Dependabot keeps them current (dependabot.yml).
 name: CI
 
 on:
   pull_request:
-  push:
     branches: [main]
 
-permissions:
-  contents: read
+permissions: {}
+
+# A superseded push to a pull request has nothing left to prove.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  validate:
-    name: validate
+  checks:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    continue-on-error: ${{ matrix.required == false }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Validator
+            node: 24
+            script: validate
+            required: true
+          - name: Type check
+            node: 24
+            script: typecheck
+            required: true
+          # engines.node is >=24, so the oldest supported line is the blocking
+          # one, and it carries the coverage threshold.
+          - name: Tests (Node 24)
+            node: 24
+            script: coverage
+            required: true
+          # Early warning for the current Node line. Advisory: a failure here
+          # is a heads-up, not a reason to block an unrelated change.
+          - name: Tests (Node 26)
+            node: 26
+            script: test
+            required: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm run validate
+          # checkout otherwise leaves the workflow token in .git/config,
+          # readable by every later step in the job. Nothing here pushes
+          # over git.
+          persist-credentials: false
 
-  test:
-    name: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 24
+          node-version: ${{ matrix.node }}
           cache: npm
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm run coverage
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm script
+        env:
+          SCRIPT: ${{ matrix.script }}
+        run: npm run "${SCRIPT}"
+
+  workflows:
+    name: Workflow lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # checkout otherwise leaves the workflow token in .git/config,
+          # readable by every later step in the job. Nothing here pushes
+          # over git.
+          persist-credentials: false
+
+      - name: actionlint
+        env:
+          ACTIONLINT_VERSION: 1.7.12
+        run: |
+          set -euo pipefail
+          curl -sSfL -o actionlint.tar.gz \
+            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          tar -xzf actionlint.tar.gz actionlint
+          ./actionlint -color
+
+      # zizmor audits the workflows themselves: unpinned actions, injectable
+      # ${{ }} interpolation in run blocks, over-broad token permissions,
+      # dangerous triggers. release.yml is the one place that can publish, so
+      # CI configuration deserves a linter of its own.
+      - name: zizmor
+        env:
+          ZIZMOR_VERSION: 1.30.1
+        run: |
+          set -euo pipefail
+          pipx install "zizmor==${ZIZMOR_VERSION}"
+          zizmor --persona=regular --min-severity=low .github/workflows
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Full history: a credential that was committed and then "removed"
+          # in a later commit is still in the repository and still leaked.
+          fetch-depth: 0
+
+      # Downloaded and checksum-verified rather than pulled in as an action:
+      # one less third-party workflow with access to this repository.
+      - name: gitleaks
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          set -euo pipefail
+          curl -sSfL -o gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks git --no-banner --redact --exit-code 1 .
+
+  # One job to require in the branch ruleset. Adding or renaming a job above
+  # never means editing branch protection again — and a job that is skipped or
+  # cancelled cannot pass as "green" either.
+  gate:
+    name: CI gate
+    if: always()
+    needs: [checks, workflows, secrets]
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Verify every job succeeded
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          set -euo pipefail
+          echo "job results: ${RESULTS}"
+          for result in ${RESULTS}; do
+            if [ "${result}" != "success" ]; then
+              echo "::error::A required CI job did not succeed (${RESULTS})."
+              exit 1
+            fi
+          done
+          echo "All required CI jobs succeeded."

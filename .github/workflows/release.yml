@@ -1,32 +1,47 @@
+# Shipping, in one step: merge a version pull request.
+#
+# `npm run version` on a branch consumes the changesets and bumps the version.
+# That pull request passes the CI gate like any other and is squash-merged.
+# This workflow then sees a version on main that has no release yet and
+# publishes it. Nothing is built here: the merged commit already went through
+# the gate as a pull request.
 name: Release
 
 on:
   push:
     branches: [main]
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+permissions: {}
 
-permissions:
-  contents: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  release:
-    name: release
+  publish:
+    name: Publish release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the tag and the GitHub Release
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
-      - name: Create tag and release when the version has no tag yet
+          # checkout otherwise leaves the workflow token in .git/config,
+          # readable by every later step in the job. The tag is created
+          # through the API, nothing here pushes over git.
+          persist-credentials: false
+
+      - name: Publish the release when the version has none yet
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TARGET_SHA: ${{ github.sha }}
         run: |
+          set -euo pipefail
           version=$(node -p "require('./package.json').version")
-          if [ "$version" = "0.0.0" ] || git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
-            echo "No new version ($version)."
+          if [ "${version}" = "0.0.0" ] || gh release view "v${version}" >/dev/null 2>&1; then
+            echo "No new version (${version})."
             exit 0
           fi
-          awk -v v="$version" '$0 == "## " v {f=1; next} /^## /{f=0} f' CHANGELOG.md > notes.md
-          git tag "v$version"
-          git push origin "v$version"
-          gh release create "v$version" --title "v$version" --notes-file notes.md
+          awk -v v="${version}" '$0 == "## " v {f=1; next} /^## /{f=0} f' CHANGELOG.md > notes.md
+          gh release create "v${version}" --target "${TARGET_SHA}" --title "v${version}" --notes-file notes.md
