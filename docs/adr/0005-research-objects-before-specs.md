@@ -2,6 +2,8 @@
 
 Status: accepted, 2026-09-13.
 
+Amended 2026-09-13: in this repo `research/` is gitignored and lives only locally. Other projects decide where research lives during project setup.
+
 ## Context
 
 Ideas for features, epics or products come up long before anyone decides to build them. Many are never built and were only inspiration. Until now they had no home: they lived in chat history or went straight into implementation without being challenged.

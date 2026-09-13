@@ -121,8 +121,8 @@ research/NNNN-<slug>/
 promotion through the quality gates: deterministic checks in the validator, and judgement
 checks with Daniel (problem in one sentence, "do nothing" considered, explicit go). The
 promotion skill and the epic/spec format are still open. The design is in
-[ADR 0005](docs/adr/0005-research-objects-before-specs.md); this repo's own research lives in
-[`research/`](research/).
+[ADR 0005](docs/adr/0005-research-objects-before-specs.md); this repo's own research lives
+only locally in a gitignored `research/`.
 
 ## The validator
 
@@ -147,7 +147,6 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
 | [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion. |
 | [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, and why research comes before specs. |
-| [Research](research/) | Browse ideas for this repo, including the parked and rejected ones. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |
