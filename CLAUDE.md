@@ -12,6 +12,7 @@ Claude Code plugin `64x-lunicorn`. Terms live in `CONTEXT.md`, decisions in `doc
 - **Duplication in prose is not a smell.** DRY does not apply here. A shared paragraph in two skills is cheaper than a pointer that costs a load step and is sometimes ignored.
 - **Project boundary.** Only what applies across projects goes into this repo. Project-specific material stays in that project's `.claude/`.
 - **When changing a `SKILL.md`**, always invoke `write-skill`. New skills are created through `/64x-lunicorn:harvest-skill`, which wraps `skill-creator` with this repo's rules; `skill-creator` is never used on its own. No `mattpocock-skills` (ADR 0004).
+- **Research is never implemented.** Anything under `research/` reaches code only after promotion to an epic or spec (ADR 0005). Ideas are worked on with `/64x-lunicorn:research-idea`.
 - **Validator rules are born through TDD.** A new convention means: fixture, test, red, rule, green. Never the rule first.
 - **English throughout.** Code, docs, messages and commits are English. Entries in `inbox.md` keep the language the correction was given in.
 

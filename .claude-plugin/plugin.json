@@ -17,8 +17,10 @@
     "skills"
   ],
   "skills": [
+    "./skills/engineering/verify-claims",
     "./skills/engineering/write-commit-message",
     "./skills/engineering/write-skill",
-    "./skills/orchestration/harvest-skill"
+    "./skills/orchestration/harvest-skill",
+    "./skills/orchestration/research-idea"
   ]
 }

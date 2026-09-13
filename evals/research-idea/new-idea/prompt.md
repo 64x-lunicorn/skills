@@ -1,0 +1,1 @@
+/64x-lunicorn:research-idea Idee: Die Skills könnten Korrekturen automatisch aus Session-Transkripten erkennen und selbst in die inbox.md schreiben. Muss nicht umgesetzt werden, lass uns das erstmal durchdenken.
