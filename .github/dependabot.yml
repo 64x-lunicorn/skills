@@ -1,0 +1,38 @@
+# Dependency updates arrive as pull requests, which means they arrive through
+# the same gate as everything else: the validator, the type check and the test
+# suite with its coverage threshold.
+#
+# The GitHub Actions ecosystem matters as much as npm here: CI pins its actions
+# to commit SHAs, and without Dependabot those pins would quietly rot.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    groups:
+      # Every dependency is development tooling; the plugin itself ships none.
+      dev-tooling:
+        dependency-type: development
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    groups:
+      actions:
+        patterns:
+          - "*"

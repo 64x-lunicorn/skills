@@ -41,7 +41,23 @@ One Ed25519 key in 1Password serves as both authentication and signing key.
 ## 2. Create the repo and push
 
 ```bash
-gh repo create 64x-lunicorn/skills --public --description "Skills as code for Claude Code"
+gh repo create 64x-lunicorn/skills --public
+```
+
+Description, topics and features match the other public repos on the account: one sentence ending in the stack, ten topics mixing domain and technology, no wiki, no discussions.
+
+```bash
+gh repo edit 64x-lunicorn/skills \
+  --description "Claude Code plugin with agent skills harvested from real corrections, not invented — every SKILL.md passes a deterministic validator before it lands. Built in TypeScript." \
+  --add-topic agent-skills,ai-agents,anthropic,claude,claude-code,claude-code-plugin,developer-tools,llm,prompt-engineering,typescript \
+  --enable-wiki=false \
+  --enable-discussions=false
+```
+
+Turn on private vulnerability reporting, which [SECURITY.md](../SECURITY.md) links to:
+
+```bash
+gh api -X PUT repos/64x-lunicorn/skills/private-vulnerability-reporting
 ```
 
 ```bash

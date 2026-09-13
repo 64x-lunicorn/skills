@@ -10,7 +10,14 @@
       "name": "64x-lunicorn",
       "source": "./",
       "description": "Skills as code for Claude Code: harvested from real corrections, enforced by a validator",
-      "category": "engineering"
+      "category": "engineering",
+      "keywords": [
+        "agent-skills",
+        "claude-code",
+        "conventional-commits",
+        "developer-tools",
+        "skills"
+      ]
     }
   ]
 }

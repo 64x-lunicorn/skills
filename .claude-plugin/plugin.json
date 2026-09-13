@@ -6,8 +6,16 @@
     "name": "64x-lunicorn",
     "url": "https://github.com/64x-lunicorn"
   },
+  "homepage": "https://github.com/64x-lunicorn/skills",
   "repository": "https://github.com/64x-lunicorn/skills",
   "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "conventional-commits",
+    "developer-tools",
+    "skills"
+  ],
   "skills": [
     "./skills/engineering/write-commit-message"
   ]
