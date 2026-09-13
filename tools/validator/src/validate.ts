@@ -1,3 +1,7 @@
+import { loadRepo } from "./repo.ts";
+import type { Rule } from "./rules/rule.ts";
+import { sk001 } from "./rules/sk001.ts";
+
 export interface Finding {
   rule: string;
   /** Pfad relativ zur Repo-Wurzel, mit `/` getrennt. */
@@ -6,6 +10,9 @@ export interface Finding {
   message: string;
 }
 
-export function validate(_root: string): Finding[] {
-  return [];
+const rules: Rule[] = [sk001];
+
+export function validate(root: string): Finding[] {
+  const repo = loadRepo(root);
+  return rules.flatMap((rule) => rule(repo));
 }
