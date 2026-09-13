@@ -57,5 +57,6 @@ export const SKILL_NAME_VERBS = [
   "run",
   "test",
   "triage",
+  "verify",
   "write",
 ];
