@@ -10,7 +10,7 @@
 
 **Layering**: user-invoked orchestrates, model-invoked holds the reusable discipline. User-invoked calls model-invoked, never the other way round, never user-invoked to user-invoked.
 
-**Harvest**: a skill only comes into being once the same correction was needed three times. Harvested, not invented.
+**Harvest**: a skill only comes into being once the same correction was needed three times, or Daniel names a gap in the repo's process or his development skill set (ADR 0004). Harvested, not invented. `harvest-skill` runs it.
 
 **Inbox**: `inbox.md`, the harvest backlog. Corrections are recorded verbatim with a counter.
 

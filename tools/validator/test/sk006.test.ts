@@ -36,4 +36,8 @@ describe("SK006: skill name lowercase, hyphenated, verb-noun", () => {
   it("accepts an allowlisted verb with a multi-part noun", () => {
     expect(validate(fixture("sk006/pass"))).toEqual([]);
   });
+
+  it("accepts harvest as the verb of the skill-creating orchestrator", () => {
+    expect(validate(fixture("sk006/pass-harvest"))).toEqual([]);
+  });
 });

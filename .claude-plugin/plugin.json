@@ -1,6 +1,6 @@
 {
   "name": "64x-lunicorn",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Skills as code for Claude Code: harvested from real corrections, enforced by a validator",
   "author": {
     "name": "64x-lunicorn",
@@ -17,6 +17,8 @@
     "skills"
   ],
   "skills": [
-    "./skills/engineering/write-commit-message"
+    "./skills/engineering/write-commit-message",
+    "./skills/engineering/write-skill",
+    "./skills/orchestration/harvest-skill"
   ]
 }
