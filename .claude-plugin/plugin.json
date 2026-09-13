@@ -1,11 +1,13 @@
 {
   "name": "64x-lunicorn",
   "version": "0.1.0",
-  "description": "Skills, Subagents, Commands, Hooks und Workflows für Claude Code",
+  "description": "Skills as code for Claude Code: harvested from real corrections, enforced by a validator",
   "author": {
-    "name": "64x-lunicorn"
+    "name": "64x-lunicorn",
+    "url": "https://github.com/64x-lunicorn"
   },
-  "repository": "https://github.com/Lunicorn-lab/skills",
+  "repository": "https://github.com/64x-lunicorn/skills",
+  "license": "MIT",
   "skills": [
     "./skills/engineering/write-commit-message"
   ]

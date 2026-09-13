@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Claude-Code-Plugin: Skills, Subagents, Commands, Hooks und Workflows",
+  "description": "Skills as code for Claude Code: harvested from real corrections, enforced by a validator",
   "license": "MIT",
   "engines": {
     "node": ">=24"

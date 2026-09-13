@@ -10,7 +10,7 @@ Das Repo startet mit Skills. Später kommen Subagents, Commands, Hooks und Workf
 
 Das Repo ist ein Claude-Code-Plugin mit dem Namen `64x-lunicorn`. Das Manifest liegt in `.claude-plugin/plugin.json`, das Repo ist zugleich sein eigener Marketplace (`.claude-plugin/marketplace.json`, `source: "./"`). Kommandos heißen `/64x-lunicorn:<skill>`.
 
-Der Name `64x-lunicorn` ist eindeutig genug für Kommando-Präfix und Marketplace. Der Repo-Name `skills` wäre es nicht. Entscheidung Daniel, 2026-09-13.
+Der Name ist der öffentliche GitHub-Account, unter dem das Repo liegt. So ist er eindeutig für Kommando-Präfix und Marketplace, und im Repo steht kein Klarname. Der Repo-Name `skills` wäre nicht eindeutig. Entscheidung Daniel, 2026-09-13.
 
 ## Konsequenzen
 
@@ -23,3 +23,4 @@ Der Name `64x-lunicorn` ist eindeutig genug für Kommando-Präfix und Marketplac
 
 - **Loser Skills-Ordner** unter `~/.claude/skills/`: am schnellsten, aber ohne Subagents, Hooks und Workflows und ohne Versionierung.
 - **Mehrere Plugins** (eins pro Ebene): sauber getrennt, aber mehr Installationen und kein gemeinsamer Release für Bausteine, die zusammengehören.
+- **Kürzeres Präfix** wie `lunicorn`: bequemer zu tippen, aber nicht identisch mit dem Account.

@@ -1,13 +1,23 @@
 # GitHub einrichten
 
-Diese Schritte führt Daniel selbst aus. Sie betreffen Auth und Repo-Einstellungen. Das Repo `Lunicorn-lab/skills` existiert bereits, ist privat und noch leer.
+Diese Schritte führt Daniel selbst aus. Sie betreffen Auth und Repo-Einstellungen. Das Repo liegt noch privat und leer unter `Lunicorn-lab/skills` und zieht zum öffentlichen Account `64x-lunicorn` um. Alle Befehle ab Schritt 2 gehen vom Ziel `64x-lunicorn/skills` aus.
 
-## 0. Voraussetzung: Plan
+## 0. Repo übertragen und öffentlich machen
 
-Rulesets und Branch Protection gibt es für **private** Repos erst ab GitHub Pro (persönlicher Account) bzw. Team (Organisation). Ohne das bleibt nur, das Repo öffentlich zu machen. Prüfen:
+Öffentliche Repos bekommen Rulesets und Branch Protection auch ohne bezahlten Plan.
 
 ```bash
-gh api user --jq .plan.name
+gh api -X POST repos/Lunicorn-lab/skills/transfer -f new_owner=64x-lunicorn
+```
+
+Die Übertragung muss im Ziel-Account bestätigt werden. Danach:
+
+```bash
+gh repo edit 64x-lunicorn/skills --visibility public --accept-visibility-change-consequences
+```
+
+```bash
+git remote set-url origin git@github.com:64x-lunicorn/skills.git
 ```
 
 ## 1. Signierschlüssel bei GitHub hinterlegen
@@ -29,7 +39,7 @@ git push -u origin main
 Nur Squash-Merge. GitHub signiert Squash-Commits aus der Web-Oberfläche selbst. Rebase-Merges kann GitHub nicht signieren, sie würden an der Signaturpflicht scheitern.
 
 ```bash
-gh repo edit Lunicorn-lab/skills --enable-squash-merge --enable-merge-commit=false --enable-rebase-merge=false --delete-branch-on-merge
+gh repo edit 64x-lunicorn/skills --enable-squash-merge --enable-merge-commit=false --enable-rebase-merge=false --delete-branch-on-merge
 ```
 
 ## 4. Ruleset für `main`
@@ -39,7 +49,7 @@ Keine Direct Pushes, PR erforderlich, kein Force-Push, kein Löschen, lineare Hi
 `required_approving_review_count` steht auf 0: Im Repo gibt es genau einen Menschen, und GitHub lässt niemanden den eigenen PR approven. Der PR ist trotzdem Pflicht, damit der Validator läuft.
 
 ```bash
-gh api -X POST repos/Lunicorn-lab/skills/rulesets --input - <<'EOF'
+gh api -X POST repos/64x-lunicorn/skills/rulesets --input - <<'EOF'
 {
   "name": "main",
   "target": "branch",
@@ -78,7 +88,7 @@ Die Checks `validate` und `test` kann GitHub erst zuordnen, wenn `ci.yml` einmal
 ## 5. Prüfen
 
 ```bash
-gh api repos/Lunicorn-lab/skills/rulesets --jq '.[].name'
+gh api repos/64x-lunicorn/skills/rulesets --jq '.[].name'
 git switch -c chore/protection-check && git commit --allow-empty -m "chore: check branch protection" && git push -u origin HEAD
 git push origin HEAD:main
 ```

@@ -1,14 +1,16 @@
 {
   "name": "64x-lunicorn",
   "owner": {
-    "name": "64x-lunicorn"
+    "name": "64x-lunicorn",
+    "url": "https://github.com/64x-lunicorn"
   },
-  "description": "Claude-Code-Plugin als installierbarer Marketplace",
+  "description": "Skills as code for Claude Code, installable as a plugin",
   "plugins": [
     {
       "name": "64x-lunicorn",
       "source": "./",
-      "description": "Skills, Subagents, Commands, Hooks und Workflows für Claude Code"
+      "description": "Skills as code for Claude Code: harvested from real corrections, enforced by a validator",
+      "category": "engineering"
     }
   ]
 }

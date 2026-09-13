@@ -1,12 +1,26 @@
-# 64x-lunicorn
+# skills
 
-Claude-Code-Plugin: eigene Skills, später Subagents, Commands, Hooks und Workflows. Jede `SKILL.md` läuft vor dem Merge durch einen Validator, der die Konventionen aus [ADR 0002](docs/adr/0002-eigene-konventionen-strenger-als-die-spec.md) erzwingt.
+**Skills as code for Claude Code.** Harvested from real corrections, not invented. Every `SKILL.md` passes a validator before it can land on `main`.
 
-**Installieren**
+## Install
 
 ```
-/plugin marketplace add Lunicorn-lab/skills
+/plugin marketplace add 64x-lunicorn/skills
 /plugin install 64x-lunicorn@64x-lunicorn
 ```
 
-**Beitragen:** Korrektur zuerst in [`inbox.md`](inbox.md). Beim dritten Mal wird daraus ein Skill, nach [`CLAUDE.md`](CLAUDE.md). PR öffnen, `npm run validate` und `npm test` müssen grün sein.
+Skills trigger on their own or run as `/64x-lunicorn:<skill>`.
+
+## Skills
+
+| Skill | What it does |
+| :-- | :-- |
+| [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | Drafts a Conventional Commits message in English imperative mood for staged changes. |
+
+## Contributing
+
+A correction goes into [`inbox.md`](inbox.md) first. The third time it is needed, it becomes a skill ([`CLAUDE.md`](CLAUDE.md)). Open a PR; `npm run validate` and `npm test` must pass. The rules behind the validator: [ADR 0002](docs/adr/0002-eigene-konventionen-strenger-als-die-spec.md).
+
+## License
+
+[MIT](LICENSE)
