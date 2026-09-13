@@ -1,6 +1,6 @@
 {
   "name": "64x-lunicorn-skills",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "description": "Claude-Code-Plugin: Skills, Subagents, Commands, Hooks und Workflows",
