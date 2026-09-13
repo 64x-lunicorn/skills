@@ -28,11 +28,24 @@ export interface Field {
 
 export interface Repo {
   root: string;
+  /** `name` aus `.claude-plugin/plugin.json`, das Präfix der Kommandos. */
+  pluginName?: string;
   skillDirs: SkillDir[];
 }
 
 export function loadRepo(root: string): Repo {
-  return { root, skillDirs: findSkillDirs(root) };
+  return { root, pluginName: readManifest(root)?.name, skillDirs: findSkillDirs(root) };
+}
+
+/** user-invoked heißt: das Modell darf den Skill nicht selbst ziehen. */
+export function isUserInvoked(skillMd: SkillMd): boolean {
+  return skillMd.fields?.get("disable-model-invocation")?.value === true;
+}
+
+function readManifest(root: string): { name?: string } | undefined {
+  const file = path.join(root, ".claude-plugin", "plugin.json");
+  if (!fs.existsSync(file)) return undefined;
+  return JSON.parse(fs.readFileSync(file, "utf8"));
 }
 
 function findSkillDirs(root: string): SkillDir[] {

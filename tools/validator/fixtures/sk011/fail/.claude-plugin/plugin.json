@@ -1,0 +1,8 @@
+{
+  "name": "fixture",
+  "skills": [
+    "./skills/engineering/write-commit-message",
+    "./skills/orchestration/plan-sprint",
+    "./skills/orchestration/run-sprint"
+  ]
+}

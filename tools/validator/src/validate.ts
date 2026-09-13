@@ -10,6 +10,7 @@ import { sk007 } from "./rules/sk007.ts";
 import { sk008 } from "./rules/sk008.ts";
 import { sk009 } from "./rules/sk009.ts";
 import { sk010 } from "./rules/sk010.ts";
+import { sk011 } from "./rules/sk011.ts";
 
 export interface Finding {
   rule: string;
@@ -19,7 +20,7 @@ export interface Finding {
   message: string;
 }
 
-const rules: Rule[] = [sk001, sk002, sk003, sk004, sk005, sk006, sk007, sk008, sk009, sk010];
+const rules: Rule[] = [sk001, sk002, sk003, sk004, sk005, sk006, sk007, sk008, sk009, sk010, sk011];
 
 export function validate(root: string): Finding[] {
   const repo = loadRepo(root);
