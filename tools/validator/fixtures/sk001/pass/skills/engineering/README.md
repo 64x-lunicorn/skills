@@ -1,0 +1,1 @@
+Kategorie-README, kein Skill.

@@ -1,0 +1,24 @@
+{
+  "name": "64x-lunicorn-skills",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Claude-Code-Plugin: Skills, Subagents, Commands, Hooks und Workflows",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "@vitest/coverage-v8": "^5.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0",
+    "yaml": "^2.9.1"
+  }
+}
