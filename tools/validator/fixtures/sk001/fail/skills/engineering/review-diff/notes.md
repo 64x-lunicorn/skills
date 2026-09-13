@@ -1,1 +1,1 @@
-Notizen ohne SKILL.md daneben.
+Notes without a SKILL.md next to them.

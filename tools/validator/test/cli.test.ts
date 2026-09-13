@@ -10,20 +10,20 @@ function run(root: string) {
 }
 
 describe("CLI", () => {
-  it("gibt pro Befund Regel-ID, Pfad, Zeile und Begründung aus und endet mit Exit-Code 1", () => {
+  it("prints rule ID, path, line and reason per finding and exits with code 1", () => {
     const result = run(fixture("sk003/fail-too-short"));
     expect(result.status).toBe(1);
     expect(result.stdout).toMatch(
-      /^SK003 skills\/engineering\/write-commit-message\/SKILL\.md:3 description hat 24 Zeichen/m,
+      /^SK003 skills\/engineering\/write-commit-message\/SKILL\.md:3 description has 24 characters/m,
     );
   });
 
-  it("lässt die Zeile weg, wenn sie nicht ermittelbar ist", () => {
+  it("omits the line when it cannot be determined", () => {
     const result = run(fixture("sk001/fail"));
-    expect(result.stdout).toMatch(/^SK001 skills\/engineering\/review-diff Skill-Verzeichnis ohne SKILL\.md/m);
+    expect(result.stdout).toMatch(/^SK001 skills\/engineering\/review-diff Skill directory without SKILL\.md/m);
   });
 
-  it("endet ohne Befund mit Exit-Code 0", () => {
+  it("exits with code 0 without findings", () => {
     const result = run(fixture("sk001/pass"));
     expect(result.status).toBe(0);
   });

@@ -16,7 +16,7 @@ import { sk013 } from "./rules/sk013.ts";
 
 export interface Finding {
   rule: string;
-  /** Pfad relativ zur Repo-Wurzel, mit `/` getrennt. */
+  /** Path relative to the repo root, separated by `/`. */
   path: string;
   line?: number;
   message: string;

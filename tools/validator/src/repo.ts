@@ -2,9 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { LineCounter, isMap, isScalar, parseDocument } from "yaml";
 
-/** Ein Verzeichnis `skills/<kategorie>/<name>/`, mit oder ohne SKILL.md. */
+/** A directory `skills/<category>/<name>/`, with or without SKILL.md. */
 export interface SkillDir {
-  /** Pfad relativ zur Repo-Wurzel, z. B. `skills/engineering/write-commit-message`. */
+  /** Path relative to the repo root, e.g. `skills/engineering/write-commit-message`. */
   path: string;
   category: string;
   name: string;
@@ -13,11 +13,11 @@ export interface SkillDir {
 
 export interface SkillMd {
   path: string;
-  /** Fehlt, wenn das Frontmatter nicht wirkt. Dann ist `frontmatterError` gesetzt. */
+  /** Absent when the frontmatter has no effect; `frontmatterError` is set instead. */
   fields?: Map<string, Field>;
   frontmatterError?: { line: number; message: string };
   body: string[];
-  /** Zeilennummer (1-basiert) der ersten Body-Zeile in der Datei. */
+  /** 1-based line number of the first body line in the file. */
   bodyStartLine: number;
 }
 
@@ -29,9 +29,9 @@ export interface Field {
 export const MANIFEST_PATH = ".claude-plugin/plugin.json";
 
 export interface Manifest {
-  /** Präfix der Kommandos: `/<name>:<skill>`. */
+  /** Command prefix: `/<name>:<skill>`. */
   name?: string;
-  /** Einträge aus `skills`, wie sie in der Datei stehen. */
+  /** Entries from `skills`, as written in the file. */
   skills: string[];
   lines: string[];
 }
@@ -46,7 +46,7 @@ export function loadRepo(root: string): Repo {
   return { root, manifest: readManifest(root), skillDirs: findSkillDirs(root) };
 }
 
-/** user-invoked heißt: das Modell darf den Skill nicht selbst ziehen. */
+/** user-invoked means the model must not invoke the skill on its own. */
 export function isUserInvoked(skillMd: SkillMd): boolean {
   return skillMd.fields?.get("disable-model-invocation")?.value === true;
 }
@@ -91,7 +91,7 @@ function parseSkillMd(rel: string, text: string): SkillMd {
       frontmatterError: {
         line: 1,
         message:
-          "Das öffnende --- muss in Zeile 1 stehen. Sonst behandelt Claude Code die ganze Datei als Inhalt und das Frontmatter wirkt nicht.",
+          "The opening --- must be on line 1. Otherwise Claude Code treats the whole file as content and the frontmatter has no effect.",
       },
       body: lines,
       bodyStartLine: 1,
@@ -104,7 +104,7 @@ function parseSkillMd(rel: string, text: string): SkillMd {
       path: rel,
       frontmatterError: {
         line: 1,
-        message: "Das schließende --- des Frontmatters fehlt. Das Frontmatter wirkt nicht.",
+        message: "The closing --- of the frontmatter is missing. The frontmatter has no effect.",
       },
       body: lines,
       bodyStartLine: 1,
@@ -121,9 +121,9 @@ function parseSkillMd(rel: string, text: string): SkillMd {
     return {
       path: rel,
       frontmatterError: {
-        // +1, weil das YAML in Zeile 2 der Datei beginnt.
+        // +1 because the YAML starts on line 2 of the file.
         line: (error.linePos?.[0].line ?? 1) + 1,
-        message: `Frontmatter ist kein gültiges YAML: ${error.message.split("\n")[0]}`,
+        message: `Frontmatter is not valid YAML: ${error.message.split("\n")[0]}`,
       },
       body,
       bodyStartLine,

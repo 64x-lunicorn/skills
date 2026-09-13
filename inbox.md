@@ -1,23 +1,23 @@
 # Inbox
 
-Backlog für die Ernte. Wenn Daniel Claude eine Korrektur zum zweiten Mal gibt, kommt sie hierher, **wörtlich**, nicht geglättet. Bei jeder Wiederholung steigt der Zähler. Bei **3×** wird aus dem Eintrag ein Skill (Phase 3) und der Eintrag verschwindet mit dem PR, der den Skill anlegt.
+The harvest backlog. When Daniel gives Claude the same correction a second time, it goes here **verbatim**, in the language it was given in, not polished. Every repeat raises the counter. At **3×** the entry becomes a skill (phase 3) and is removed in the PR that adds the skill.
 
-Format pro Eintrag:
+Entry format:
 
 ```markdown
-## <Kurztitel>
+## <short title>
 
-- **Zähler:** 2×
-- **Zuletzt:** YYYY-MM-DD, <Projekt>
-- **Wörtlich:** „<Daniels Korrektur, unverändert>“
-- **Kontext:** <was Claude gerade getan hat, ein Satz>
+- **Count:** 2×
+- **Last:** YYYY-MM-DD, <project>
+- **Verbatim:** "<the correction, unchanged>"
+- **Context:** <what Claude was doing, one sentence>
 ```
 
 ---
 
-## Beispiel: Format-Vorlage, kein echter Eintrag
+## Example: format template, not a real entry
 
-- **Zähler:** 2×
-- **Zuletzt:** 2026-09-13, skills
-- **Wörtlich:** „<hier steht Daniels Satz, genau so, wie er ihn geschrieben hat>“
-- **Kontext:** Claude hat eine Konvention geraten, statt nachzufragen.
+- **Count:** 2×
+- **Last:** 2026-09-13, skills
+- **Verbatim:** "<the correction exactly as it was written>"
+- **Context:** Claude guessed a convention instead of asking.

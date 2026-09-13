@@ -1,16 +1,16 @@
-# GitHub einrichten
+# Setting up GitHub
 
-Diese Schritte führt Daniel selbst aus. Sie betreffen Auth und Repo-Einstellungen. Das Repo liegt noch privat und leer unter `Lunicorn-lab/skills` und zieht zum öffentlichen Account `64x-lunicorn` um. Alle Befehle ab Schritt 2 gehen vom Ziel `64x-lunicorn/skills` aus.
+Daniel runs these steps; they touch authentication and repo settings. The repo still sits private and empty at `Lunicorn-lab/skills` and moves to the public account `64x-lunicorn`. Every command from step 1 on targets `64x-lunicorn/skills`.
 
-## 0. Repo übertragen und öffentlich machen
+## 0. Transfer the repo and make it public
 
-Öffentliche Repos bekommen Rulesets und Branch Protection auch ohne bezahlten Plan.
+Public repos get rulesets and branch protection without a paid plan.
 
 ```bash
 gh api -X POST repos/Lunicorn-lab/skills/transfer -f new_owner=64x-lunicorn
 ```
 
-Die Übertragung muss im Ziel-Account bestätigt werden. Danach:
+The transfer has to be accepted in the target account. Then:
 
 ```bash
 gh repo edit 64x-lunicorn/skills --visibility public --accept-visibility-change-consequences
@@ -20,33 +20,33 @@ gh repo edit 64x-lunicorn/skills --visibility public --accept-visibility-change-
 git remote set-url origin git@github.com:64x-lunicorn/skills.git
 ```
 
-## 1. Signierschlüssel bei GitHub hinterlegen
+## 1. Register the signing key with GitHub
 
-Lokal ist SSH-Signierung schon aktiv (`commit.gpgsign=true`, `gpg.format=ssh`). Damit GitHub die Commits als *Verified* anzeigt, muss derselbe öffentliche Schlüssel als **Signing Key** hinterlegt sein:
+SSH signing is already active locally (`commit.gpgsign=true`, `gpg.format=ssh`). For GitHub to show commits as *Verified*, the same public key must be registered as a **signing key**:
 
 ```bash
-gh ssh-key add ~/.ssh/<signierschluessel>.pub --type signing --title "commit signing"
+gh ssh-key add ~/.ssh/<signing-key>.pub --type signing --title "commit signing"
 ```
 
-## 2. Bestehende Commits pushen, bevor die Protection greift
+## 2. Push the existing commits before protection applies
 
 ```bash
 git push -u origin main
 ```
 
-## 3. Merge-Einstellungen
+## 3. Merge settings
 
-Nur Squash-Merge. GitHub signiert Squash-Commits aus der Web-Oberfläche selbst. Rebase-Merges kann GitHub nicht signieren, sie würden an der Signaturpflicht scheitern.
+Squash merge only. GitHub signs squash commits made in the web UI itself. It cannot sign rebase merges, which would fail the signature requirement.
 
 ```bash
 gh repo edit 64x-lunicorn/skills --enable-squash-merge --enable-merge-commit=false --enable-rebase-merge=false --delete-branch-on-merge
 ```
 
-## 4. Ruleset für `main`
+## 4. Ruleset for `main`
 
-Keine Direct Pushes, PR erforderlich, kein Force-Push, kein Löschen, lineare History, nur signierte Commits, Status-Checks `validate` und `test` erforderlich.
+No direct pushes, PR required, no force push, no deletion, linear history, signed commits only, status checks `validate` and `test` required.
 
-`required_approving_review_count` steht auf 0: Im Repo gibt es genau einen Menschen, und GitHub lässt niemanden den eigenen PR approven. Der PR ist trotzdem Pflicht, damit der Validator läuft.
+`required_approving_review_count` is 0: the repo has exactly one human, and GitHub does not let anyone approve their own PR. The PR is still mandatory so the validator runs.
 
 ```bash
 gh api -X POST repos/64x-lunicorn/skills/rulesets --input - <<'EOF'
@@ -83,9 +83,9 @@ gh api -X POST repos/64x-lunicorn/skills/rulesets --input - <<'EOF'
 EOF
 ```
 
-Die Checks `validate` und `test` kann GitHub erst zuordnen, wenn `ci.yml` einmal gelaufen ist. Das passiert mit dem Push aus Schritt 2.
+GitHub can only match the `validate` and `test` checks once `ci.yml` has run at least once. The push in step 2 takes care of that.
 
-## 5. Prüfen
+## 5. Verify
 
 ```bash
 gh api repos/64x-lunicorn/skills/rulesets --jq '.[].name'
@@ -93,16 +93,16 @@ git switch -c chore/protection-check && git commit --allow-empty -m "chore: chec
 git push origin HEAD:main
 ```
 
-Der letzte Push muss abgelehnt werden. Danach den Branch wieder löschen:
+The last push must be rejected. Then delete the branch again:
 
 ```bash
 git switch main && git branch -D chore/protection-check && git push origin --delete chore/protection-check
 ```
 
-## Release-Ablauf
+## Release flow
 
-Der Workflow `release.yml` braucht kein Secret und keinen PAT:
+`release.yml` needs no secret and no PAT:
 
-1. Auf einem Branch `npm run version` ausführen. Das verbraucht die Changesets, schreibt `CHANGELOG.md` und setzt die Version in `package.json` und `.claude-plugin/plugin.json`.
-2. PR öffnen, CI grün, Squash-Merge.
-3. `release.yml` sieht auf `main` eine Version ohne Tag und legt Tag `v<version>` und GitHub-Release an.
+1. On a branch, run `npm run version`. It consumes the changesets, writes `CHANGELOG.md` and sets the version in `package.json` and `.claude-plugin/plugin.json`.
+2. Open a PR, wait for green CI, squash merge.
+3. On `main`, `release.yml` sees a version without a tag and creates tag `v<version>` and the GitHub release.

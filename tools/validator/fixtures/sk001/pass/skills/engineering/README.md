@@ -1,1 +1,1 @@
-Kategorie-README, kein Skill.
+Category README, not a skill.

@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { validate } from "../src/validate.ts";
 import { fixture } from "./fixture.ts";
 
-describe("SK001: jedes Skill-Verzeichnis enthält eine SKILL.md", () => {
-  it("meldet ein Skill-Verzeichnis ohne SKILL.md", () => {
+describe("SK001: every skill directory contains a SKILL.md", () => {
+  it("reports a skill directory without SKILL.md", () => {
     expect(validate(fixture("sk001/fail"))).toEqual([
       {
         rule: "SK001",
@@ -13,7 +13,7 @@ describe("SK001: jedes Skill-Verzeichnis enthält eine SKILL.md", () => {
     ]);
   });
 
-  it("akzeptiert README in Kategorien und Unterordner in Skills", () => {
+  it("accepts category READMEs and subfolders inside skills", () => {
     expect(validate(fixture("sk001/pass"))).toEqual([]);
   });
 });

@@ -10,7 +10,7 @@ export const sk013: Rule = ({ manifest, skillDirs }) => {
       {
         rule: "SK013",
         path: MANIFEST_PATH,
-        message: `${MANIFEST_PATH} fehlt. Ohne Manifest mit skills-Liste lädt Claude Code keinen Skill unter skills/<kategorie>/.`,
+        message: `${MANIFEST_PATH} is missing. Without a manifest listing skills, Claude Code loads no skill under skills/<category>/.`,
       },
     ];
   }
@@ -23,7 +23,7 @@ export const sk013: Rule = ({ manifest, skillDirs }) => {
     .map((skill) => ({
       rule: "SK013",
       path: skill,
-      message: `Skill fehlt in skills von ${MANIFEST_PATH}. Skills unter skills/<kategorie>/ lädt Claude Code nur, wenn sie dort eingetragen sind, sonst stillschweigend nicht.`,
+      message: `Skill is not listed in skills of ${MANIFEST_PATH}. Claude Code only loads skills under skills/<category>/ when they are listed there; otherwise they silently do not load.`,
     }));
 
   const dangling = manifest.skills
@@ -34,7 +34,7 @@ export const sk013: Rule = ({ manifest, skillDirs }) => {
         rule: "SK013",
         path: MANIFEST_PATH,
         ...(index >= 0 ? { line: index + 1 } : {}),
-        message: `Eintrag „${entry}“ zeigt auf kein Skill-Verzeichnis mit SKILL.md.`,
+        message: `Entry "${entry}" does not point to a skill directory with SKILL.md.`,
       };
     });
 

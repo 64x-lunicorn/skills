@@ -3,7 +3,7 @@ import path from "node:path";
 import type { Finding } from "../validate.ts";
 import type { Rule } from "./rule.ts";
 
-/** Dateien, an denen `claude plugin eval` einen Case erkennt. */
+/** Files by which `claude plugin eval` recognises a case. */
 const CASE_FILES = new Set(["prompt.md", "case.yaml"]);
 
 export const sk012: Rule = (repo) =>
@@ -16,7 +16,7 @@ export const sk012: Rule = (repo) =>
       {
         rule: "SK012",
         path: dir,
-        message: `Keine Eval unter evals/${name}/. Lege mindestens einen Case mit prompt.md oder case.yaml an.`,
+        message: `No eval under evals/${name}/. Add at least one case with prompt.md or case.yaml.`,
       },
     ];
   });

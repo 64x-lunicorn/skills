@@ -9,6 +9,6 @@ export const sk007: Rule = (repo) =>
         rule: "SK007",
         path: skillMd!.path,
         line: field.line,
-        message: `Feld „${key}“ steht nicht in der Allowlist. Erlaubt sind: ${ALLOWED_FRONTMATTER_FIELDS.join(", ")}. Siehe ADR 0002.`,
+        message: `Field "${key}" is not in the allowlist. Allowed: ${ALLOWED_FRONTMATTER_FIELDS.join(", ")}. See ADR 0002.`,
       })),
   );

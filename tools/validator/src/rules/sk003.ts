@@ -15,14 +15,14 @@ export const sk003: Rule = (repo) =>
           path,
           line: 1,
           message:
-            "description fehlt. Sie ist die einzige API des Skills: nur sie steht permanent im Kontext.",
+            "description is missing. It is the skill's only API: the only part that stays in context permanently.",
         },
       ];
     }
 
     const text = typeof field.value === "string" ? field.value.trim() : "";
     if (text === "") {
-      return [{ rule: "SK003", path, line: field.line, message: "description ist leer oder kein Text." }];
+      return [{ rule: "SK003", path, line: field.line, message: "description is empty or not text." }];
     }
 
     if (text.length < MIN_DESCRIPTION_LENGTH) {
@@ -31,7 +31,7 @@ export const sk003: Rule = (repo) =>
           rule: "SK003",
           path,
           line: field.line,
-          message: `description hat ${text.length} Zeichen, verlangt sind mindestens ${MIN_DESCRIPTION_LENGTH}. Eine vage description ist der häufigste Grund, warum ein Skill nie feuert.`,
+          message: `description has ${text.length} characters, at least ${MIN_DESCRIPTION_LENGTH} are required. A vague description is the most common reason a skill never fires.`,
         },
       ];
     }

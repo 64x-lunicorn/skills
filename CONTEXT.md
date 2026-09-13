@@ -1,25 +1,25 @@
-# Begriffe
+# Terms
 
-**Skill**: Verzeichnis `skills/<kategorie>/<name>/` mit einer `SKILL.md`. Der Name ist zugleich das Kommando `/64x-lunicorn:<name>`.
+**Skill**: directory `skills/<category>/<name>/` with a `SKILL.md`. The name is also the command `/64x-lunicorn:<name>`.
 
-**Kategorie**: erste Ebene unter `skills/`, z. B. `engineering` oder `orchestration`.
+**Category**: first level under `skills/`, e.g. `engineering` or `orchestration`.
 
-**model-invoked**: das Modell zieht den Skill selbst, ausgelöst über die description.
+**model-invoked**: the model invokes the skill on its own, triggered by the description.
 
-**user-invoked**: nur Daniel zieht den Skill, per Kommando. Erkennbar an `disable-model-invocation: true`. Orchestratoren sind immer user-invoked.
+**user-invoked**: only Daniel invokes the skill, by command. Marked by `disable-model-invocation: true`. Orchestrators are always user-invoked.
 
-**Schichtung**: user-invoked orchestriert, model-invoked hält die wiederverwendbare Disziplin. User-invoked ruft model-invoked, nie umgekehrt, nie user-invoked zu user-invoked.
+**Layering**: user-invoked orchestrates, model-invoked holds the reusable discipline. User-invoked calls model-invoked, never the other way round, never user-invoked to user-invoked.
 
-**Ernte**: ein Skill entsteht erst, wenn dieselbe Korrektur dreimal nötig war. Geerntet, nicht erfunden.
+**Harvest**: a skill only comes into being once the same correction was needed three times. Harvested, not invented.
 
-**Inbox**: `inbox.md`, der Backlog der Ernte. Korrekturen stehen dort wörtlich mit Zähler.
+**Inbox**: `inbox.md`, the harvest backlog. Corrections are recorded verbatim with a counter.
 
-**Gate A**: der Validator. Deterministisch, ohne API, blockiert den Merge.
+**Gate A**: the validator. Deterministic, no API, blocks the merge.
 
-**Gate B**: der Eval-Runner ab Phase 2. Nicht-deterministisch, kostet Tokens, zunächst nicht blockierend.
+**Gate B**: the eval runner from phase 2 on. Non-deterministic, costs tokens, not blocking at first.
 
-**Regel-ID**: stabile Kennung einer Validator-Regel, `SK001` …. Befunde, Tests und ADR 0002 verweisen darauf.
+**Rule ID**: stable identifier of a validator rule, `SK001` …. Findings, tests and ADR 0002 refer to it.
 
-**Befund**: eine Meldung des Validators: Regel-ID, Pfad, Zeile wenn ermittelbar, Begründung.
+**Finding**: one report from the validator: rule ID, path, line when known, reason.
 
-**Fixture**: Mini-Repo unter `tools/validator/fixtures/skNNN/`. `fail-*` verstößt gegen genau eine Regel, `pass` erfüllt sie an ihren Grenzfällen.
+**Fixture**: mini repo under `tools/validator/fixtures/skNNN/`. `fail-*` violates exactly one rule, `pass` satisfies it at its edge cases.

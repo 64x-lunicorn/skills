@@ -19,7 +19,7 @@ Skills trigger on their own or run as `/64x-lunicorn:<skill>`.
 
 ## Contributing
 
-A correction goes into [`inbox.md`](inbox.md) first. The third time it is needed, it becomes a skill ([`CLAUDE.md`](CLAUDE.md)). Open a PR; `npm run validate` and `npm test` must pass. The rules behind the validator: [ADR 0002](docs/adr/0002-eigene-konventionen-strenger-als-die-spec.md).
+A correction goes into [`inbox.md`](inbox.md) first. The third time it is needed, it becomes a skill ([`CLAUDE.md`](CLAUDE.md)). Open a PR; `npm run validate` and `npm test` must pass. The rules behind the validator: [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 
 ## License
 

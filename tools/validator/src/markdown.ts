@@ -2,13 +2,13 @@ import type { SkillMd } from "./repo.ts";
 
 export interface ProseLine {
   text: string;
-  /** Zeilennummer (1-basiert) in der SKILL.md. */
+  /** 1-based line number in SKILL.md. */
   line: number;
 }
 
 /**
- * Body-Zeilen ohne Code: Zeilen in ``` oder ~~~ Blöcken entfallen,
- * Inline-Code wird entfernt. Beispiele in Code sind keine Referenzen.
+ * Body lines without code: lines inside ``` or ~~~ blocks are dropped,
+ * inline code is removed. Examples in code are not references.
  */
 export function proseLines(skillMd: SkillMd): ProseLine[] {
   const result: ProseLine[] = [];

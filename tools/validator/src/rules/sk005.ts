@@ -12,7 +12,7 @@ export const sk005: Rule = (repo) =>
           rule: "SK005",
           path: skillMd.path,
           line: 1,
-          message: `name fehlt. Setze name: ${name}, damit die Datei in jeder Installationsart dasselbe Kommando ergibt.`,
+          message: `name is missing. Set name: ${name} so the file yields the same command in every installation type.`,
         },
       ];
     }
@@ -23,7 +23,7 @@ export const sk005: Rule = (repo) =>
           rule: "SK005",
           path: skillMd.path,
           line: field.line,
-          message: `name „${String(field.value)}“ weicht vom Verzeichnisnamen „${name}“ ab. Bei Personal- und Project-Skills bestimmt das Verzeichnis das Kommando, im Plugin der name.`,
+          message: `name "${String(field.value)}" differs from the directory name "${name}". For personal and project skills the directory sets the command, in a plugin the name does.`,
         },
       ];
     }

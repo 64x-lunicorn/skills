@@ -17,13 +17,13 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Tag und Release anlegen, wenn die Version noch keinen Tag hat
+      - name: Create tag and release when the version has no tag yet
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           version=$(node -p "require('./package.json').version")
           if [ "$version" = "0.0.0" ] || git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
-            echo "Keine neue Version ($version)."
+            echo "No new version ($version)."
             exit 0
           fi
           awk -v v="$version" '$0 == "## " v {f=1; next} /^## /{f=0} f' CHANGELOG.md > notes.md

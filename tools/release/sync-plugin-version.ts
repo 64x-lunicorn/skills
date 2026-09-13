@@ -1,5 +1,5 @@
-// Überträgt die von Changesets gesetzte Version aus package.json nach .claude-plugin/plugin.json.
-// Claude Code liefert Updates nur aus, wenn sich die Version im Manifest ändert.
+// Copies the version Changesets set in package.json into .claude-plugin/plugin.json.
+// Claude Code only ships updates when the version in the manifest changes.
 import fs from "node:fs";
 
 const manifestPath = ".claude-plugin/plugin.json";

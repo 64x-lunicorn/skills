@@ -4,23 +4,23 @@ import { fixture } from "./fixture.ts";
 
 const skillMd = "skills/engineering/write-commit-message/SKILL.md";
 
-describe("SK004: description in dritter Person, mit Anwendungsfall und Auslösern", () => {
+describe("SK004: description in third person with use case and triggers", () => {
   it.each(["fail-this-skill", "fail-dieser-skill", "fail-you"])(
-    "meldet einen verbotenen Anfang (%s)",
+    "reports a forbidden start (%s)",
     (name) => {
       expect(validate(fixture(`sk004/${name}`))).toEqual([
-        { rule: "SK004", path: skillMd, line: 3, message: expect.stringContaining("dritter Person") },
+        { rule: "SK004", path: skillMd, line: 3, message: expect.stringContaining("third person") },
       ]);
     },
   );
 
-  it("meldet eine description mit weniger als 12 Wörtern", () => {
+  it("reports a description with fewer than 12 words", () => {
     expect(validate(fixture("sk004/fail-too-few-words"))).toEqual([
       { rule: "SK004", path: skillMd, line: 3, message: expect.stringContaining("12") },
     ]);
   });
 
-  it("akzeptiert „this skill“ mitten im Text", () => {
+  it('accepts "this skill" in the middle of the text', () => {
     expect(validate(fixture("sk004/pass"))).toEqual([]);
   });
 });

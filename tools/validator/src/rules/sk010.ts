@@ -19,7 +19,7 @@ export const sk010: Rule = (repo) =>
           rule: "SK010",
           path: skillMd.path,
           line,
-          message: `Referenzierte Datei „${target}“ existiert nicht (relativ zu ${dir}/).`,
+          message: `Referenced file "${target}" does not exist (relative to ${dir}/).`,
         })),
     );
   });

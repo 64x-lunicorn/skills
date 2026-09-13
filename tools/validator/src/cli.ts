@@ -9,6 +9,6 @@ for (const { rule, path: file, line, message } of findings) {
 }
 
 if (findings.length > 0) {
-  console.error(`\n${findings.length} Befund(e). Regeln: docs/adr/0002-eigene-konventionen-strenger-als-die-spec.md`);
+  console.error(`\n${findings.length} finding(s). Rules: docs/adr/0002-own-conventions-stricter-than-the-spec.md`);
   process.exitCode = 1;
 }

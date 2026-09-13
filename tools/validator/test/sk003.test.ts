@@ -4,26 +4,26 @@ import { fixture } from "./fixture.ts";
 
 const skillMd = "skills/engineering/write-commit-message/SKILL.md";
 
-describe("SK003: description vorhanden, nicht leer, mindestens 60 Zeichen", () => {
-  it("meldet eine fehlende description am Frontmatter-Anfang", () => {
+describe("SK003: description present, not empty, at least 60 characters", () => {
+  it("reports a missing description at the start of the frontmatter", () => {
     expect(validate(fixture("sk003/fail-missing"))).toEqual([
-      { rule: "SK003", path: skillMd, line: 1, message: expect.stringContaining("fehlt") },
+      { rule: "SK003", path: skillMd, line: 1, message: expect.stringContaining("missing") },
     ]);
   });
 
-  it("meldet eine leere description an ihrer Zeile", () => {
+  it("reports an empty description on its line", () => {
     expect(validate(fixture("sk003/fail-empty"))).toEqual([
-      { rule: "SK003", path: skillMd, line: 3, message: expect.stringContaining("leer") },
+      { rule: "SK003", path: skillMd, line: 3, message: expect.stringContaining("empty") },
     ]);
   });
 
-  it("meldet eine description unter 60 Zeichen", () => {
+  it("reports a description under 60 characters", () => {
     expect(validate(fixture("sk003/fail-too-short"))).toEqual([
       { rule: "SK003", path: skillMd, line: 3, message: expect.stringContaining("60") },
     ]);
   });
 
-  it("akzeptiert eine mehrzeilige description als YAML-Blockscalar", () => {
+  it("accepts a multi-line description as a YAML block scalar", () => {
     expect(validate(fixture("sk003/pass"))).toEqual([]);
   });
 });

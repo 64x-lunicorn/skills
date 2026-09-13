@@ -13,7 +13,7 @@ export const sk008: Rule = (repo) =>
         rule: "SK008",
         path: skillMd.path,
         line: field?.line ?? 1,
-        message: `Skills unter skills/${ORCHESTRATION_CATEGORY}/ müssen disable-model-invocation: true setzen. Orchestratoren zieht nur Daniel, nie das Modell.`,
+        message: `Skills under skills/${ORCHESTRATION_CATEGORY}/ must set disable-model-invocation: true. Only Daniel invokes orchestrators, never the model.`,
       },
     ];
   });

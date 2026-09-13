@@ -1,5 +1,5 @@
-// Schwellwerte und Listen, die Daniels Konventionen festlegen.
-// Begründung und Diskussion: docs/adr/0002-eigene-konventionen-strenger-als-die-spec.md
+// Thresholds and lists that define the repo's conventions.
+// Rationale and discussion: docs/adr/0002-own-conventions-stricter-than-the-spec.md
 
 /** SK003 */
 export const MIN_DESCRIPTION_LENGTH = 60;
@@ -7,16 +7,22 @@ export const MIN_DESCRIPTION_LENGTH = 60;
 /** SK004 */
 export const MIN_DESCRIPTION_WORDS = 12;
 
-/** SK004: Anfänge, die nicht in dritter Person mit dem Anwendungsfall führen. Groß-/Kleinschreibung egal. */
+/** SK004: starts that do not lead with the use case in third person. Case-insensitive. */
 export const FORBIDDEN_DESCRIPTION_STARTS = ["this skill", "dieser skill", "dieses skill", "i ", "you "];
 
+/** SK009: beyond this, content belongs in a reference file next to SKILL.md. */
+export const MAX_BODY_LINES = 200;
+
+/** SK008: category whose skills only Daniel invokes, never the model. */
+export const ORCHESTRATION_CATEGORY = "orchestration";
+
 /**
- * SK007: Frontmatter-Allowlist. Die sechs Spec-Felder plus bewusst zugelassene Claude-Code-Felder.
- * Ausgeschlossen: when_to_use (die description ist die einzige API), hooks (Seiteneffekte
- * gehören in hooks/ des Plugins), shell (erst nötig, wenn PowerShell gebraucht wird).
+ * SK007: frontmatter allowlist. The six spec fields plus deliberately allowed Claude Code fields.
+ * Excluded: when_to_use (the description is the only API), hooks (side effects belong in the
+ * plugin's hooks/), shell (only needed once PowerShell is needed).
  */
 export const ALLOWED_FRONTMATTER_FIELDS = [
-  // Agent-Skills-Spec
+  // Agent Skills spec
   "allowed-tools",
   "compatibility",
   "description",
@@ -37,13 +43,7 @@ export const ALLOWED_FRONTMATTER_FIELDS = [
   "user-invocable",
 ];
 
-/** SK009: darüber gehört Inhalt in eine Referenzdatei neben der SKILL.md. */
-export const MAX_BODY_LINES = 200;
-
-/** SK008: Kategorie, deren Skills nur Daniel zieht, nie das Modell. */
-export const ORCHESTRATION_CATEGORY = "orchestration";
-
-/** SK006: erlaubte Verben als erstes Namenssegment. Wächst per TDD, nie auf Vorrat. */
+/** SK006: allowed verbs as the first name segment. Grows through TDD, never in advance. */
 export const SKILL_NAME_VERBS = [
   "design",
   "diagnose",

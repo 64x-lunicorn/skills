@@ -4,14 +4,14 @@ import { fixture } from "./fixture.ts";
 
 const skillMd = "skills/engineering/write-commit-message/SKILL.md";
 
-describe("SK010: jede im Body referenzierte Datei existiert", () => {
-  it("meldet einen Link auf eine fehlende Datei an seiner Zeile", () => {
+describe("SK010: every file referenced in the body exists", () => {
+  it("reports a link to a missing file on its line", () => {
     expect(validate(fixture("sk010/fail"))).toEqual([
       { rule: "SK010", path: skillMd, line: 8, message: expect.stringContaining("references/examples.md") },
     ]);
   });
 
-  it("ignoriert URLs, Anker, Fragmente und Links in Code", () => {
+  it("ignores URLs, anchors, fragments and links in code", () => {
     expect(validate(fixture("sk010/pass"))).toEqual([]);
   });
 });

@@ -7,5 +7,5 @@ export const sk001: Rule = (repo) =>
       rule: "SK001",
       path: dir.path,
       message:
-        "Skill-Verzeichnis ohne SKILL.md. Jedes Verzeichnis unter skills/<kategorie>/ ist ein Skill und braucht eine SKILL.md.",
+        "Skill directory without SKILL.md. Every directory under skills/<category>/ is a skill and needs a SKILL.md.",
     }));
