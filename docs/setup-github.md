@@ -1,38 +1,58 @@
 # Setting up GitHub
 
-Daniel runs these steps; they touch authentication and repo settings. The repo still sits private and empty at `Lunicorn-lab/skills` and moves to the public account `64x-lunicorn`. Every command from step 1 on targets `64x-lunicorn/skills`.
+Daniel runs these steps; they touch keys, authentication and repo settings. The repo lives at `64x-lunicorn/skills` (public). Commits use the identity `64x-lunicorn <248661140+64x-lunicorn@users.noreply.github.com>` from the repo-local git config.
 
-## 0. Transfer the repo and make it public
+## 1. Key for 64x-lunicorn
 
-Public repos get rulesets and branch protection without a paid plan.
+One Ed25519 key in 1Password serves as both authentication and signing key.
+
+1. In 1Password: new item **SSH Key**, type Ed25519, title `GitHub 64x-lunicorn`.
+2. Export its public key to `~/.ssh/github_64x-lunicorn.pub`.
+3. Add a host alias to `~/.ssh/config`, so this account's key is used instead of the other GitHub keys:
+
+   ```
+   Host github-64x
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/github_64x-lunicorn.pub
+     IdentitiesOnly yes
+   ```
+
+4. Sign in with `gh` as `64x-lunicorn` and register the key twice:
+
+   ```bash
+   gh auth login
+   ```
+
+   ```bash
+   gh ssh-key add ~/.ssh/github_64x-lunicorn.pub --type authentication --title "1Password"
+   ```
+
+   ```bash
+   gh ssh-key add ~/.ssh/github_64x-lunicorn.pub --type signing --title "1Password signing"
+   ```
+
+5. Check the connection. The answer must greet `64x-lunicorn`:
+
+   ```bash
+   ssh -T github-64x
+   ```
+
+## 2. Create the repo and push
 
 ```bash
-gh api -X POST repos/Lunicorn-lab/skills/transfer -f new_owner=64x-lunicorn
-```
-
-The transfer has to be accepted in the target account. Then:
-
-```bash
-gh repo edit 64x-lunicorn/skills --visibility public --accept-visibility-change-consequences
+gh repo create 64x-lunicorn/skills --public --description "Skills as code for Claude Code"
 ```
 
 ```bash
-git remote set-url origin git@github.com:64x-lunicorn/skills.git
+git remote set-url origin git@github-64x:64x-lunicorn/skills.git
 ```
-
-## 1. Register the signing key with GitHub
-
-SSH signing is already active locally (`commit.gpgsign=true`, `gpg.format=ssh`). For GitHub to show commits as *Verified*, the same public key must be registered as a **signing key**:
-
-```bash
-gh ssh-key add ~/.ssh/<signing-key>.pub --type signing --title "commit signing"
-```
-
-## 2. Push the existing commits before protection applies
 
 ```bash
 git push -u origin main
 ```
+
+The push runs `ci.yml` once, so GitHub knows the `validate` and `test` checks, and `release.yml` creates tag and release `v0.1.0`.
 
 ## 3. Merge settings
 
@@ -82,8 +102,6 @@ gh api -X POST repos/64x-lunicorn/skills/rulesets --input - <<'EOF'
 }
 EOF
 ```
-
-GitHub can only match the `validate` and `test` checks once `ci.yml` has run at least once. The push in step 2 takes care of that.
 
 ## 5. Verify
 
