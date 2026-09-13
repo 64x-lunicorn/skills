@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Tag und Release anlegen, wenn die Version noch keinen Tag hat
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "$version" = "0.0.0" ] || git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
+            echo "Keine neue Version ($version)."
+            exit 0
+          fi
+          awk -v v="$version" '$0 == "## " v {f=1; next} /^## /{f=0} f' CHANGELOG.md > notes.md
+          git tag "v$version"
+          git push origin "v$version"
+          gh release create "v$version" --title "v$version" --notes-file notes.md
