@@ -1,0 +1,13 @@
+{
+  "name": "64x-lunicorn",
+  "owner": {
+    "name": "64x-lunicorn"
+  },
+  "plugins": [
+    {
+      "name": "64x-lunicorn",
+      "source": "./",
+      "description": "Skills, Subagents, Commands, Hooks und Workflows für Claude Code"
+    }
+  ]
+}
