@@ -77,7 +77,8 @@ describe("selectScenarios", () => {
 });
 
 describe("evalArgs", () => {
-  it("runs one case by name with scaffold, trusted plugin, no publishing and no ablation", () => {
+  // Pinned contract: the flags come from the runner decision in architecture issue #17.
+  it("runs one case by name with scaffold, trusted plugin, Write and Edit granted, no publishing and no ablation", () => {
     expect(evalArgs(scenario("No emojis in questions", ["scenario"]))).toEqual([
       "plugin",
       "eval",
@@ -86,6 +87,9 @@ describe("evalArgs", () => {
       "No emojis in questions",
       "--scaffold",
       "--trust-plugin",
+      "--allow-tools",
+      "Write",
+      "Edit",
       "--no-publish",
       "--ablation",
       "none",
