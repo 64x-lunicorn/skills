@@ -17,7 +17,7 @@ export interface ScenarioCase {
 
 interface CaseYaml {
   name?: string;
-  tags?: string[];
+  tags?: unknown;
   execution?: { prompt?: string };
   graders?: unknown[];
 }
@@ -82,6 +82,7 @@ function readCase(root: string, rel: string): ScenarioCase {
     throw new Error(`${rel}: ${(error as Error).message}`);
   }
   if (!data?.name) throw new Error(`${rel}: missing name`);
+  if (data.tags !== undefined && !isStringList(data.tags)) throw new Error(`${rel}: tags must be a list`);
   return {
     path: rel,
     name: data.name,
@@ -89,4 +90,8 @@ function readCase(root: string, rel: string): ScenarioCase {
     prompt: data.execution?.prompt,
     graders: data.graders,
   };
+}
+
+function isStringList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
 }

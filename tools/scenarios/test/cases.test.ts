@@ -44,6 +44,12 @@ describe("loadCases", () => {
 
     expect(() => loadCases(root)).toThrow("evals/interview-me/nameless/case.yaml: missing name");
   });
+
+  it("names the file of a case.yaml whose tags are not a list", () => {
+    const root = repoWith({ "evals/interview-me/tag-string/case.yaml": "name: x\ntags: not-a-scenario-yet\n" });
+
+    expect(() => loadCases(root)).toThrow("evals/interview-me/tag-string/case.yaml: tags must be a list");
+  });
 });
 
 function scenario(name: string, tags: string[]): ScenarioCase {
