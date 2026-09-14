@@ -6,7 +6,7 @@ import { repoRoot } from "./root.ts";
 afterEach(removeRepos);
 
 describe("loadCases", () => {
-  it("loads every case.yaml under evals/ with its name, tags and prompt", () => {
+  it("loads every case.yaml under evals/ with its name and tags", () => {
     const root = repoWith({
       "evals/interview-user/one-question/case.yaml": [
         'schema_version: "1.1"',
@@ -27,7 +27,6 @@ describe("loadCases", () => {
         path: "evals/interview-user/one-question/case.yaml",
         name: "One question at a time",
         tags: ["scenario", "pending"],
-        prompt: "Ask me.",
       },
     ]);
   });
@@ -55,7 +54,8 @@ describe("loadCases", () => {
     ["an empty name", 'name: ""\nexecution:\n  prompt: p\ngraders: [{}]\n', "name must be a non-empty string"],
     ["a name that is zero", "name: 0\nexecution:\n  prompt: p\ngraders: [{}]\n", "name must be a non-empty string"],
     ["tags that are not strings", "name: x\ntags: [1]\nexecution:\n  prompt: p\ngraders: [{}]\n", "tags must be a list of strings"],
-    ["a prompt that is not a string", "name: x\nexecution:\n  prompt: [p]\ngraders: [{}]\n", "prompt must be a string"],
+    ["a prompt that is not a string", "name: x\nexecution:\n  prompt: [p]\ngraders: [{}]\n", "prompt must be a non-empty string"],
+    ["a blank prompt", 'name: x\nexecution:\n  prompt: "  "\ngraders: [{}]\n', "prompt must be a non-empty string"],
     ["graders that are not a list", "name: x\nexecution:\n  prompt: p\ngraders: not-a-list\n", "graders must be a non-empty list"],
     ["an empty graders list", "name: x\nexecution:\n  prompt: p\ngraders: []\n", "graders must be a non-empty list"],
   ])("names the file of a case.yaml with %s", (_, content, reason) => {
@@ -66,7 +66,7 @@ describe("loadCases", () => {
 });
 
 function scenario(name: string, tags: string[]): ScenarioCase {
-  return { path: `evals/x/${name}/case.yaml`, name, tags, prompt: "p" };
+  return { path: `evals/x/${name}/case.yaml`, name, tags };
 }
 
 describe("selectScenarios", () => {
@@ -119,8 +119,7 @@ describe("evalArgs", () => {
 describe("cases of this repository", () => {
   const cases = loadCases(repoRoot);
 
-  it.each(cases.map((c) => [c.path, c] as const))("%s is a scenario with a prompt", (_, c) => {
-    expect(c.prompt.trim()).toBeTruthy();
+  it.each(cases.map((c) => [c.path, c] as const))("%s is a scenario", (_, c) => {
     expect(c.tags).toContain("scenario");
   });
 

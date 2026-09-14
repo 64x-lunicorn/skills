@@ -11,7 +11,6 @@ export interface ScenarioCase {
   path: string;
   name: string;
   tags?: string[];
-  prompt: string;
 }
 
 interface CaseYaml {
@@ -82,7 +81,9 @@ function readCase(root: string, rel: string): ScenarioCase {
   }
   if (typeof data?.name !== "string" || data.name === "") throw new Error(`${rel}: name must be a non-empty string`);
   if (data.tags !== undefined && !isStringList(data.tags)) throw new Error(`${rel}: tags must be a list of strings`);
-  if (typeof data.execution?.prompt !== "string") throw new Error(`${rel}: prompt must be a string`);
+  if (typeof data.execution?.prompt !== "string" || data.execution.prompt.trim() === "") {
+    throw new Error(`${rel}: prompt must be a non-empty string`);
+  }
   if (!Array.isArray(data.graders) || data.graders.length === 0) {
     throw new Error(`${rel}: graders must be a non-empty list`);
   }
@@ -90,7 +91,6 @@ function readCase(root: string, rel: string): ScenarioCase {
     path: rel,
     name: data.name,
     tags: data.tags,
-    prompt: data.execution.prompt,
   };
 }
 
