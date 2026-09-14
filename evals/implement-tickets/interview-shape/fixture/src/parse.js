@@ -1,9 +1,11 @@
+import { readHeader } from "./header.js";
+
 // Converts CSV text into an array of objects keyed by the header.
 export function parseCsv(text) {
   const lines = text.split("\n");
-  const header = lines[0].split(",");
+  const header = readHeader(lines);
   const data = [];
-  for (let i = 1; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
     if (l.trim().length === 0) continue;
     const tmp = l.split(",");

@@ -24,7 +24,7 @@ Scenario: An empty line is skipped
 
 ## Implementation notes
 
-- **Components:** `src/parse.js`, `test/parse.test.js`.
+- **Components:** `src/parse.js`, `src/header.js`, `test/parse.test.js`.
 - **Decisions that apply:** the parser skips empty lines.
 
 Closed: merged with the commit "feat: skip empty lines".
