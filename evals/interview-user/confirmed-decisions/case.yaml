@@ -19,14 +19,14 @@ execution:
     Which license does the package get?
     Recommended answer: MIT. It is the usual license for small command line tools and puts no obligations on users.
 
-    Daniel: ja, MIT passt
+    Daniel: yes, MIT is fine
 
     Claude:
     Open decisions: 1
     Which name is the package published under?
     Recommended answer: csv2json. It says what the tool does and matches the plan.
 
-    Daniel: nimm csv-to-json, csv2json ist schon vergeben
+    Daniel: use csv-to-json, csv2json is already taken
 
     Continue the interview.
   max_turns: 10

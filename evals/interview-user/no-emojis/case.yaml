@@ -6,7 +6,7 @@ execution:
   prompt: |
     /64x-lunicorn:interview-user
 
-    Plan: publish csv2json, a small command line tool that converts CSV files to JSON, as an open source package. Wird gut 🙂
+    Plan: publish csv2json, a small command line tool that converts CSV files to JSON, as an open source package. Looking forward to it 🙂
 
     Open decision: which license the package gets.
   max_turns: 10

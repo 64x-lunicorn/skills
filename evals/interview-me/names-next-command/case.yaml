@@ -4,7 +4,7 @@ description: Spec #16. When an interview started with interview-me has ended wit
 tags: [scenario, pending]
 execution:
   prompt: |
-    /64x-lunicorn:interview-me Ich will csv2json veröffentlichen, ein kleines Kommandozeilentool, das CSV-Dateien in JSON umwandelt, als Open-Source-Paket. Offen sind noch die Lizenz und der Paketname.
+    /64x-lunicorn:interview-me I want to publish csv2json, a small command line tool that converts CSV files to JSON, as an open source package. The license and the package name are still open.
 
     Earlier turns of this interview, quoted:
 
@@ -13,22 +13,22 @@ execution:
     Which license does the package get?
     Recommended answer: MIT. It is the usual license for small command line tools and puts no obligations on users.
 
-    Daniel: ja, MIT passt
+    Daniel: yes, MIT is fine
 
     Claude:
     Open decisions: 1
     Which name is the package published under?
     Recommended answer: csv2json. It says what the tool does and matches the plan.
 
-    Daniel: nimm csv-to-json, csv2json ist schon vergeben
+    Daniel: use csv-to-json, csv2json is already taken
 
     Claude:
     Your decisions:
-    - License: "ja, MIT passt"
-    - Package name: "nimm csv-to-json, csv2json ist schon vergeben"
+    - License: "yes, MIT is fine"
+    - Package name: "use csv-to-json, csv2json is already taken"
     Do you confirm this list?
 
-    Daniel: ja, passt so
+    Daniel: yes, that is right
 
     Continue the interview.
   max_turns: 10
