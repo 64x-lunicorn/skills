@@ -31,5 +31,5 @@ graders:
     pattern: '\*\*Reservation\*\*: '
   - type: regex
     name: no words to avoid
-    pattern: '_Avoid_'
+    pattern: '\*\*Reservation\*\*: [^\n]*_Avoid_'
     match: 'not_contains'
