@@ -44,10 +44,11 @@ waits in the inbox, word for word.
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds sixteen skills today:
+> This collection is young and grows slowly on purpose. It holds seventeen skills today:
 > two for creating the rest, three for researching and promoting ideas before anything is
-> built, two for writing specs, three for splitting them into tickets, four for implementing
-> tickets, one for setting up projects and one for commits. More arrive as they are harvested.
+> built, two for writing specs, three for splitting them into tickets, five for implementing
+> tickets and verifying the result, one for setting up projects and one for commits. More
+> arrive as they are harvested.
 
 ## How it works
 
@@ -89,6 +90,7 @@ Skills trigger on their own when a request matches their description, or run as
 | [`review-change`](skills/engineering/review-change/SKILL.md) | model-invoked | Reviews a branch on the spec or the standards axis, including smells and duplication across the codebase, without changing anything. |
 | [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults and writes the marker every other skill checks. |
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
+| [`verify-spec`](skills/engineering/verify-spec/SKILL.md) | model-invoked | Verifies a Spec once all its tickets are merged: scenarios, domain rules, duplication and drift across tickets, leftovers. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
 | [`write-skill`](skills/engineering/write-skill/SKILL.md) | model-invoked | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
 | [`write-spec`](skills/orchestration/write-spec/SKILL.md) | user-invoked | Turns a functional change from a conversation into a Spec issue after light quality gates. |
@@ -97,7 +99,8 @@ Skills trigger on their own when a request matches their description, or run as
 User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` uses
 `write-skill`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
 use `design-spec`, `plan-tickets` uses `design-ticket` and `review-architecture`,
-`implement-tickets` uses `implement-ticket`, which builds with `write-tests`, and `review-change`.
+`implement-tickets` uses `implement-ticket`, which builds with `write-tests`, `review-change`
+and `verify-spec`.
 
 ## Research
 
@@ -220,9 +223,14 @@ wayfinder  -->  tickets  -->  implement-ticket  -->  review-change  -->  pull re
 | Spec axis and standards axis in separate forked reviews | Deviations from the Spec, self-biased review |
 | Hard findings fixed and re-reviewed, judgement calls decided by Daniel | Findings nobody acts on |
 | One pull request per ticket, wayfinder reconciled on the next run | Tickets that never close, blocked work that never unblocks |
+| `verify-spec` over the whole Spec once every ticket is merged | Duplication and drift between tickets, leftovers, Specs that never close |
 
 A stop is shown to Daniel and posted on the wayfinder, never worked around. Merging stays with
-Daniel. The design is in [ADR 0008](docs/adr/0008-implementing-tickets.md).
+Daniel. When the wayfinder is fully checked off, the next run verifies the Spec as a whole:
+findings become follow-up tickets, and a clean result closes the Spec, its architecture issue
+and its wayfinder on Daniel's go. The design is in
+[ADR 0008](docs/adr/0008-implementing-tickets.md) and
+[ADR 0009](docs/adr/0009-verifying-and-closing-a-spec.md).
 
 ## The validator
 
@@ -245,8 +253,8 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | Guide | Start here when you want to... |
 | :--- | :--- |
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
-| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec, ticket, wayfinder, seam. |
-| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, how they are split into tickets, and how tickets are implemented. |
+| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec, ticket, wayfinder, seam, Spec verification. |
+| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, how they are split into tickets, how tickets are implemented, and how a Spec is verified and closed. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |

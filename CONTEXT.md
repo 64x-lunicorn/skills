@@ -38,7 +38,9 @@
 
 **Reuse inventory**: the list `implement-ticket` writes before the first test, naming the existing code it reuses and why everything new is new. The standards review checks duplication against it.
 
-**Review finding**: one result of `review-change`, classed `hard` (fixed without asking) or `judgement` (decided by Daniel). Not to be confused with a validator finding.
+**Review finding**: one result of `review-change` or `verify-spec`, classed `hard` (fixed without asking), `judgement` (decided by Daniel) or `conflict` (sources contradict each other; only Daniel decides which gives way). Not to be confused with a validator finding.
+
+**Spec verification**: the check `verify-spec` runs once every ticket of a Spec is merged, over the whole Spec instead of one ticket. It ends in follow-up tickets, a conflict for Daniel, or the Spec closed together with its architecture issue and wayfinder (ADR 0009).
 
 **Gate A**: the validator. Deterministic, no API, blocks the merge.
 
