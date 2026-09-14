@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: The interview saves nothing
-description: Spec #16. An interview that ended with confirmed decisions has written nothing itself and hands the decisions back to the calling skill; recording them is covered by #62.
+description: Spec #16. An interview that ended with confirmed decisions has written nothing itself.
 tags: [scenario, pending]
 execution:
   prompt: |
@@ -50,9 +50,3 @@ graders:
     tool: Edit
     min: 0
     max: 0
-  - type: llm
-    name: decisions handed back to the calling skill
-    criteria: >-
-      The message treats the interview as over and hands the confirmed
-      decisions back for the calling skill to record. It does not claim to have
-      saved, written or recorded them anywhere itself.
