@@ -23,6 +23,7 @@
     "./skills/engineering/review-architecture",
     "./skills/engineering/review-change",
     "./skills/engineering/verify-claims",
+    "./skills/engineering/verify-spec",
     "./skills/engineering/write-commit-message",
     "./skills/engineering/write-skill",
     "./skills/engineering/write-tests",
