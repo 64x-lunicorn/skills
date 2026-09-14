@@ -1,0 +1,39 @@
+schema_version: "1.1"
+name: An updated branch passes both reviews and the gate again
+description: Spec #24. An implement-tickets run brings ticket/5-greet-missing-name-stranger up to date with main; both review-change axes and the project's checks run on the branch again before any new ticket starts.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-tickets 0003
+  max_turns: 100
+  timeout_seconds: 2400
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: updated with implement-ticket update
+    tool: Skill
+    input_match: 'implement-ticket.*update'
+  - type: tool_used
+    name: spec review ran
+    tool: Skill
+    input_match: 'review-change.*spec'
+  - type: tool_used
+    name: standards review ran
+    tool: Skill
+    input_match: 'review-change.*standards'
+  - type: tool_order
+    name: reviews after the update
+    before: { tool: Skill, input_match: 'implement-ticket.*update' }
+    after: { tool: Skill, input_match: 'review-change' }
+  - type: tool_order
+    name: gate after the reviews
+    before: { tool: Skill, input_match: 'review-change' }
+    after: { tool: Bash, input_match: 'scripts/check\.sh' }
+  - type: tool_used
+    name: no new ticket started
+    tool: Bash
+    input_match: 'git\s+(checkout\s+-b|switch\s+-c|branch)\s+ticket/6'
+    min: 0
+    max: 0

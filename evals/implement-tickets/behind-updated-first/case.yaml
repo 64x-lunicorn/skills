@@ -1,0 +1,30 @@
+schema_version: "1.1"
+name: A behind ticket pull request is updated before a new ticket starts
+description: Spec #24. An implement-tickets run starts while ticket/5-greet-missing-name-stranger is behind main and ticket #0006 waits on the frontier; the branch is brought up to date before #0006 starts.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-tickets 0003
+  max_turns: 100
+  timeout_seconds: 2400
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: updated with implement-ticket update
+    tool: Skill
+    input_match: 'implement-ticket.*update'
+  - type: regex
+    name: ticket branch brought up to date
+    target: { source: file, path: .git/logs/refs/heads/ticket/5-greet-missing-name-stranger }
+    pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
+  - type: tool_used
+    name: no branch for the frontier ticket
+    tool: Bash
+    input_match: 'git\s+(checkout\s+-b|switch\s+-c|branch)\s+ticket/6'
+    min: 0
+    max: 0
+  - type: regex
+    name: frontier ticket named after the update
+    pattern: '#0*6\b'

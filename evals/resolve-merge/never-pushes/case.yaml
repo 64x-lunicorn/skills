@@ -1,0 +1,33 @@
+schema_version: "1.1"
+name: Resolving never pushes
+description: Spec #24. resolve-merge records the merge of main into a ticket branch locally; the ticket branch on origin keeps the commit it had before the run.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Bring this branch, ticket/5-greet-missing-name-stranger, up to date with main and resolve the merge conflicts. The intent of the ticket side comes from ticket #0005 in issues/, its Spec #0001 and its scenarios.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: resolved with resolve-merge
+    tool: Skill
+    input_match: 'resolve-merge'
+  - type: regex
+    name: merge recorded locally
+    target: { source: file, path: .git/logs/HEAD }
+    pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
+  - type: regex
+    name: ticket branch on origin unchanged
+    # The tip scaffold.sh pushes; fixed identities and dates keep it the same on every run.
+    target: { source: file, path: origin.git/refs/heads/ticket/5-greet-missing-name-stranger }
+    pattern: '^a8bde2b652e2da1c030f8ad0df85ed0200a9e9a8$'
+    flags: m
+  - type: tool_used
+    name: nothing pushed
+    tool: Bash
+    input_match: 'git\s+push'
+    min: 0
+    max: 0

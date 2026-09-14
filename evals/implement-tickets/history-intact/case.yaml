@@ -1,0 +1,36 @@
+schema_version: "1.1"
+name: The history the review saw stays intact
+description: Spec #24. An implement-tickets run brings ticket/5-greet-missing-name-stranger, pushed at the commit its review saw, up to date with main; the branch keeps that commit and is pushed without force.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-tickets 0003
+  max_turns: 100
+  timeout_seconds: 2400
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: updated with implement-ticket update
+    tool: Skill
+    input_match: 'implement-ticket.*update'
+  - type: regex
+    name: updated branch pushed
+    # The tip scaffold.sh pushes, the commit the review saw; fixed identities and dates keep it the same on every run.
+    target: { source: file, path: origin.git/refs/heads/ticket/5-greet-missing-name-stranger }
+    pattern: '^9425db00da1fbe1b26fcea78ee334fc3135dfc23$'
+    flags: m
+    match: not_contains
+  - type: tool_used
+    name: pushed without force
+    tool: Bash
+    input_match: 'git\s+push\b.*(--force|\s-f\b|\s\+)'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: history not rewritten
+    tool: Bash
+    input_match: 'git\s+(rebase|commit\s+.*--amend|reset\s+--hard)'
+    min: 0
+    max: 0

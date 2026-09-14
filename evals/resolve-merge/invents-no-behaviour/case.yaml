@@ -1,0 +1,32 @@
+schema_version: "1.1"
+name: Resolving invents no behaviour
+description: Spec #24. Merging main into a ticket branch conflicts in src/greet.sh; every change in the resolved file comes from the ticket side or from main, nothing else.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Bring this branch, ticket/5-greet-missing-name-stranger, up to date with main and resolve the merge conflicts. The intent of the ticket side comes from ticket #0005 in issues/, its Spec #0001 and its scenarios.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: resolved with resolve-merge
+    tool: Skill
+    input_match: 'resolve-merge'
+  - type: regex
+    name: no conflict markers left
+    target: { source: file, path: src/greet.sh }
+    pattern: '^(<<<<<<<|=======|>>>>>>>)'
+    flags: m
+    match: not_contains
+  - type: llm
+    name: only changes of the two sides
+    focus: { source: file, path: src/greet.sh }
+    criteria: >-
+      The file defines one shell function greet whose single printf line prints
+      the greeting word from GREETING, defaulting to Hello, then a comma, a
+      space and the first argument, defaulting to stranger, then a newline.
+      Apart from that, the function adds nothing: no other variables, options,
+      conditions, loops, validation, comments or output.
