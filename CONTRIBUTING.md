@@ -37,6 +37,19 @@ It runs every check CI runs: Validator, Type check, Tests. On a pull request, CI
 
 Documentation-only changes do not need a test run. Verify links and examples instead.
 
+## Scenario tests
+
+Scenarios of a Spec that need a model to observe run as `claude plugin eval` cases in `case.yaml` files under `evals/`. A case tagged `scenario` automates one scenario and carries the scenario name verbatim; a case for one example of a Scenario Outline adds its skill in parentheses, as in `Every calling skill interviews the same way (write-spec)`. A case also tagged `pending` waits for its feature ticket, which removes the tag. Run every scenario that is not pending, or one case by its name:
+
+```bash
+npm run scenarios
+npm run scenarios -- "One question at a time"
+```
+
+A name must belong to a scenario that is not pending; the runner rejects any other name and exits 1. A pending case runs by name only after its `pending` tag is removed, so the example above works once its feature ticket is done.
+
+The required CI checks do not run scenario tests. They only check the structure of the cases and run the deterministic scenarios as ordinary tests.
+
 ## Proposing a skill
 
 Skills here are harvested, not invented. Harvesting instead of inventing, layering and the description as the only API are deliberate constraints, not missing features. Open an issue with:
