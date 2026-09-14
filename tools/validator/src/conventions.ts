@@ -62,6 +62,7 @@ export const SKILL_NAME_VERBS = [
   "diagnose",
   "harvest",
   "implement",
+  "interview",
   "plan",
   "promote",
   "refactor",

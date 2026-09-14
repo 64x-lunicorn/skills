@@ -22,6 +22,7 @@
     "./skills/engineering/design-spec",
     "./skills/engineering/design-ticket",
     "./skills/engineering/implement-ticket",
+    "./skills/engineering/interview-user",
     "./skills/engineering/review-architecture",
     "./skills/engineering/review-change",
     "./skills/engineering/verify-claims",

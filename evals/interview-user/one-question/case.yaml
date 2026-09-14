@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: One question at a time
 description: Spec #16. An interview with two open decisions asks only one question and waits for the answer before the next one.
-tags: [scenario, pending]
+tags: [scenario]
 execution:
   prompt: |
     /64x-lunicorn:interview-user
@@ -21,6 +21,12 @@ graders:
   - type: llm
     name: no second question
     criteria: >-
-      The message asks Daniel exactly one question and then stops to wait for
-      his answer. It does not ask a second question, and it does not put the
-      other open decision to him as something to answer now.
+      A question to Daniel has a fixed shape of three lines: an
+      "Open decisions: <n>" line, the question itself, and a
+      "Recommended answer: <answer>. <reason>" line. These three lines together
+      are one question; the count, the recommended answer and its reason are
+      part of it and are not a second question. The message asks Daniel exactly
+      one question in this shape and then stops to wait for his answer. It
+      fails when it asks anything else: a second decision, the other open
+      decision put to him as something to answer now, or a follow-up question
+      to Daniel.
