@@ -1,0 +1,41 @@
+schema_version: "1.1"
+name: 'A decision missing one criterion gets no ADR (hard to reverse, obvious in context and a real trade-off)'
+description: 'Spec #23. A decision that is hard to reverse and a real trade-off but obvious in context is confirmed; no ADR is proposed.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We are in the architecture review of the Spec for reservations in lendbook.
+
+    Earlier turns of this conversation, quoted:
+
+    Claude:
+    Decision to settle: how is the new reservations endpoint versioned?
+    Option A: the version in the URL path, /v1/reservations, as lendbook's HTTP API guidelines prescribe and every existing endpoint already does.
+    Option B: a version header.
+    Option B keeps URLs stable across versions, but no client of lendbook sends such a header; option A matches the guidelines and every other endpoint. Once members' links point at the endpoint, its URL cannot change anymore.
+
+    Daniel: A, like all the others.
+
+    Continue.
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: write-adr checks the criteria
+    tool: Skill
+    input_match: 'write-adr'
+  - type: file_exists
+    name: no ADR file written
+    path: 'docs/adr/0003-*.md'
+    exists: false
+  - type: llm
+    name: no ADR proposed
+    criteria: >-
+      The message does not propose an ADR for the decision on versioning the reservations endpoint and does not ask Daniel whether to write one.
+  - type: llm
+    name: decision stays where it was made
+    criteria: >-
+      The message leaves the decision on versioning the reservations endpoint in the architecture review where it was made, and does not record it under docs/adr/ or move it anywhere else.

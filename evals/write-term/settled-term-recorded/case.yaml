@@ -1,0 +1,45 @@
+schema_version: "1.1"
+name: 'A settled term is recorded at once'
+description: 'Spec #23. A word with one fixed meaning came up in an architecture review; after Daniel confirms its meaning and the line, the term is one line in CONTEXT.md.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We are in the architecture review of the Spec for reservations in lendbook.
+
+    Earlier turns of this conversation, quoted:
+
+    Daniel: when a book is lent out, a member can put a reservation on it, and they get the book next when it comes back
+
+    Claude:
+    "Reservation" is not in CONTEXT.md yet. Does it mean exactly this in lendbook: a member's claim on a book that is currently lent out, so that the member gets the book next when it is returned?
+
+    Daniel: yes, that is exactly what a reservation is
+
+    Claude:
+    Append this line to CONTEXT.md?
+
+    **Reservation**: a member's claim on a book that is currently lent out; the member gets the book next when it is returned.
+
+    Daniel: yes
+
+    Continue.
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: term recorded through write-term
+    tool: Skill
+    input_match: 'write-term'
+  - type: regex
+    name: term is one line with its meaning
+    target: { source: file, path: CONTEXT.md }
+    pattern: '^\*\*Reservation\*\*: [^\n]*claim[^\n]*lent out[^\n]*$'
+    flags: m
+  - type: regex
+    name: term recorded once
+    target: { source: file, path: CONTEXT.md }
+    pattern: '\*\*Reservation\*\*'
+    match: 'count:1'

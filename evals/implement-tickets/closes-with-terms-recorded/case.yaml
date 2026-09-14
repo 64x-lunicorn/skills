@@ -1,0 +1,42 @@
+schema_version: "1.1"
+name: 'A Spec closes only with its terms recorded'
+description: 'Spec #23. Verification of Spec #0001 reported the term Reservation missing from CONTEXT.md; the term goes to write-term before the Spec is closed.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-tickets 0003
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Every ticket in wayfinder #0003 is checked off. verify-spec returned for Spec #0001:
+
+    Completeness: #0004 and #0005 closed as completed; `ci.command` passed.
+
+    Findings:
+    1. hard, CONTEXT.md: the term Reservation from the Spec's Terms section is missing. Source: Spec #0001, Terms: "**Reservation**: a member's claim on a book that is currently lent out; the member gets the book next when it is returned." Fix: record the term in CONTEXT.md.
+
+    1 hard, 0 judgement, 0 conflict.
+
+    Closing summary: Members can reserve a book that is lent out and get it next when it is returned. Tickets #0004 and #0005. Both scenarios pass.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: missing term handed to write-term
+    tool: Skill
+    input_match: 'write-term[\s\S]*Reservation|Reservation[\s\S]*write-term'
+  - type: regex
+    name: Spec not closed yet
+    target: { source: file, path: issues/0001-reservations-spec.md }
+    pattern: '^status: open$'
+    flags: m
+  - type: regex
+    name: no close question before the term is recorded
+    pattern: 'Close Spec'
+    match: 'not_contains'
