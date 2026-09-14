@@ -6,7 +6,7 @@ import { repoRoot } from "./root.ts";
 afterEach(removeRepos);
 
 describe("loadCases", () => {
-  it("loads every case.yaml under evals/ with its name, tags, prompt and graders", () => {
+  it("loads every case.yaml under evals/ with its name, tags and prompt", () => {
     const root = repoWith({
       "evals/interview-user/one-question/case.yaml": [
         'schema_version: "1.1"',
@@ -28,7 +28,6 @@ describe("loadCases", () => {
         name: "One question at a time",
         tags: ["scenario", "pending"],
         prompt: "Ask me.",
-        graders: [{ type: "regex", name: "marker", pattern: "x" }],
       },
     ]);
   });
@@ -67,7 +66,7 @@ describe("loadCases", () => {
 });
 
 function scenario(name: string, tags: string[]): ScenarioCase {
-  return { path: `evals/x/${name}/case.yaml`, name, tags, prompt: "p", graders: [{}] };
+  return { path: `evals/x/${name}/case.yaml`, name, tags, prompt: "p" };
 }
 
 describe("selectScenarios", () => {

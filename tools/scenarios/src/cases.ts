@@ -12,7 +12,6 @@ export interface ScenarioCase {
   name: string;
   tags?: string[];
   prompt: string;
-  graders: unknown[];
 }
 
 interface CaseYaml {
@@ -92,7 +91,6 @@ function readCase(root: string, rel: string): ScenarioCase {
     name: data.name,
     tags: data.tags,
     prompt: data.execution.prompt,
-    graders: data.graders,
   };
 }
 
