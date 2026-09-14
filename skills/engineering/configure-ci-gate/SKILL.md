@@ -13,6 +13,8 @@ Stop and name the gap when:
 
 - `default_branch`, `ci.command` or `ci.checks` is missing, a check has no `name` or `run`, or its `required` is not `true` or `false`. Every template depends on them.
 - `ci.checks` has duplicate names, uses a reserved name (`Secret scan`, `Workflow lint`, `CI gate`), or a name or `run` contains `|` or a backtick, which would break the check table in `docs/ci-cd.md`. A complex command belongs in a script the check calls.
+- A check's optional `secrets` is not a list, names a secret that does not match `[A-Z_][A-Z0-9_]*`, or names one twice. The names are rendered unquoted into the workflow, where anything else is invalid or ambiguous.
+- `forge` is `gitlab` or `forgejo` and a check names `secrets`. Only the GitHub rendering is verified; GitLab hands CI/CD variables to every job on its own, and Forgejo was never tested.
 - `ci.runtime.stack` has no entry for the forge in [the runtime templates](references/runtimes.md). A new stack gets its template when a project needs it, not a guess now.
 - `forge` is `gitlab` and `ci.runner` is not a list, or a check is named like a GitLab keyword such as `default`, `stages`, `workflow`, `variables` or `image`, which GitLab would read as configuration instead of a job.
 - `forge` is `forgejo` and `ci.runner` is not a runner label, or no check has `required: true`: the required matrix would be empty, and Forgejo rejects a job with an empty matrix.
