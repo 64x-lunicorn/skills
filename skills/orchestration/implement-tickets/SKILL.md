@@ -12,7 +12,7 @@ Turns agreed tickets into pull requests, one ticket at a time. Slow is steady: e
 Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in every case; the notice informs, it does not block:
 
 - File missing: print `Project setup missing. Run /64x-lunicorn:setup-project.`
-- `setup_version` below 1: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
+- `setup_version` below 2: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
 
 ## 1. Reconcile the wayfinder
 

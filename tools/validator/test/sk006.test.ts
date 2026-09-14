@@ -52,4 +52,8 @@ describe("SK006: skill name lowercase, hyphenated, verb-noun", () => {
   it("accepts setup as the verb of the project-setup orchestrator", () => {
     expect(validate(fixture("sk006/pass-setup"))).toEqual([]);
   });
+
+  it("accepts configure as the verb of the CI gate skill", () => {
+    expect(validate(fixture("sk006/pass-configure"))).toEqual([]);
+  });
 });
