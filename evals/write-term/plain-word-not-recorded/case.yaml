@@ -1,23 +1,18 @@
 schema_version: "1.1"
 name: 'A plain word is not recorded'
-description: 'Spec #23. A word without a fixed meaning came up during an interview; the conversation goes on and CONTEXT.md stays unchanged.'
+description: 'Spec #23. A word without a fixed meaning came up during an interview and is handed to write-term, standing in for the caller; CONTEXT.md stays unchanged.'
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh
 execution:
   prompt: |
-    We are in an interview on the plan for reservations in lendbook.
+    /64x-lunicorn:write-term
 
-    Earlier turns of this interview, quoted:
-
-    Claude:
-    Open decisions: 2
-    How does a member learn that a reserved book is back?
-    Recommended answer: An email to the member. The circle already has every member's email address.
+    The word "shelf" came up during an interview on the plan for reservations in lendbook. It has no fixed meaning in this project. Daniel's answer in that interview, quoted:
 
     Daniel: an email is fine. Until the member picks it up the book stays on the shelf, and by shelf I just mean wherever the organiser happens to keep it, nothing more
 
-    Continue the interview.
+    Consider whether "shelf" is a term to record in CONTEXT.md.
   max_turns: 25
   timeout_seconds: 600
   allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

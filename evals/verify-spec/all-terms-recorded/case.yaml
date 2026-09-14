@@ -11,9 +11,14 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 graders:
+  - type: tool_used
+    name: verified through verify-spec
+    tool: Skill
+    input_match: 'verify-spec'
   - type: regex
     name: terms checked against CONTEXT.md
-    pattern: 'CONTEXT\.md'
+    pattern: '^Terms:[^\n]*CONTEXT\.md'
+    flags: m
   - type: regex
     name: no finding on terms
     pattern: '(missing|absent|not (recorded|listed|found|present))[^\n]{0,120}CONTEXT\.md|CONTEXT\.md[^\n]{0,120}(missing|absent|lacks)'

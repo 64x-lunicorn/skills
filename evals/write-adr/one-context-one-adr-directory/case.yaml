@@ -53,9 +53,15 @@ graders:
   - type: file_exists
     name: ADR in docs/adr/
     path: 'docs/adr/0003-*.md'
-  - type: regex
-    name: no other Markdown file created
-    target: files
-    pattern: '^(?!docs/adr/0003-)[^\n]*\.md$'
-    flags: m
-    match: 'not_contains'
+  - type: file_exists
+    name: no CONTEXT.md under app/
+    path: 'app/CONTEXT.md'
+    exists: false
+  - type: file_exists
+    name: no ADR index under app/
+    path: 'app/docs/adr/README.md'
+    exists: false
+  - type: file_exists
+    name: no ADR under app/
+    path: 'app/docs/adr/*.md'
+    exists: false

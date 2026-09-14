@@ -11,9 +11,14 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 graders:
+  - type: tool_used
+    name: verified through verify-spec
+    tool: Skill
+    input_match: 'verify-spec'
   - type: regex
-    name: missing term reported
-    pattern: 'Reservation[^\n]{0,200}CONTEXT\.md|CONTEXT\.md[^\n]{0,200}Reservation'
+    name: missing term reported as a hard finding
+    pattern: '\bhard\b[^\n]*\bReservation\b|\bReservation\b[^\n]*\bhard\b'
+    flags: i
   - type: tool_used
     name: nothing written
     tool: Write
