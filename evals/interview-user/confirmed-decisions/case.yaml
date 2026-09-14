@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: The interview ends with confirmed decisions
-description: Spec #16. When Daniel has answered every open decision, he is shown the list of his decisions in his words, and the interview ends only after he confirms it.
+description: "Spec #16. When Daniel has answered every open decision, he is shown the list of his decisions in his words, and the interview ends only after he confirms it."
 tags: [scenario, pending]
 execution:
   prompt: |
