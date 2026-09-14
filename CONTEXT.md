@@ -42,6 +42,12 @@
 
 **Spec verification**: the check `verify-spec` runs once every ticket of a Spec is merged, over the whole Spec instead of one ticket. It ends in follow-up tickets, a conflict for Daniel, or the Spec closed together with its architecture issue and wayfinder (ADR 0009).
 
+**Marker**: `.claude/64x-lunicorn.yml`, committed, written by `setup-project`. Every skill reads forge, default branch, research location, issue tracker, `ci.command`, `ci.runtime` and `ci.checks` from it. `setup_version` is 2 since `ci.runtime` was added (ADR 0010).
+
+**CI gate**: the only required status check in every project, always named `CI gate`. It runs after the checks from `ci.checks`, Workflow lint and Secret scan, and is green only when every blocking job succeeded. Without a forge, git hooks run `ci.command` instead.
+
+**Label set**: the closed set of labels `write-issue-templates` maintains: type (`bug`, `request`, `spec`, `task`, `bugfix`, `architecture`, `wayfinder`), status (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `blocked`) and `dependencies`.
+
 **Gate A**: the validator. Deterministic, no API, blocks the merge.
 
 **Gate B**: the eval runner from phase 2 on. Non-deterministic, costs tokens, not blocking at first.
