@@ -1,6 +1,10 @@
 # skills
 
-Claude Code plugin `64x-lunicorn`. Terms live in `CONTEXT.md`, decisions in `docs/adr/`.
+Claude Code plugin `64x-lunicorn`. Terms live in [CONTEXT.md](CONTEXT.md), decisions in [docs/adr/](docs/adr/README.md).
+
+## Project setup
+
+`.claude/64x-lunicorn.yml` records forge, default branch, research, issues and the CI checks, and every 64x-lunicorn skill reads it. Change it by re-running `/64x-lunicorn:setup-project`, not by hand: the gate, the templates and these docs are generated from it.
 
 ## Conventions no validator can check
 
@@ -25,8 +29,17 @@ Claude Code plugin `64x-lunicorn`. Terms live in `CONTEXT.md`, decisions in `doc
 3. Add at least one eval case under `evals/<name>/<case>/prompt.md`.
 4. `npm run validate` passes.
 
-## Changes
+## Shipping a change
 
-- Commits follow `write-commit-message`: Conventional Commits, English, imperative.
+- Commit messages are drafted with `write-commit-message`.
 - Every change to the plugin ships with a changeset (`npx changeset`). Validator-only or docs-only changes need none.
 - New validator rules and changed thresholds go into `tools/validator/src/conventions.ts` and ADR 0002, both in the same PR. A new rule is a proposal to Daniel before its first test is written.
+
+## Changes
+
+- Code, docs, messages and commits are English.
+- Commits follow Conventional Commits in imperative mood.
+- Work on a branch; `main` changes only through a squash-merged pull request that passed `CI gate`.
+- Run `npm run ci` before pushing; it runs every check the gate runs.
+- Issues live in the GitHub issues of `64x-lunicorn/skills`, with the closed label set.
+- Ideas live in `research/`, gitignored and local only, and reach code only after promotion to a Spec.

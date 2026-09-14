@@ -1,5 +1,7 @@
 # Terms
 
+The words this project uses with one fixed meaning, one paragraph each. Code, issues and Specs use the same word; a new term is added here when it gets a fixed meaning.
+
 **Skill**: directory `skills/<category>/<name>/` with a `SKILL.md`. The name is also the command `/64x-lunicorn:<name>`.
 
 **Category**: first level under `skills/`, e.g. `engineering` or `orchestration`.

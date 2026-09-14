@@ -14,7 +14,7 @@ real corrections, and a validator that holds every `SKILL.md` to the same conven
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-D97757?style=flat-square)](.claude-plugin/plugin.json)
 [![Validator](https://img.shields.io/badge/validator-14_rules-334155?style=flat-square)](docs/adr/0002-own-conventions-stricter-than-the-spec.md)
 
-[Install](#install) &nbsp; / &nbsp;
+[Quickstart](#quickstart) &nbsp; / &nbsp;
 [Skills](#skills) &nbsp; / &nbsp;
 [Project setup](#project-setup) &nbsp; / &nbsp;
 [Research](#research) &nbsp; / &nbsp;
@@ -30,9 +30,7 @@ real corrections, and a validator that holds every `SKILL.md` to the same conven
 
 ## Skills that earn their place
 
-Most skill collections start from ideas. This one starts from friction: when an assistant
-needs the same correction for the third time, that correction becomes a skill. Until then it
-waits in the inbox, word for word.
+Most skill collections start from ideas. This one starts from friction: when an assistant needs the same correction for the third time, that correction becomes a skill. Until then it waits in the inbox, word for word.
 
 **A skill exists because it was needed, not because it seemed like a good idea.**
 
@@ -65,10 +63,17 @@ The validator is deterministic, needs no API access and runs in milliseconds.
 Behavioural evals under [`evals/`](evals/) come next; every skill already ships with at
 least one case.
 
-## Install
+## Quickstart
+
+1. Add the marketplace:
 
 ```text
 /plugin marketplace add 64x-lunicorn/skills
+```
+
+2. Install the plugin:
+
+```text
 /plugin install 64x-lunicorn@64x-lunicorn
 ```
 
@@ -294,23 +299,21 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, how they are split into tickets, how tickets are implemented, how a Spec is verified and closed, and how the CI gate and issue templates are set up, how README, community files and agent docs are generated, and how GitLab and Forgejo are supported. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
-| [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |
+| [CI/CD](docs/ci-cd.md) | Understand the gate, run it locally and see the rules on `main`. |
+| [Contributing](CONTRIBUTING.md) | Set up development, run the checks and submit a focused change. |
 | [Security policy](SECURITY.md) | Report a vulnerability privately. |
 
 ## Contributing
 
-Bug reports, harvest candidates and focused pull requests are welcome. New skills start as
-an [issue](https://github.com/64x-lunicorn/skills/issues) describing the correction that
-keeps coming up.
+Bug reports and focused pull requests are welcome. Run the whole gate locally before pushing:
 
 ```bash
-npm ci
-npm test
-npm run validate
+npm run ci
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the checks, how validator rules are added through
-TDD, and what a pull request needs.
+Harvest candidates are welcome: new skills start as an [issue](https://github.com/64x-lunicorn/skills/issues) describing the correction that keeps coming up, and validator rules are added through TDD.
+
+Use synthetic data in examples, tests and issues. See [CONTRIBUTING.md](CONTRIBUTING.md) for the checks and what a change needs.
 
 ## License and credits
 

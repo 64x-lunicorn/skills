@@ -1,0 +1,17 @@
+setup_version: 3
+forge: github
+default_branch: main
+research:
+  path: research/
+  tracked: false  # false = gitignored, local only
+issues:
+  tracker: forge
+  path: null
+ci:
+  command: npm run ci
+  runtime: { stack: node, node: ">=24" }
+  runner: null
+  checks:
+    - { name: Validator, run: npm run validate, required: true }
+    - { name: Type check, run: npm run typecheck, required: true }
+    - { name: Tests, run: npm run coverage, required: true }
