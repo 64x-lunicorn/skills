@@ -1,0 +1,58 @@
+schema_version: "1.1"
+name: The interview saves nothing
+description: Spec #16. An interview that ended with confirmed decisions has written nothing itself; the calling skill records the decisions where it keeps its results.
+tags: [scenario, pending]
+execution:
+  prompt: |
+    /64x-lunicorn:interview-user
+
+    Plan: publish csv2json, a small command line tool that converts CSV files to JSON, as an open source package.
+
+    Open decisions:
+    - which license the package gets
+    - which name the package is published under
+
+    Earlier turns of this interview, quoted:
+
+    Claude:
+    Open decisions: 2
+    Which license does the package get?
+    Recommended answer: MIT. It is the usual license for small command line tools and puts no obligations on users.
+
+    Daniel: ja, MIT passt
+
+    Claude:
+    Open decisions: 1
+    Which name is the package published under?
+    Recommended answer: csv2json. It says what the tool does and matches the plan.
+
+    Daniel: nimm csv-to-json, csv2json ist schon vergeben
+
+    Claude:
+    Your decisions:
+    - License: "ja, MIT passt"
+    - Package name: "nimm csv-to-json, csv2json ist schon vergeben"
+    Do you confirm this list?
+
+    Daniel: ja, passt so
+
+    Continue the interview.
+  max_turns: 10
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: nothing written
+    tool: Write
+    min: 0
+    max: 0
+  - type: tool_used
+    name: nothing edited
+    tool: Edit
+    min: 0
+    max: 0
+  - type: llm
+    name: decisions handed back to the calling skill
+    criteria: >-
+      The message treats the interview as over and hands the confirmed
+      decisions back for the calling skill to record. It does not claim to have
+      saved, written or recorded them anywhere itself.

@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: No emojis in questions
+description: Spec #16. When an interview shows a question and its recommendation, they contain no emojis, even when Daniel's own message has one.
+tags: [scenario, pending]
+execution:
+  prompt: |
+    /64x-lunicorn:interview-user
+
+    Plan: publish csv2json, a small command line tool that converts CSV files to JSON, as an open source package. Wird gut 🙂
+
+    Open decision: which license the package gets.
+  max_turns: 10
+  allowed_tools: [Read, Glob, Grep, Skill]
+graders:
+  - type: regex
+    name: a question is shown
+    pattern: '^Open decisions: '
+    flags: m
+  - type: regex
+    name: no emojis
+    pattern: '\p{Extended_Pictographic}'
+    flags: u
+    match: not_contains

@@ -1,0 +1,55 @@
+schema_version: "1.1"
+name: interview-me names the next command
+description: Spec #16. When an interview started with interview-me has ended with confirmed decisions, the next command for Daniel to start is named, and no other command is started and nothing is saved.
+tags: [scenario, pending]
+execution:
+  prompt: |
+    /64x-lunicorn:interview-me Ich will csv2json veröffentlichen, ein kleines Kommandozeilentool, das CSV-Dateien in JSON umwandelt, als Open-Source-Paket. Offen sind noch die Lizenz und der Paketname.
+
+    Earlier turns of this interview, quoted:
+
+    Claude:
+    Open decisions: 2
+    Which license does the package get?
+    Recommended answer: MIT. It is the usual license for small command line tools and puts no obligations on users.
+
+    Daniel: ja, MIT passt
+
+    Claude:
+    Open decisions: 1
+    Which name is the package published under?
+    Recommended answer: csv2json. It says what the tool does and matches the plan.
+
+    Daniel: nimm csv-to-json, csv2json ist schon vergeben
+
+    Claude:
+    Your decisions:
+    - License: "ja, MIT passt"
+    - Package name: "nimm csv-to-json, csv2json ist schon vergeben"
+    Do you confirm this list?
+
+    Daniel: ja, passt so
+
+    Continue the interview.
+  max_turns: 10
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: regex
+    name: next command named
+    pattern: '/64x-lunicorn:[a-z]+(-[a-z]+)+'
+  - type: tool_used
+    name: no other command started
+    tool: Skill
+    input_match: '^(?![\s\S]*interview-user)'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: nothing written
+    tool: Write
+    min: 0
+    max: 0
+  - type: tool_used
+    name: nothing edited
+    tool: Edit
+    min: 0
+    max: 0
