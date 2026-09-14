@@ -22,7 +22,15 @@
 
 **Spec**: an issue labelled `spec` describing domain behaviour and one functional change, with a Mermaid domain flow and Gherkin acceptance criteria. Never implemented directly; the work happens in its sub-issues (ADR 0006).
 
-**Technical notes**: statements about how to build a change that `design-spec` keeps out of a Spec. They are input for the architecture issue.
+**Technical notes**: statements about how to build a change that `design-spec` keeps out of a Spec. They are posted as a comment on the Spec and are input for the architecture issue.
+
+**Ticket**: an issue labelled `task`, a sub-issue of its Spec. One vertical slice, one pull request; its acceptance criteria are Gherkin scenarios copied verbatim from the Spec (ADR 0007).
+
+**Integration test ticket**: the ticket that writes every scenario of a Spec as an automated test tagged pending, first in the order. The required CI gate skips pending tests; each feature ticket removes the tag from its scenarios.
+
+**Architecture issue**: an issue labelled `architecture`, a sub-issue of its Spec. Holds the reviewed technical design: components, flow, decisions, ticket dependencies and implementation order.
+
+**Wayfinder**: an issue labelled `wayfinder`, a sub-issue of its Spec. The living order of work: phases, a progress graph and a checklist agents work through.
 
 **Gate A**: the validator. Deterministic, no API, blocks the merge.
 

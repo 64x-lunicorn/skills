@@ -72,7 +72,9 @@ Name the tracker and the title `Spec: <title>` to Daniel and create the issue af
 
 Write the body to a file in the scratchpad and pass it as a file (`gh issue create --body-file`), because backticks in the Mermaid and Gherkin blocks break when quoted inline in a shell.
 
-**Done when** the Spec exists and its URL or path is known.
+Then post the technical notes as a comment on the Spec, headed `Technical notes for the architecture issue`, or `None` below the heading when there are none. For a local issue file, add them as a final section with that heading. The notes stay out of the Spec, but the architecture issue needs them when the Spec is split, usually in a later session.
+
+**Done when** the Spec exists, has its technical notes comment, and its URL or path is known.
 
 ## 6. Freeze the object
 
