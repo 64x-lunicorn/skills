@@ -74,7 +74,7 @@ Research documents are written in English. `discussion.md` keeps statements in t
 
 ## Resolved
 
-- **Promotion target** (2026-09-13). A promotion produces one **Spec issue** in the project's tracker, labelled `spec`: on the forge, or as a Markdown file in `issues/` without one. The Spec stands on its own, because research may be local-only; its Origin section points back to the research object. Sections: Goal, Context, Decisions, Non-goals, Acceptance criteria, Tasks, Open risks, Origin. Splitting it into Task issues is a separate, later step. The template lives in `skills/orchestration/promote-research/references/spec-template.md`.
+- **Promotion target** (2026-09-13). A promotion produces one **Spec issue** in the project's tracker, labelled `spec`: on the forge, or as a Markdown file in `issues/` without one. The Spec stands on its own, because research may be local-only; its Origin section points back to the research object. Splitting it into tickets is a separate, later step. Sections and template were revised by ADR 0006; the template now lives in `skills/engineering/design-spec/references/spec-template.md`.
 
 ## Consequences
 

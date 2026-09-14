@@ -20,6 +20,10 @@
 
 **Promotion**: a research object passes the quality gates and becomes an epic or spec. The object is frozen and linked both ways.
 
+**Spec**: an issue labelled `spec` describing domain behaviour and one functional change, with a Mermaid domain flow and Gherkin acceptance criteria. Never implemented directly; the work happens in its sub-issues (ADR 0006).
+
+**Technical notes**: statements about how to build a change that `design-spec` keeps out of a Spec. They are input for the architecture issue.
+
 **Gate A**: the validator. Deterministic, no API, blocks the merge.
 
 **Gate B**: the eval runner from phase 2 on. Non-deterministic, costs tokens, not blocking at first.
