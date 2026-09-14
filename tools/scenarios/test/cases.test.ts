@@ -1,26 +1,9 @@
-import fs from "node:fs";
-import os from "node:os";
-import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { type ScenarioCase, evalArgs, loadCases, selectScenarios } from "../src/cases.ts";
+import { removeRepos, repoWith } from "./repo.ts";
 import { repoRoot } from "./root.ts";
 
-const tempRoots: string[] = [];
-
-afterEach(() => {
-  for (const root of tempRoots.splice(0)) fs.rmSync(root, { recursive: true, force: true });
-});
-
-function repoWith(files: Record<string, string>): string {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "scenarios-"));
-  tempRoots.push(root);
-  for (const [rel, text] of Object.entries(files)) {
-    const file = path.join(root, rel);
-    fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, text);
-  }
-  return root;
-}
+afterEach(removeRepos);
 
 describe("loadCases", () => {
   it("loads every case.yaml under evals/ with its name, tags, prompt and graders", () => {
@@ -110,12 +93,13 @@ describe("evalArgs", () => {
   });
 });
 
-describe("scenario cases of this repository", () => {
-  const cases = loadCases(repoRoot).filter((c) => c.tags?.includes("scenario"));
+describe("cases of this repository", () => {
+  const cases = loadCases(repoRoot);
 
   it.each(cases.map((c) => [c.path, c] as const))("%s is a scenario with a prompt and a grader", (_, c) => {
     expect(c.prompt?.trim()).toBeTruthy();
     expect(c.graders?.length).toBeGreaterThan(0);
+    expect(c.tags).toContain("scenario");
   });
 
   it("gives every case a unique name", () => {

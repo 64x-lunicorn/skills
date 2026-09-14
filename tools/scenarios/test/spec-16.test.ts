@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 import { loadCases } from "../src/cases.ts";
 import { repoRoot } from "./root.ts";
-import { SCENARIO as WORDING_SCENARIO } from "./wording.test.ts";
+import { SCENARIO as WORDING_SCENARIO } from "./wording.ts";
 
 /** The scenarios of Spec #16 that ticket #25 owns, verbatim. */
 const SCENARIOS = [
