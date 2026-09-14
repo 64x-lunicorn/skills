@@ -50,3 +50,9 @@ graders:
     tool: Edit
     min: 0
     max: 0
+  - type: llm
+    name: interview over with confirmed decisions
+    criteria: >-
+      The message treats the interview as over with the confirmed list of
+      decisions, and it does not claim to have saved, written or recorded them
+      itself.
