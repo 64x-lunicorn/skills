@@ -16,6 +16,10 @@ graders:
     tool: Skill
     input_match: 'verify-spec'
   - type: regex
+    name: terms checked against CONTEXT.md
+    pattern: '^Terms:[^\n]*CONTEXT\.md'
+    flags: m
+  - type: regex
     name: missing term reported as a hard finding
     pattern: '(?=[^\n]*\bhard\b)(?=[^\n]*\bReservation\b)(?=[^\n]*CONTEXT\.md)'
     flags: i
