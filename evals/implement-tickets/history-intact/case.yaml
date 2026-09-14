@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: The history the review saw stays intact
-description: Spec #24. An implement-tickets run brings ticket/5-greet-missing-name-stranger, pushed at the commit its review saw, up to date with main; the branch keeps that commit and is pushed without force.
+description: Spec #24. An implement-tickets run brings ticket/5-missing-name, pushed at the commit its review saw, up to date with main; the branch keeps that commit and is pushed without force.
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh
@@ -18,16 +18,21 @@ graders:
   - type: regex
     name: updated branch pushed
     # The tip scaffold.sh pushes, the commit the review saw; fixed identities and dates keep it the same on every run.
-    target: { source: file, path: origin.git/refs/heads/ticket/5-greet-missing-name-stranger }
+    target: { source: file, path: origin.git/refs/heads/ticket/5-missing-name }
     pattern: '^9425db00da1fbe1b26fcea78ee334fc3135dfc23$'
     flags: m
     match: not_contains
   - type: tool_used
     name: pushed without force
     tool: Bash
-    input_match: 'git\s+push\b.*(--force|\s-f\b|\s\+)'
+    input_match: 'git\b.*\bpush\b.*(--force|\s-\w*f|\s\+)'
     min: 0
     max: 0
+  - type: regex
+    name: every commit the review saw still on the branch
+    target: { source: file, path: .git/logs/refs/heads/ticket/5-missing-name }
+    pattern: '\t(rebase|reset:|commit \(amend\))'
+    match: not_contains
   - type: tool_used
     name: history not rewritten
     tool: Bash

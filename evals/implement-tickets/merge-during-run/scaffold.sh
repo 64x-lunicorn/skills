@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Copies the case's project state into the run workspace and builds its git history:
-# main carries the squash commit of ticket #0004; ticket/5-greet-missing-name-stranger
+# main carries the squash commit of ticket #0004; ticket/5-missing-name
 # is behind main without merge conflicts, and ticket/6-greet-several-names is up to
 # date with it. A post-commit hook stands in for Daniel merging a pull request while
 # the run goes on: the first commit on a ticket branch moves main one commit ahead,
+# locally and on origin,
 # which puts ticket/6-greet-several-names behind during the run.
 # Fixed identities and dates keep every commit id the same on every run.
 set -euo pipefail
@@ -25,7 +26,7 @@ git symbolic-ref HEAD refs/heads/main
 printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
 
-git checkout -q -b ticket/5-greet-missing-name-stranger
+git checkout -q -b ticket/5-missing-name
 cat > src/greet.sh <<'SH'
 greet() {
   word=Hello
@@ -98,6 +99,7 @@ case "$(git symbolic-ref --short -q HEAD)" in
   ticket/*)
     if git merge-base --is-ancestor refs/heads/main refs/fixture/merged-during-run; then
       git update-ref refs/heads/main refs/fixture/merged-during-run
+      git --git-dir="$(git config remote.origin.url)" update-ref refs/heads/main refs/fixture/merged-during-run
     fi
     ;;
 esac
@@ -106,5 +108,6 @@ chmod +x .git/hooks/post-commit
 
 git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"
-git push -q origin main ticket/5-greet-missing-name-stranger ticket/6-greet-several-names
+# The merged pull request's commit goes to origin too, so the hook can move main there.
+git push -q origin main ticket/5-missing-name ticket/6-greet-several-names refs/fixture/merged-during-run
 git checkout -q main

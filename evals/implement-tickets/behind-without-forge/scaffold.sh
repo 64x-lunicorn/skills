@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Copies the case's project state into the run workspace and builds its git history
 # without any remote: main carries the squash commit of ticket #0004, and
-# ticket/5-greet-missing-name-stranger does not contain it, without merge conflicts.
+# ticket/5-missing-name does not contain it, without merge conflicts.
 # Fixed identities and dates keep every commit id the same on every run.
 set -euo pipefail
 cp -R "$(dirname "${BASH_SOURCE[0]}")/fixture/." .
@@ -21,7 +21,7 @@ git init -q
 git symbolic-ref HEAD refs/heads/main
 commit 0 -m "feat: greet a name"
 
-git checkout -q -b ticket/5-greet-missing-name-stranger
+git checkout -q -b ticket/5-missing-name
 cat > src/greet.sh <<'SH'
 greet() {
   word=Hello

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Copies the case's project state into the run workspace and builds its git history:
 # main carries the squash commits of ticket #0004 and bugfix #0007, which refuses a
-# missing name, and ticket/5-greet-missing-name-stranger greets a missing name as
-# stranger on the same line, so merging main into it conflicts and both intents
+# missing name, and ticket/5-missing-name greets a missing name as
+# stranger on the same line, so merging main into it has merge conflicts and both intents
 # cannot be kept. Fixed identities and dates keep every commit id the same on every run.
 set -euo pipefail
 cp -R "$(dirname "${BASH_SOURCE[0]}")/fixture/." .
@@ -23,7 +23,7 @@ git symbolic-ref HEAD refs/heads/main
 printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
 
-git checkout -q -b ticket/5-greet-missing-name-stranger
+git checkout -q -b ticket/5-missing-name
 cat > src/greet.sh <<'SH'
 greet() {
   printf 'Hello, %s\n' "${1:-stranger}"
@@ -72,5 +72,5 @@ commit 3 -m "fix: refuse a missing name" -m "Closes #0007."
 
 git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"
-git push -q origin main ticket/5-greet-missing-name-stranger
+git push -q origin main ticket/5-missing-name
 git checkout -q main

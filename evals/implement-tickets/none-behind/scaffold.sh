@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Copies the case's project state into the run workspace and builds its git history:
-# main carries the squash commit of ticket #0004, and ticket/5-greet-missing-name-stranger
+# main carries the squash commit of ticket #0004, and ticket/5-missing-name
 # branches from that commit, so no ticket branch is behind main.
 # Fixed identities and dates keep every commit id the same on every run.
 set -euo pipefail
@@ -37,7 +37,7 @@ actual=$(GREETING=Hi greet Ada)
 SH
 commit 1 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 
-git checkout -q -b ticket/5-greet-missing-name-stranger
+git checkout -q -b ticket/5-missing-name
 cat > src/greet.sh <<'SH'
 greet() {
   printf '%s, %s\n' "${GREETING:-Hello}" "${1:-stranger}"
@@ -55,5 +55,5 @@ commit 2 -m "feat: greet a missing name as stranger" -m "Refs #0005."
 
 git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"
-git push -q origin main ticket/5-greet-missing-name-stranger
+git push -q origin main ticket/5-missing-name
 git checkout -q main

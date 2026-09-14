@@ -1,12 +1,12 @@
 schema_version: "1.1"
 name: Incompatible intents stop the update
-description: Spec #24. Merging main into a ticket branch conflicts in src/greet.sh, where ticket #0005 greets a missing name as stranger and bugfix #0007 on main refuses it; the update stops with incompatible intents, quotes both sources and leaves the decision to Daniel.
+description: Spec #24. Merging main into a ticket branch has merge conflicts in src/greet.sh, where ticket #0005 greets a missing name as stranger and bugfix #0007 on main refuses it; the update stops with incompatible intents, quotes both sources and leaves the decision to Daniel.
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh
 execution:
   prompt: |
-    Bring this branch, ticket/5-greet-missing-name-stranger, up to date with main and resolve the merge conflicts. The intent of the ticket side comes from ticket #0005 in issues/, its Spec #0001 and its scenarios.
+    Bring this branch, ticket/5-missing-name, up to date with main and resolve the merge conflicts. The intent of the ticket side comes from ticket #0005 in issues/, its Spec #0001 and its scenarios.
   max_turns: 40
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
@@ -21,12 +21,25 @@ graders:
     flags: i
   - type: regex
     name: source of main's side quoted, bugfix #0007
-    pattern: '#0*7\b'
+    # Verbatim from the Goal of issues/0007-refuse-missing-name-bugfix.md; in no prompt, branch name or commit message.
+    pattern: 'a greeting for nobody corrupts'
   - type: regex
     name: source of the ticket side quoted, a missing name greeted as stranger
-    pattern: 'stranger'
+    # Verbatim from the Goal of issues/0005-missing-name-stranger-task.md; in no prompt, branch name or commit message.
+    pattern: 'never prints an empty name'
   - type: regex
     name: merge not recorded
     target: { source: file, path: .git/logs/HEAD }
     pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
     match: not_contains
+  - type: tool_used
+    name: merge not aborted
+    tool: Bash
+    input_match: 'git\s+merge\s+--abort'
+    min: 0
+    max: 0
+  - type: regex
+    name: merge left open for Daniel
+    target: { source: file, path: .git/MERGE_HEAD }
+    pattern: '^[0-9a-f]{40}$'
+    flags: m

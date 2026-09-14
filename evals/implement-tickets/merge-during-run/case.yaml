@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: A merge during a run is not noticed inside that run
-description: Spec #24. An implement-tickets run updates ticket/5-greet-missing-name-stranger; a git hook stands in for Daniel merging a pull request during the run, and ticket/6-greet-several-names, behind only since then, is not updated in this run.
+description: Spec #24. An implement-tickets run updates ticket/5-missing-name; a git hook stands in for Daniel merging a pull request during the run, and ticket/6-greet-several-names, behind only since then, is not updated in this run.
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh
@@ -17,7 +17,7 @@ graders:
     input_match: 'implement-ticket.*update'
   - type: regex
     name: behind branch at the start updated
-    target: { source: file, path: .git/logs/refs/heads/ticket/5-greet-missing-name-stranger }
+    target: { source: file, path: .git/logs/refs/heads/ticket/5-missing-name }
     pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
   - type: regex
     name: branch behind only during the run unchanged
@@ -25,3 +25,10 @@ graders:
     target: { source: file, path: .git/refs/heads/ticket/6-greet-several-names }
     pattern: '^260f6361767eb4a420243ab5918cc8369218efbc$'
     flags: m
+  - type: tool_used
+    name: no update of the branch behind only during the run
+    # The Skill input is graded as JSON, so the number may follow "args".
+    tool: Skill
+    input_match: 'implement-ticket\W+(args\W+)?0*6\s+update'
+    min: 0
+    max: 0
