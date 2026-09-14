@@ -21,6 +21,6 @@ graders:
     flags: m
   - type: regex
     name: no finding on terms
-    pattern: '(?=[^\n]*\bhard\b)(?=[^\n]*\b(?:Member|Loan|Reservation)\b)(?=[^\n]*CONTEXT\.md)'
-    flags: i
+    pattern: '^(?!Terms:)(?=[^\n]*\bhard\b)(?=[^\n]*\b(?:Member|Loan|Reservation)\b)(?=[^\n]*CONTEXT\.md)'
+    flags: im
     match: 'not_contains'

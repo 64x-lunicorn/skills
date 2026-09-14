@@ -15,6 +15,8 @@ execution:
 
     Completeness: #0004 and #0005 closed as completed; `ci.command` passed.
 
+    Terms: Reservation is missing from CONTEXT.md; Member and Loan are recorded.
+
     Findings:
     1. hard, CONTEXT.md: the term Reservation from the Spec's Terms section is missing. Source: Spec #0001, Terms: "**Reservation**: a member's claim on a book that is currently lent out; the member gets the book next when it is returned." Fix: record the term in CONTEXT.md.
 

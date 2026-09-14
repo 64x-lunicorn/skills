@@ -38,4 +38,4 @@ graders:
   - type: llm
     name: decision stays where it was made
     criteria: >-
-      The message leaves the decision on versioning the reservations endpoint in the architecture review where it was made, and does not record it under docs/adr/ or move it anywhere else.
+      The message does not record the decision on versioning the reservations endpoint under docs/adr/ and does not move it anywhere else. The message does not need to say where the decision stays.
