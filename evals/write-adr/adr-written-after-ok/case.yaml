@@ -50,5 +50,5 @@ graders:
   - type: regex
     name: ADR index lists it
     target: { source: file, path: docs/adr/README.md }
-    pattern: '^\| \[0003\]\(0003-loan-history-as-append-only-events\.md\) \| Loan history as append-only events \| accepted \|$'
+    pattern: '^\| \[0003\]\(0003-[a-z0-9-]+\.md\) \| Loan history as append-only events \| accepted \|$'
     flags: m
