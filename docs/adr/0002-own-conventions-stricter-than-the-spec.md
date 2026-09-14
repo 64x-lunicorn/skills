@@ -29,8 +29,11 @@ The values live once in code, in `tools/validator/src/conventions.ts`. This ADR 
 | SK011 | A user-invoked skill does not reference another user-invoked skill (`/name` or `/64x-lunicorn:name`) |
 | SK012 | Every skill has at least one case under `evals/<skill-name>/` (`prompt.md` or `case.yaml`) |
 | SK013 | Every skill is listed in `skills` of `plugin.json`, every entry there points to a skill |
+| SK014 | A user-invoked skill has a `## 0. Check project setup` section with the exact notice `Project setup missing. Run /64x-lunicorn:setup-project.` and `` `setup_version` below N `` where N is the current setup version |
 
 SK013 was not part of the original catalogue. Daniel approved it on 2026-09-13, once it was clear that Claude Code silently skips nested skills without an entry.
+
+SK014 was approved by Daniel on 2026-09-14 for Spec #4 (project setup). Without it, a user-invoked skill runs in a project that was never set up and nobody notices. The notice informs and never blocks. The current setup version is `SETUP_VERSION` in `conventions.ts`; raising it fails every skill that still checks the old value, so no skill keeps an outdated check. The notice sits in inline code, which SK011 ignores, so SK011 needs no exception for `setup-project`. `setup-project` itself is not exempt yet; the exemption is added through TDD when that skill is harvested.
 
 ### Field allowlist (SK007)
 

@@ -12,7 +12,7 @@ real corrections, and a validator that holds every `SKILL.md` to the same conven
 [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
 [![Built with TypeScript](https://img.shields.io/badge/built_with-TypeScript-3178c6?style=flat-square)](package.json)
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-D97757?style=flat-square)](.claude-plugin/plugin.json)
-[![Validator](https://img.shields.io/badge/validator-13_rules-334155?style=flat-square)](docs/adr/0002-own-conventions-stricter-than-the-spec.md)
+[![Validator](https://img.shields.io/badge/validator-14_rules-334155?style=flat-square)](docs/adr/0002-own-conventions-stricter-than-the-spec.md)
 
 [Install](#install) &nbsp; / &nbsp;
 [Skills](#skills) &nbsp; / &nbsp;
@@ -36,7 +36,7 @@ waits in the inbox, word for word.
 | :--- | :--- |
 | **Harvested from practice** | Every skill traces back to a correction that kept coming up in real work. |
 | **Descriptions that fire** | The description is a skill's only API. Vague ones are rejected before they ship. |
-| **Conventions, enforced** | 13 deterministic rules check frontmatter, naming, layering, references and evals on every pull request. |
+| **Conventions, enforced** | 14 deterministic rules check frontmatter, naming, layering, references, evals and the project setup step on every pull request. |
 | **Layered on purpose** | User-invoked skills orchestrate; model-invoked skills hold the reusable discipline. |
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
@@ -50,7 +50,7 @@ waits in the inbox, word for word.
 ```text
 correction  -->  inbox.md  -->  SKILL.md  -->  validator  -->  pull request  -->  release
                     |              |              |
-                    |              |              +-- 13 rules, blocks the merge
+                    |              |              +-- 14 rules, blocks the merge
                     |              +-- written once the same correction was needed 3x
                     +-- recorded word for word, with a counter
 ```

@@ -13,6 +13,15 @@ export const FORBIDDEN_DESCRIPTION_STARTS = ["this skill", "dieser skill", "dies
 /** SK009: beyond this, content belongs in a reference file next to SKILL.md. */
 export const MAX_BODY_LINES = 200;
 
+/** SK014: every user-invoked skill checks the project setup before its own steps. */
+export const SETUP_STEP_HEADING = "## 0. Check project setup";
+
+/** SK014: the exact notice, so every skill says the same thing. */
+export const SETUP_MISSING_NOTICE = "Project setup missing. Run /64x-lunicorn:setup-project.";
+
+/** SK014: current `setup_version` of `.claude/64x-lunicorn.yml`. Raising it fails every skill still checking the old value. */
+export const SETUP_VERSION = 1;
+
 /** SK008: category whose skills only Daniel invokes, never the model. */
 export const ORCHESTRATION_CATEGORY = "orchestration";
 

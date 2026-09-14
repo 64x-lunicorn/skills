@@ -7,6 +7,13 @@ disable-model-invocation: true
 
 Promotion is the only path from `research/` to implementation (ADR 0005). The gates exist so that an idea nobody challenged never turns into a requirement. This skill checks, asks and writes; it does not change what the research concluded.
 
+## 0. Check project setup
+
+Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in every case; the notice informs, it does not block:
+
+- File missing: print `Project setup missing. Run /64x-lunicorn:setup-project.`
+- `setup_version` below 1: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
+
 ## 1. Pick the object
 
 Take the object named in the argument. Without one, list the objects in `research/` whose status is `concluded` and ask which.

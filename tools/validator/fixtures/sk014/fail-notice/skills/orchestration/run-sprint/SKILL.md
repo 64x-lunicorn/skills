@@ -4,16 +4,13 @@ description: Runs a sprint over a set of GitHub tickets. Use when Daniel says "r
 disable-model-invocation: true
 ---
 
-Commit each ticket with /fixture:write-commit-message or (/write-commit-message).
-The plan lives in docs/plan-sprint/output.json.
-
-```
-/fixture:plan-sprint
-```
-
 ## 0. Check project setup
 
 Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in every case:
 
-- File missing: print `Project setup missing. Run /64x-lunicorn:setup-project.`
+- File missing: print a notice.
 - `setup_version` below 1: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
+
+## 1. Run
+
+Implement each ticket.

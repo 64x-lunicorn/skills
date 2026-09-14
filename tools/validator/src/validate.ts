@@ -13,6 +13,7 @@ import { sk010 } from "./rules/sk010.ts";
 import { sk011 } from "./rules/sk011.ts";
 import { sk012 } from "./rules/sk012.ts";
 import { sk013 } from "./rules/sk013.ts";
+import { sk014 } from "./rules/sk014.ts";
 
 export interface Finding {
   rule: string;
@@ -24,6 +25,7 @@ export interface Finding {
 
 const rules: Rule[] = [
   sk001, sk002, sk003, sk004, sk005, sk006, sk007, sk008, sk009, sk010, sk011, sk012, sk013,
+  sk014,
 ];
 
 export function validate(root: string): Finding[] {
