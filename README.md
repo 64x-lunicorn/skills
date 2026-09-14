@@ -80,6 +80,7 @@ Skills trigger on their own when a request matches their description, or run as
 | Skill | Invocation | What it does |
 | :--- | :--- | :--- |
 | [`configure-ci-gate`](skills/engineering/configure-ci-gate/SKILL.md) | model-invoked | Generates the workflow with the single required `CI gate`, the ruleset and merge settings, or git hooks without a forge, and reports drift. |
+| [`design-http-api`](skills/engineering/design-http-api/SKILL.md) | model-invoked | Designs or changes an HTTP API against fixed REST guidelines and keeps its OpenAPI document, Swagger UI and Bruno collection in the same change. |
 | [`design-spec`](skills/engineering/design-spec/SKILL.md) | model-invoked | Drafts a Spec that describes domain behaviour only, with a Mermaid domain flow and Gherkin acceptance criteria. |
 | [`design-ticket`](skills/engineering/design-ticket/SKILL.md) | model-invoked | Cuts a Spec into vertical-slice tickets, one pull request each, with the Spec's scenarios as acceptance criteria. |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
