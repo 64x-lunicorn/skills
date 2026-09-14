@@ -27,6 +27,7 @@ For every technical question, pick one option and give the reason, with the reje
 - Follow existing ADRs and patterns. Departing from one is a decision of its own and says so.
 - Check facts about libraries, APIs and platforms against their primary documentation, with version. A wrong fact here becomes the design every ticket builds on.
 - Stay inside the Spec. Behaviour the Spec does not ask for is not added, however useful it looks.
+- When the Spec needs HTTP endpoints, design the contract with `design-http-api`. Its per-API choices and each operation's method, path and status codes are decisions; a choice nobody recorded becomes a proposal for Daniel instead of being picked here.
 
 **Done when** every technical question has a decision with a reason.
 

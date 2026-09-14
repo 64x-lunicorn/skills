@@ -18,6 +18,7 @@
   ],
   "skills": [
     "./skills/engineering/configure-ci-gate",
+    "./skills/engineering/design-http-api",
     "./skills/engineering/design-spec",
     "./skills/engineering/design-ticket",
     "./skills/engineering/implement-ticket",

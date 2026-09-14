@@ -49,6 +49,7 @@ Build every behaviour with `write-tests`, at the seams from the implementation n
 
 - Run the typecheck, when the project has one, and the affected test file after every green; the full suite comes in step 6.
 - Follow the Decisions of the architecture issue. Needing a library, component or seam it does not name: stop.
+- When the ticket adds, changes or removes an HTTP endpoint, build it with `design-http-api`, OpenAPI document and Bruno collection included in the same commits. A per-API choice that is not recorded is a stop.
 - Write only what the scenarios need. Options, hooks and abstractions for later are speculative and stay out.
 
 After every green, compare `git diff --stat` with the components in the implementation notes. A file outside them is either reverted or recorded with its reason; a change inside another ticket's scope is a stop.

@@ -45,8 +45,9 @@ Skip this step on the spec axis. This axis owns documented standards, duplicatio
 - **Duplication:** for every new function, type, constant, component and test helper, search the whole codebase for an existing one doing the same job. Repeated logic inside the diff counts as well; repeated literal test data does not. Code that copies what an architecture decision names for reuse is left to the spec axis, so it is reported once.
 - **Smells:** check the diff against [the smell baseline](references/smells.md). A documented standard that endorses a pattern overrides the baseline.
 - **Tests:** coupled to internals, mocking the project's own modules, expected values recomputed the way the code computes them, verification through a side channel instead of the interface.
+- **HTTP API:** when the diff adds, changes or removes an HTTP endpoint, check it against the checklist of `design-http-api`. An endpoint change without the matching change to the OpenAPI document and the Bruno collection, or a violated MUST rule without a recorded reason, is hard; a violated SHOULD rule is judgement.
 
-**Done when** every changed file is checked against all four.
+**Done when** every changed file is checked against all four, and every changed HTTP endpoint against the API checklist.
 
 ## 4. Classify
 

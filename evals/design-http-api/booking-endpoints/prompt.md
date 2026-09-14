@@ -1,0 +1,1 @@
+Wir brauchen für die Terminbuchung eine REST API in unserem Express-Backend: Buchungen anlegen, auflisten, ändern und stornieren. Kunden sollen nur ihre eigenen Buchungen sehen. Mach mir den Entwurf, ich will das nächste Woche bauen.
