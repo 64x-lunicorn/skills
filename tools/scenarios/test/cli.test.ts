@@ -12,9 +12,9 @@ function run(root: string, names: string[], env: NodeJS.ProcessEnv = process.env
   return spawnSync(process.execPath, [cli, ...names], { cwd: root, encoding: "utf8", env });
 }
 
-/** A temporary repo with one runnable case and a stub `claude` that exits with `exitCode`. */
-function repoWithStubClaude(exitCode: number): { root: string; env: NodeJS.ProcessEnv } {
-  const root = repoWith({
+/** A temporary repo with one runnable case. */
+function repoWithRunnableCase(): string {
+  return repoWith({
     "evals/interview-user/recommended-answer/case.yaml": [
       'schema_version: "1.1"',
       "name: A question carries a recommended answer",
@@ -26,11 +26,15 @@ function repoWithStubClaude(exitCode: number): { root: string; env: NodeJS.Proce
       "    name: marker",
       "    pattern: x",
     ].join("\n"),
-    "bin/claude": `#!/bin/sh\nexit ${exitCode}\n`,
   });
+}
+
+/** Adds a stub `claude` that exits with `exitCode` to `root` and returns an env that finds it first. */
+function addStubClaude(root: string, exitCode: number): NodeJS.ProcessEnv {
   const bin = path.join(root, "bin");
-  fs.chmodSync(path.join(bin, "claude"), 0o755);
-  return { root, env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` } };
+  fs.mkdirSync(bin, { recursive: true });
+  fs.writeFileSync(path.join(bin, "claude"), `#!/bin/sh\nexit ${exitCode}\n`, { mode: 0o755 });
+  return { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` };
 }
 
 describe("CLI", () => {
@@ -58,7 +62,8 @@ describe("CLI", () => {
   });
 
   it("runs a runnable scenario and reports that it passed", () => {
-    const { root, env } = repoWithStubClaude(0);
+    const root = repoWithRunnableCase();
+    const env = addStubClaude(root, 0);
 
     const result = run(root, [], env);
 
@@ -68,7 +73,8 @@ describe("CLI", () => {
   });
 
   it("reports a failed scenario by name and exits with code 1", () => {
-    const { root, env } = repoWithStubClaude(1);
+    const root = repoWithRunnableCase();
+    const env = addStubClaude(root, 1);
 
     const result = run(root, [], env);
 
@@ -78,8 +84,7 @@ describe("CLI", () => {
   });
 
   it("reports why claude could not be started and counts the scenario as failed", () => {
-    const { root } = repoWithStubClaude(0);
-    fs.rmSync(path.join(root, "bin", "claude"));
+    const root = repoWithRunnableCase();
 
     const result = run(root, [], { ...process.env, PATH: path.join(root, "bin") });
 
