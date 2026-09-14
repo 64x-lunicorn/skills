@@ -1,12 +1,12 @@
 ---
 name: setup-project
-description: Sets up a project for the 64x-lunicorn plugin through a guided interview with detected defaults, writes the committed marker .claude/64x-lunicorn.yml that every other skill reads, and configures the CI gate and issue templates from it.
+description: Sets up a project for the 64x-lunicorn plugin through a guided interview with detected defaults, writes the committed marker .claude/64x-lunicorn.yml that every other skill reads, and generates the CI gate, issue templates, agent docs, community files and README from it.
 disable-model-invocation: true
 ---
 
 Brings a project to one known setup, and brings it back when it drifted. The same answers must always produce the same files, so the interview collects everything first and the writing follows fixed templates. Every other user-invoked skill checks for the marker this skill writes.
 
-This version writes the marker, the CI gate and the issue templates. README, community files and agent docs each come from their own model-invoked skill, added one by one; until one exists, its part is reported as a gap.
+This version supports GitHub and projects without a forge. GitLab and Forgejo are reported as a gap until the spike tasks of Spec #4 are done.
 
 ## 1. Detect
 
@@ -23,6 +23,9 @@ Read the repo before asking anything, so each question can come with a default a
   - `swift`: `Package.swift` or an `.xcodeproj`, with the Xcode version an existing workflow selects.
   - `cpp-qt`: `CMakeLists.txt` with a `find_package(Qt` call, with CMake and Qt versions from existing workflows.
 - **Description and topics** (GitHub only): `gh repo view --json description,repositoryTopics`.
+- **License:** `LICENSE` or `COPYING` read as `mit` or `gpl-3.0` by its text, with the year and holder from its copyright line or from the README's license section. The holder defaults to the owner of the `origin` remote, otherwise `git config user.name`.
+- **Code owners** (GitHub only): the owner and paths of an existing CODEOWNERS. Otherwise `@<origin owner>`, and as critical paths `/.github/workflows/`, `/.claude/64x-lunicorn.yml` and the stack's manifest and lock file when they exist.
+- **README:** the tagline and the pitch (headline, paragraph and bold one-liner) of an existing README in the house skeleton.
 
 **Done when** every question in step 2 has a detected default or is marked as having none.
 
@@ -38,6 +41,9 @@ Ask one question at a time and wait for the answer; show the detected default wi
 6. **CI command:** the one command that runs every check locally. When step 1 prepared a new one, show it and ask whether to add it.
 7. **CI checks:** each check with `name`, `run` and `required`. On a re-run, existing checks keep their order and new ones are appended; on a first run, the order is the order the entry points were detected. A fixed order is what keeps the generated workflow byte-identical. `Secret scan`, `Workflow lint` and `CI gate` are not listed here; `configure-ci-gate` adds them to every project.
 8. **Description and topics** (GitHub only): the description is one sentence ending in the stack.
+9. **License:** `mit` or `gpl-3.0`, and the copyright holder. A different existing license is only reported, never replaced.
+10. **Code owners** (GitHub only): the owner and the critical paths, which are listed separately so a change there is never skimmed. On a re-run, existing paths keep their order and new ones are appended.
+11. **README tagline and pitch:** the tagline, the pitch headline, the paragraph and the bold one-liner. Without a detected default, draft them from the repository and show the draft as the default.
 
 Write nothing during the interview. A setup half-written from early answers is exactly the drift this skill removes.
 
@@ -77,22 +83,29 @@ When Daniel accepted a new CI command in step 2, add it to the stack's entry poi
 
 **Done when** the marker exists, parses as YAML and every value matches an answer from step 2.
 
-## 4. Configure the gate and the issues
+## 4. Generate from the marker
 
-Invoke `configure-ci-gate`, passing the description and topics on GitHub. Then invoke `write-issue-templates`. Both generate files from the marker, and both ask Daniel before they change remote settings. When one of them stops on a gap, note the gap and go on.
+Invoke these skills one after another, each once the previous one has reported:
 
-**Done when** both skills have reported or stopped with a named gap.
+1. `configure-ci-gate`, passing the description and topics on GitHub.
+2. `write-issue-templates`.
+3. `write-agent-docs`.
+4. `write-community-files`, passing the license key, the year and holder, and on GitHub the code owner and the critical paths. The year is the detected one, or the current year for a new license.
+5. `write-readme`, passing the tagline, the pitch, the license key, the year and the holder. It comes last because the README links what the others write.
+
+Each generates files from the marker and asks Daniel before it changes remote settings. When one of them stops on a gap, note the gap and go on.
+
+**Done when** all five skills have reported or stopped with a named gap.
 
 ## 5. Report
 
 End with one report and leave every change uncommitted, so Daniel reviews the result in a pull request:
 
-- **Written:** the marker, `.gitignore` and the stack entry point when they changed, and every file from both skills with its status.
+- **Written:** the marker, `.gitignore` and the stack entry point when they changed, and every file from the five skills with its status.
 - **Remote settings:** applied, matching or declined, per skill.
-- **Drift** (re-run only): every marker key whose value changed, as old value and new value, and the drift both skills reported.
+- **Drift** (re-run only): every marker key whose value changed, as old value and new value, and the drift the skills reported.
 - **Gaps:**
-  - README, community files and agent docs: not set up yet, because their skills do not exist in this plugin version.
   - GitLab and Forgejo: not supported yet, until the spike tasks of Spec #4 are done.
-  - Every gap `configure-ci-gate` named for the forge.
+  - Every gap a skill named, such as a forge gap of the gate or the banner placeholder of the README.
 
 **Done when** the report names every written file, every remote setting, every changed key and every gap.

@@ -46,6 +46,8 @@
 
 **CI gate**: the only required status check in every project, always named `CI gate`. It runs after the checks from `ci.checks`, Workflow lint and Secret scan, and is green only when every blocking job succeeded. Without a forge, git hooks run `ci.command` instead.
 
+**Project section**: the part of a generated file that holds the project's own content, such as a README pitch, a CONTRIBUTING setup or the conventions in `CLAUDE.md`. Drafted once from the repository, confirmed by Daniel, then kept word for word on every re-run, so only the fixed parts around it can drift (ADR 0011).
+
 **Label set**: the closed set of labels `write-issue-templates` maintains: type (`bug`, `request`, `spec`, `task`, `bugfix`, `architecture`, `wayfinder`), status (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `blocked`) and `dependencies`.
 
 **Gate A**: the validator. Deterministic, no API, blocks the merge.
