@@ -7,9 +7,9 @@ An interview gets Daniel's decisions without handing him work Claude can do itse
 
 Run it in the main conversation: only there can Daniel answer.
 
-## 1. List the open decisions
+## 1. List the open questions
 
-Collect the choices in the plan at hand that Daniel has not answered yet: those the calling skill hands over, those the plan leaves open, minus those answered in earlier turns.
+Collect the questions in the plan at hand that Daniel has not answered yet: those the calling skill hands over, those the plan leaves open, minus those answered in earlier turns.
 
 **Done when** every open question of the plan is on the list.
 
@@ -19,7 +19,7 @@ For each open question, check whether its answer is already in the repository or
 
 What only Daniel can choose stays a decision, even when a file suggests an answer; that suggestion becomes the recommended answer instead. A slow look-up may go to a subagent while questions that do not depend on it go on.
 
-**Done when** the list holds only decisions.
+**Done when** the list of open questions holds only open decisions.
 
 ## 3. Ask one question
 
