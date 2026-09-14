@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: A fact that can be looked up is not asked
 description: Spec #16. An open question whose answer is in the repository is looked up, and Daniel is not asked for it.
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

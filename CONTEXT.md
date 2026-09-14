@@ -16,6 +16,12 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 
 **Inbox**: `inbox.md`, the harvest backlog. Corrections are recorded verbatim with a counter.
 
+**Interview**: a series of questions to Daniel, one at a time, each with a recommended answer and the number of open decisions, until no decision is open and Daniel has confirmed his decisions. `interview-user` runs it. _Avoid_: grilling.
+
+**Open decision**: a choice in the plan at hand that only Daniel can make and that he has not answered yet.
+
+**Recommended answer**: the answer Claude proposes to a question, with its reason, which Daniel may accept or overrule.
+
 **Research object**: directory `research/NNNN-<slug>/` holding one idea, domain or technical. Never implementable; it reaches implementation only by promotion (ADR 0005).
 
 **Research status**: `seed → exploring → concluded → promoted | parked | rejected`. Parked and rejected objects are kept.

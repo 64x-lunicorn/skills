@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: A question carries a recommended answer
 description: Spec #16. A skill needs a decision from Daniel; the question comes with a recommended answer and its reason.
-tags: [scenario, pending]
+tags: [scenario]
 execution:
   prompt: |
     /64x-lunicorn:interview-user
