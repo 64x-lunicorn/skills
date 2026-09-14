@@ -1,0 +1,69 @@
+schema_version: "1.1"
+name: The interview saves nothing (promote-research)
+description: Spec #16. When the interview of promote-research's gates has ended with confirmed decisions, promote-research records them where it keeps its results, the research object's discussion.md.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:promote-research 0001
+
+    Earlier turns of this run, quoted. The deterministic gates of step 2 all passed.
+
+    Claude:
+    Open decisions: 4
+    The question reads: "How should csv2json convert CSV files larger than the available memory?" Does it still state the problem?
+    Recommended answer: Yes. The reported 4 GB crash is still the reason for the object.
+
+    Daniel: ja, das ist genau das Problem
+
+    Claude:
+    Open decisions: 3
+    The object rejects "do nothing" because the reported export is a normal size for the users who asked. Was "do nothing" taken seriously?
+    Recommended answer: Yes. The rejection names the users it would fail.
+
+    Daniel: ja, ernsthaft angeschaut, reicht nicht
+
+    Claude:
+    Open decisions: 2
+    The only open question is whether a progress indicator is shown for long conversions, marked as accepted. Is it resolved or explicitly accepted?
+    Recommended answer: Accepted. It does not change the conversion.
+
+    Daniel: akzeptiert, kommt später
+
+    Claude:
+    Open decisions: 1
+    Promote 0001-streaming-large-files to a Spec?
+    Recommended answer: Yes. Every gate has passed.
+
+    Daniel: ja, promoten
+
+    Claude:
+    Your decisions:
+    - Problem: "ja, das ist genau das Problem"
+    - Do nothing: "ja, ernsthaft angeschaut, reicht nicht"
+    - Open questions: "akzeptiert, kommt später"
+    - Go: "ja, promoten"
+    Do you confirm this list?
+
+    Daniel: ja, passt
+
+    Continue.
+  max_turns: 30
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: decisions recorded in discussion.md
+    tool: Edit
+    input_match: 'research/0001-streaming-large-files/discussion\.md'
+  - type: llm
+    name: confirmed decisions in Daniel's words
+    focus:
+      source: file
+      path: research/0001-streaming-large-files/discussion.md
+    criteria: >-
+      The file holds, under a dated heading added after the entries of
+      2026-09-01, Daniel's four confirmed gate answers word for word:
+      "ja, das ist genau das Problem", "ja, ernsthaft angeschaut, reicht
+      nicht", "akzeptiert, kommt später" and "ja, promoten". Paraphrases or
+      translations of them do not count.

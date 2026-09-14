@@ -3,4 +3,4 @@ coverage/
 evals/results/
 .claude/worktrees/
 # Research objects live only locally in this repo (ADR 0005, amendment).
-research/
+/research/
