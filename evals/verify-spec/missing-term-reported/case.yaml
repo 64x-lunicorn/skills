@@ -17,7 +17,7 @@ graders:
     input_match: 'verify-spec'
   - type: regex
     name: missing term reported as a hard finding
-    pattern: '\bhard\b[^\n]*\bReservation\b|\bReservation\b[^\n]*\bhard\b'
+    pattern: '(?=[^\n]*\bhard\b)(?=[^\n]*\bReservation\b)(?=[^\n]*CONTEXT\.md)'
     flags: i
   - type: tool_used
     name: nothing written

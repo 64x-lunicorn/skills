@@ -21,6 +21,6 @@ graders:
     flags: m
   - type: regex
     name: no finding on terms
-    pattern: '(missing|absent|not (recorded|listed|found|present))[^\n]{0,120}CONTEXT\.md|CONTEXT\.md[^\n]{0,120}(missing|absent|lacks)'
+    pattern: '(?=[^\n]*\bhard\b)(?=[^\n]*\b(?:Member|Loan|Reservation)\b)(?=[^\n]*CONTEXT\.md)'
     flags: i
     match: 'not_contains'
