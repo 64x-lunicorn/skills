@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: The interview saves nothing (promote-research)
-description: Spec #16. When the interview of promote-research's gates has ended with confirmed decisions, promote-research records them where it keeps its results, the research object's discussion.md.
+description: "Spec #16. When the interview of promote-research's gates has ended with confirmed decisions, promote-research records them where it keeps its results, the research object's discussion.md."
 tags: [scenario]
 context:
   scaffold_script: scaffold.sh
