@@ -52,6 +52,8 @@ execution:
   max_turns: 30
   allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 graders:
+  # The grader format has no either-or between Edit and Write. All three proof runs appended to
+  # discussion.md with Edit; a run that uses Write instead stops the scenario for a decision.
   - type: tool_used
     name: decisions recorded in discussion.md
     tool: Edit
