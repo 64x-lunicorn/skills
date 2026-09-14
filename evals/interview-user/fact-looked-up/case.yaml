@@ -26,3 +26,7 @@ graders:
       The message does not ask Daniel which Node.js version the project
       requires. If it mentions the Node.js version, it states it as found in
       the repository (>=24), not as a question.
+  - type: regex
+    name: interview goes on to the open decision
+    pattern: '^Open decisions: 1$'
+    flags: m
