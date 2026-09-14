@@ -3,7 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { expect, it } from "vitest";
 import { repoRoot as root } from "./root.ts";
-import { SCENARIO } from "./wording.ts";
+
+/** Name of the Spec #16 scenario this file automates, verbatim. */
+const SCENARIO = "The wording is interview";
 
 const ownFile = path.relative(root, import.meta.filename);
 
