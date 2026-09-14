@@ -38,11 +38,11 @@ describe("loadCases", () => {
   });
 
   it.each([
-    ["a missing name", "tags: [scenario]", "name must be a non-empty string"],
+    ["a missing name", "tags: [scenario]\nexecution:\n  prompt: p\ngraders: [{}]\n", "name must be a non-empty string"],
     ["a name that is not a string", "name: 2024\nexecution:\n  prompt: p\ngraders: [{}]\n", "name must be a non-empty string"],
     ["an empty name", 'name: ""\nexecution:\n  prompt: p\ngraders: [{}]\n', "name must be a non-empty string"],
     ["a name that is zero", "name: 0\nexecution:\n  prompt: p\ngraders: [{}]\n", "name must be a non-empty string"],
-    ["tags that are not a list", "name: x\ntags: not-a-scenario-yet\n", "tags must be a list of strings"],
+    ["tags that are not a list", "name: x\ntags: not-a-scenario-yet\nexecution:\n  prompt: p\ngraders: [{}]\n", "tags must be a list of strings"],
     ["tags that are not strings", "name: x\ntags: [1]\nexecution:\n  prompt: p\ngraders: [{}]\n", "tags must be a list of strings"],
     ["a prompt that is not a string", "name: x\nexecution:\n  prompt: [p]\ngraders: [{}]\n", "prompt must be a non-empty string"],
     ["a blank prompt", 'name: x\nexecution:\n  prompt: "  "\ngraders: [{}]\n', "prompt must be a non-empty string"],
