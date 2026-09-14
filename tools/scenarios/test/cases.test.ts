@@ -42,17 +42,20 @@ describe("loadCases", () => {
   it("names the file of a case.yaml without a name", () => {
     const root = repoWith({ "evals/interview-me/nameless/case.yaml": "tags: [scenario]" });
 
-    expect(() => loadCases(root)).toThrow("evals/interview-me/nameless/case.yaml: missing name");
+    expect(() => loadCases(root)).toThrow("evals/interview-me/nameless/case.yaml: name must be a non-empty string");
   });
 
   it("names the file of a case.yaml whose tags are not a list", () => {
     const root = repoWith({ "evals/interview-me/tag-string/case.yaml": "name: x\ntags: not-a-scenario-yet\n" });
 
-    expect(() => loadCases(root)).toThrow("evals/interview-me/tag-string/case.yaml: tags must be a list");
+    expect(() => loadCases(root)).toThrow("evals/interview-me/tag-string/case.yaml: tags must be a list of strings");
   });
 
   it.each([
     ["a name that is not a string", "name: 2024\nexecution:\n  prompt: p\ngraders: [{}]\n", "name must be a non-empty string"],
+    ["an empty name", 'name: ""\nexecution:\n  prompt: p\ngraders: [{}]\n', "name must be a non-empty string"],
+    ["a name that is zero", "name: 0\nexecution:\n  prompt: p\ngraders: [{}]\n", "name must be a non-empty string"],
+    ["tags that are not strings", "name: x\ntags: [1]\nexecution:\n  prompt: p\ngraders: [{}]\n", "tags must be a list of strings"],
     ["a prompt that is not a string", "name: x\nexecution:\n  prompt: [p]\ngraders: [{}]\n", "prompt must be a string"],
     ["graders that are not a list", "name: x\nexecution:\n  prompt: p\ngraders: not-a-list\n", "graders must be a non-empty list"],
     ["an empty graders list", "name: x\nexecution:\n  prompt: p\ngraders: []\n", "graders must be a non-empty list"],
@@ -117,9 +120,8 @@ describe("evalArgs", () => {
 describe("cases of this repository", () => {
   const cases = loadCases(repoRoot);
 
-  it.each(cases.map((c) => [c.path, c] as const))("%s is a scenario with a prompt and a grader", (_, c) => {
-    expect(c.prompt?.trim()).toBeTruthy();
-    expect(c.graders?.length).toBeGreaterThan(0);
+  it.each(cases.map((c) => [c.path, c] as const))("%s is a scenario with a prompt", (_, c) => {
+    expect(c.prompt.trim()).toBeTruthy();
     expect(c.tags).toContain("scenario");
   });
 
