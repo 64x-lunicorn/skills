@@ -51,16 +51,15 @@ Append the four answers verbatim, in Daniel's language, under a dated heading in
 
 ## 4. Draft the Spec
 
-Fill [the Spec template](references/spec-template.md) from the object's README, in English.
+Draft the body with `design-spec`, from the object's README and the gate answers in `discussion.md`.
 
-- The Spec stands on its own. Its reader may never see the research object, which can be gitignored; everything needed to build lives in the Spec.
-- Every decision carries its reason. Rejected options appear as one line each, taken from Options.
-- Leave the Tasks checklist empty. Splitting the Spec into Task issues is a later step.
-- Write nothing the research did not decide. A gap you notice goes to Open risks and is named to Daniel.
+- The Spec stands on its own. Its reader may never see the research object, which can be gitignored.
+- Rejected options come from Options.
+- Origin names the research object and quotes Daniel's gate answers verbatim.
 
-Show the draft to Daniel before creating anything.
+Show Daniel the draft together with the technical notes `design-spec` sorted out, before creating anything.
 
-**Done when** Daniel has seen the draft and every section except Tasks is filled.
+**Done when** Daniel has seen the draft and the technical notes.
 
 ## 5. Create the Spec
 
@@ -70,6 +69,8 @@ Find the tracker:
 - Otherwise read `git remote -v`: GitHub via `gh`, GitLab via `glab`, Forgejo or Gitea via its API or web UI. No remote: a Markdown file `issues/NNNN-<slug>-spec.md` with `type: spec` in its frontmatter.
 
 Name the tracker and the title `Spec: <title>` to Daniel and create the issue after his confirmation; an issue is visible to others. Label it `spec`. When the label does not exist yet, ask before creating it.
+
+Write the body to a file in the scratchpad and pass it as a file (`gh issue create --body-file`), because backticks in the Mermaid and Gherkin blocks break when quoted inline in a shell.
 
 **Done when** the Spec exists and its URL or path is known.
 

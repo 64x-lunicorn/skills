@@ -17,6 +17,7 @@ real corrections, and a validator that holds every `SKILL.md` to the same conven
 [Install](#install) &nbsp; / &nbsp;
 [Skills](#skills) &nbsp; / &nbsp;
 [Research](#research) &nbsp; / &nbsp;
+[Specs](#specs) &nbsp; / &nbsp;
 [Contributing](CONTRIBUTING.md) &nbsp; / &nbsp;
 [Report a bug](https://github.com/64x-lunicorn/skills/issues)
 
@@ -41,9 +42,10 @@ waits in the inbox, word for word.
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds seven skills today:
+> This collection is young and grows slowly on purpose. It holds nine skills today:
 > two for creating the rest, three for researching and promoting ideas before anything is
-> built, one for setting up projects and one for commits. More arrive as they are harvested.
+> built, two for writing specs, one for setting up projects and one for commits. More arrive
+> as they are harvested.
 
 ## How it works
 
@@ -73,6 +75,7 @@ Skills trigger on their own when a request matches their description, or run as
 
 | Skill | Invocation | What it does |
 | :--- | :--- | :--- |
+| [`design-spec`](skills/engineering/design-spec/SKILL.md) | model-invoked | Drafts a Spec that describes domain behaviour only, with a Mermaid domain flow and Gherkin acceptance criteria. |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
 | [`promote-research`](skills/orchestration/promote-research/SKILL.md) | user-invoked | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | user-invoked | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
@@ -80,9 +83,11 @@ Skills trigger on their own when a request matches their description, or run as
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
 | [`write-skill`](skills/engineering/write-skill/SKILL.md) | model-invoked | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
+| [`write-spec`](skills/orchestration/write-spec/SKILL.md) | user-invoked | Turns a functional change from a conversation into a Spec issue after light quality gates. |
 
 User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` uses
-`write-skill`, `research-idea` uses `verify-claims`.
+`write-skill`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
+use `design-spec`.
 
 ## Research
 
@@ -126,6 +131,38 @@ checks with Daniel (problem in one sentence, "do nothing" considered, explicit g
 [ADR 0005](docs/adr/0005-research-objects-before-specs.md); this repo's own research lives
 only locally in a gitignored `research/`.
 
+## Specs
+
+A Spec says what the domain does differently afterwards, never how to build it. It is an issue
+labelled `spec` and is never implemented directly; the work happens in its sub-issues.
+
+```text
+conversation  -->  write-spec  --------+
+                                       +-->  design-spec  -->  Spec issue  -->  sub-issues
+research object  -->  promote-research +          |
+                                                  +-- technical notes, kept for the architecture issue
+```
+
+Write one from a conversation with `/64x-lunicorn:write-spec`. It asks for the problem in one
+sentence, whether "do nothing" was considered and whether open questions are resolved, then
+shows the draft and creates the issue only on an explicit go. Research objects take the
+promotion path instead.
+
+**Every Spec** follows one template, held by `design-spec`:
+
+| Section | What it holds |
+| :--- | :--- |
+| Goal, Problem | Which behaviour changes for whom, and why now. Self-contained. |
+| Domain flow | A Mermaid flowchart in domain terms, or `No flow: <reason>`. |
+| Behaviour change, Domain rules, Terms | Today versus after, the rules that always hold, the words used. |
+| Decisions, Non-goals | Domain decisions with their reasons, rejected options, what is out. |
+| Acceptance criteria | Gherkin scenarios for every behaviour change and rule, ready to become integration tests. |
+| Open questions and risks, Origin | What was accepted on purpose, and the source with Daniel's words verbatim. |
+
+Technologies, APIs and schemas stay out of the Spec. Splitting it into sub-issues comes next,
+with an architecture issue, a wayfinder issue and an integration test issue; the design is in
+[ADR 0006](docs/adr/0006-specs-describe-domain-behaviour.md).
+
 ## The validator
 
 ```bash
@@ -147,8 +184,8 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | Guide | Start here when you want to... |
 | :--- | :--- |
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
-| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion. |
-| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, and why research comes before specs. |
+| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec. |
+| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, and why specs describe domain behaviour. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |

@@ -1,0 +1,1 @@
+Schreib mir den Spec-Text für die Passwort-Zurücksetzen-Funktion: Nutzer fordert per E-Mail einen Link an, der Link ist 30 Minuten gültig und nur einmal nutzbar. Wir bauen das mit einem JWT in Redis und einem POST /auth/reset Endpoint in NestJS.
