@@ -1,4 +1,4 @@
-Richte das CI-Gate für dieses Node-Repo auf GitHub ein. In .claude/64x-lunicorn.yml steht jetzt ein zweiter Check, der Evals-Check braucht den API-Key aus den Repo-Secrets, die Tests nicht:
+Set up the CI gate for this Node repo on GitHub. .claude/64x-lunicorn.yml now has a second check: the Evals check needs the API key from the repo secrets, the tests don't:
 
 ```yaml
 setup_version: 3
