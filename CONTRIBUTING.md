@@ -46,7 +46,7 @@ npm run scenarios
 npm run scenarios -- "One question at a time"
 ```
 
-A name must belong to a scenario that is not pending; the runner rejects any other name and exits 1. A pending case runs by name only after its `pending` tag is removed, so the example above works once its feature ticket is done.
+A name must belong to a scenario that is not pending; the runner rejects any other name and exits 1. A pending case runs by name only after its `pending` tag is removed.
 
 The required CI checks do not run scenario tests. They only check the structure of the cases and run the deterministic scenarios as ordinary tests.
 
