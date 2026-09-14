@@ -31,8 +31,9 @@ graders:
   - type: regex
     name: every commit the review saw still on the branch
     target: { source: file, path: .git/logs/refs/heads/ticket/5-missing-name }
-    pattern: '\t(rebase|reset:|commit \(amend\))'
-    match: not_contains
+    # The merge commit's first parent is the commit the review saw; a reflog line starts with the old id.
+    pattern: '^9425db00da1fbe1b26fcea78ee334fc3135dfc23 [0-9a-f]{40} .*\tcommit \(merge\)'
+    flags: m
   - type: tool_used
     name: history not rewritten
     tool: Bash

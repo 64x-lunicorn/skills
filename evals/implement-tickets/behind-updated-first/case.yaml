@@ -26,5 +26,5 @@ graders:
     min: 0
     max: 0
   - type: regex
-    name: frontier ticket named after the update
+    name: frontier ticket named
     pattern: '#0*6\b'

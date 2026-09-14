@@ -25,5 +25,5 @@ graders:
     after: { tool: Bash, input_match: 'git\s+(commit|merge\s+--continue)' }
   - type: tool_order
     name: checks run on the merged tree
-    before: { tool: Bash, input_match: 'git\s+merge\b' }
+    before: { tool: Bash, input_match: 'git\s+merge\s+(--no-commit\s+)?(origin/)?main\b' }
     after: { tool: Bash, input_match: 'scripts/check\.sh' }

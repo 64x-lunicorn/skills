@@ -16,7 +16,7 @@ graders:
     tool: Skill
     input_match: 'resolve-merge'
   - type: regex
-    name: no conflict markers left
+    name: no merge conflict markers left
     target: { source: file, path: src/greet.sh }
     pattern: '^(<<<<<<<|=======|>>>>>>>)'
     flags: m

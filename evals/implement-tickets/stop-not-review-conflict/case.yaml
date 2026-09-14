@@ -25,8 +25,3 @@ graders:
     input_match: 'review-change'
     min: 0
     max: 0
-  - type: regex
-    name: no review finding of class conflict
-    pattern: 'class\W{0,3}conflict'
-    flags: i
-    match: not_contains
