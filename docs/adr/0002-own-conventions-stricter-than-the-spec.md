@@ -29,8 +29,11 @@ The values live once in code, in `tools/validator/src/conventions.ts`. This ADR 
 | SK011 | A user-invoked skill does not reference another user-invoked skill (`/name` or `/64x-lunicorn:name`) |
 | SK012 | Every skill has at least one case under `evals/<skill-name>/` (`prompt.md` or `case.yaml`) |
 | SK013 | Every skill is listed in `skills` of `plugin.json`, every entry there points to a skill |
+| SK014 | A user-invoked skill has a `## 0. Check project setup` section with the exact notice `Project setup missing. Run /64x-lunicorn:setup-project.` and `` `setup_version` below N `` where N is the current setup version |
 
 SK013 was not part of the original catalogue. Daniel approved it on 2026-09-13, once it was clear that Claude Code silently skips nested skills without an entry.
+
+SK014 was approved by Daniel on 2026-09-14 for Spec #4 (project setup). Without it, a user-invoked skill runs in a project that was never set up and nobody notices. The notice informs and never blocks. The current setup version is `SETUP_VERSION` in `conventions.ts`; raising it fails every skill that still checks the old value, so no skill keeps an outdated check. The notice sits in inline code, which SK011 ignores, so SK011 needs no exception for `setup-project`. `setup-project` is exempt (`SETUP_SKILL_NAME`): it creates the setup the notice points to, added through TDD on 2026-09-14 when the skill was harvested.
 
 ### Field allowlist (SK007)
 
@@ -46,7 +49,7 @@ Deliberately excluded:
 
 - **user-invoked**: `disable-model-invocation: true`. All other skills are model-invoked.
 - **Category**: first level under `skills/`. Only `orchestration` has its own rule (SK008).
-- **Verb allowlist (SK006)**: `design`, `diagnose`, `harvest`, `implement`, `plan`, `refactor`, `research`, `resolve`, `review`, `run`, `test`, `triage`, `verify`, `write`. A new verb is added through TDD when a harvested skill needs it. `harvest` was added on 2026-09-13 for `harvest-skill` (ADR 0004). `verify` was added on 2026-09-13 for `verify-claims` (ADR 0005).
+- **Verb allowlist (SK006)**: `design`, `diagnose`, `harvest`, `implement`, `plan`, `promote`, `refactor`, `research`, `resolve`, `review`, `run`, `setup`, `test`, `triage`, `verify`, `write`. A new verb is added through TDD when a harvested skill needs it. `harvest` was added on 2026-09-13 for `harvest-skill` (ADR 0004). `verify` was added on 2026-09-13 for `verify-claims` (ADR 0005). `promote` was added on 2026-09-13 for `promote-research` (ADR 0005). `setup` was added on 2026-09-14 for `setup-project` (Spec #4); "set up" is two words, but the name was already fixed in the Spec and the SK014 notice.
 
 ### Decisions from the bootstrap (2026-09-13)
 

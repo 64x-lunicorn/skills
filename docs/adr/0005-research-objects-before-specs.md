@@ -2,6 +2,8 @@
 
 Status: accepted, 2026-09-13.
 
+Amended 2026-09-13: in this repo `research/` is gitignored and lives only locally. Other projects decide where research lives during project setup.
+
 ## Context
 
 Ideas for features, epics or products come up long before anyone decides to build them. Many are never built and were only inspiration. Until now they had no home: they lived in chat history or went straight into implementation without being challenged.
@@ -67,9 +69,12 @@ Research documents are written in English. `discussion.md` keeps statements in t
 
 ## Open
 
-- **Promotion target.** What an epic or spec is (GitHub issue, `docs/specs/` file, other). Blocks `promote-research`, not `research`.
-- **Spikes.** Whether technical research may include a throwaway prototype, and where it lives.
+- **Spikes.** Whether technical research may include a throwaway prototype, and where it lives. Leaning: a spike is a Task issue whose acceptance criteria are a finding, not code.
 - **Validator rules** for the deterministic gate. Each is proposed to Daniel and born through TDD (ADR 0002).
+
+## Resolved
+
+- **Promotion target** (2026-09-13). A promotion produces one **Spec issue** in the project's tracker, labelled `spec`: on the forge, or as a Markdown file in `issues/` without one. The Spec stands on its own, because research may be local-only; its Origin section points back to the research object. Sections: Goal, Context, Decisions, Non-goals, Acceptance criteria, Tasks, Open risks, Origin. Splitting it into Task issues is a separate, later step. The template lives in `skills/orchestration/promote-research/references/spec-template.md`.
 
 ## Consequences
 

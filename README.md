@@ -12,7 +12,7 @@ real corrections, and a validator that holds every `SKILL.md` to the same conven
 [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
 [![Built with TypeScript](https://img.shields.io/badge/built_with-TypeScript-3178c6?style=flat-square)](package.json)
 [![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-D97757?style=flat-square)](.claude-plugin/plugin.json)
-[![Validator](https://img.shields.io/badge/validator-13_rules-334155?style=flat-square)](docs/adr/0002-own-conventions-stricter-than-the-spec.md)
+[![Validator](https://img.shields.io/badge/validator-14_rules-334155?style=flat-square)](docs/adr/0002-own-conventions-stricter-than-the-spec.md)
 
 [Install](#install) &nbsp; / &nbsp;
 [Skills](#skills) &nbsp; / &nbsp;
@@ -36,21 +36,21 @@ waits in the inbox, word for word.
 | :--- | :--- |
 | **Harvested from practice** | Every skill traces back to a correction that kept coming up in real work. |
 | **Descriptions that fire** | The description is a skill's only API. Vague ones are rejected before they ship. |
-| **Conventions, enforced** | 13 deterministic rules check frontmatter, naming, layering, references and evals on every pull request. |
+| **Conventions, enforced** | 14 deterministic rules check frontmatter, naming, layering, references, evals and the project setup step on every pull request. |
 | **Layered on purpose** | User-invoked skills orchestrate; model-invoked skills hold the reusable discipline. |
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds five skills today:
-> two for creating the rest, two for researching ideas before anything is built, and one
-> for commits. More arrive as they are harvested.
+> This collection is young and grows slowly on purpose. It holds seven skills today:
+> two for creating the rest, three for researching and promoting ideas before anything is
+> built, one for setting up projects and one for commits. More arrive as they are harvested.
 
 ## How it works
 
 ```text
 correction  -->  inbox.md  -->  SKILL.md  -->  validator  -->  pull request  -->  release
                     |              |              |
-                    |              |              +-- 13 rules, blocks the merge
+                    |              |              +-- 14 rules, blocks the merge
                     |              +-- written once the same correction was needed 3x
                     +-- recorded word for word, with a counter
 ```
@@ -74,7 +74,9 @@ Skills trigger on their own when a request matches their description, or run as
 | Skill | Invocation | What it does |
 | :--- | :--- | :--- |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
+| [`promote-research`](skills/orchestration/promote-research/SKILL.md) | user-invoked | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | user-invoked | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
+| [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults and writes the marker every other skill checks. |
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
 | [`write-skill`](skills/engineering/write-skill/SKILL.md) | model-invoked | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
@@ -119,10 +121,10 @@ research/NNNN-<slug>/
 
 **Never implementable.** Every object carries `implementable: false`. The only path to code is
 promotion through the quality gates: deterministic checks in the validator, and judgement
-checks with Daniel (problem in one sentence, "do nothing" considered, explicit go). The
-promotion skill and the epic/spec format are still open. The design is in
-[ADR 0005](docs/adr/0005-research-objects-before-specs.md); this repo's own research lives in
-[`research/`](research/).
+checks with Daniel (problem in one sentence, "do nothing" considered, explicit go).
+`/64x-lunicorn:promote-research` runs them and produces one self-contained Spec issue. The design is in
+[ADR 0005](docs/adr/0005-research-objects-before-specs.md); this repo's own research lives
+only locally in a gitignored `research/`.
 
 ## The validator
 
@@ -147,7 +149,6 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
 | [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion. |
 | [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, and why research comes before specs. |
-| [Research](research/) | Browse ideas for this repo, including the parked and rejected ones. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |

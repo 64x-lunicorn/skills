@@ -7,6 +7,13 @@ disable-model-invocation: true
 
 Holds one idea, domain or technical, in `research/NNNN-<slug>/` of the repo it belongs to and develops it with Daniel. The idea may never be built; the record is the product. A research object is never implemented directly: it reaches implementation only through promotion past quality gates, which is not part of this skill.
 
+## 0. Check project setup
+
+Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in every case; the notice informs, it does not block:
+
+- File missing: print `Project setup missing. Run /64x-lunicorn:setup-project.`
+- `setup_version` below 1: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
+
 ## 1. Find or create the object
 
 List `research/`. When the argument names an existing object or an object already asks the same question, continue that one; two objects for one question split the discussion.
