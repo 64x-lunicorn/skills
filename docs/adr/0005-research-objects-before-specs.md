@@ -61,9 +61,9 @@ seed → exploring → concluded → promoted | parked | rejected
 
 **Skills**, along the layering, built one at a time:
 
-- **`research`** (user-invoked, `skills/orchestration/`): creates or continues a research object and leads the discussion. First.
-- **Source verification** (model-invoked, `skills/engineering/`): traces claims to primary sources, cites them, may delegate reading to a background agent, writes to `sources.md`. First, together with `research`.
-- **`promote-research`** (user-invoked): runs the gates and produces the epic or spec. Only once the spec format is decided.
+- **`research-idea`** (user-invoked, `skills/orchestration/`): creates or continues a research object and leads the discussion. First.
+- **`verify-claims`** (model-invoked, `skills/engineering/`): traces claims to primary sources, cites them, may delegate reading to a background agent, writes to `sources.md`. First, together with `research-idea`.
+- **`promote-research`** (user-invoked): runs the gates and produces the epic or spec. Only once the spec format is decided; it drafts through `design-spec` (ADR 0006).
 
 Research documents are written in English. `discussion.md` keeps statements in the language they were given in, like `inbox.md`.
 
