@@ -64,6 +64,7 @@ export function evalArgs(scenario: ScenarioCase): string[] {
     "--scaffold",
     "--trust-plugin",
     "--allow-tools",
+    "Bash",
     "Write",
     "Edit",
     "--no-publish",
