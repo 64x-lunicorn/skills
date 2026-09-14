@@ -12,10 +12,9 @@ Read `forge`, `default_branch` and `ci.command` from `.claude/64x-lunicorn.yml`.
 Stop and name the gap when:
 
 - The marker, `forge`, `default_branch` or `ci.command` is missing. Point to `setup-project`.
-- `forge` is `gitlab` or `forgejo`. Their issue URLs are unverified until the spike tasks of Spec #4 are done.
 - The license is not `mit` or `gpl-3.0`, or none was passed and no `LICENSE` or `COPYING` matches either. The license badge and section exist only for these two.
 
-The name is the repository name from the `origin` remote, otherwise the name of the project directory. What the caller did not pass comes from the existing README; when there is none, it is drafted in step 2 like a project section.
+The name is the repository name from the `origin` remote, on GitLab the last segment of the project path, otherwise the name of the project directory. What the caller did not pass comes from the existing README; when there is none, it is drafted in step 2 like a project section.
 
 **Done when** every input is known or the run has stopped with the gap named.
 

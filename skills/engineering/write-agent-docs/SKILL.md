@@ -9,10 +9,7 @@ Agents read `CLAUDE.md` first, look terms up in `CONTEXT.md` and find the reason
 
 Read `forge`, `default_branch`, `research`, `issues` and `ci.command` from `.claude/64x-lunicorn.yml`.
 
-Stop and name the gap when:
-
-- The marker or one of these keys is missing. Point to `setup-project`.
-- `forge` is `gitlab` or `forgejo`. How changes reach their default branch is unverified until the spike tasks of Spec #4 are done.
+Stop and point to `setup-project` when the marker or one of these keys is missing.
 
 **Done when** every input is valid or the run has stopped with the gap named.
 

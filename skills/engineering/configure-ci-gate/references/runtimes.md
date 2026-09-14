@@ -1,6 +1,8 @@
 # Runtime templates
 
-Read when filling `<<runs_on>>`, `<<setup_steps>>` and `<<dependabot_stack>>`. One section per `ci.runtime.stack`. Values in `<<…>>` come from `ci.runtime`; the snippets already quote them, so insert the bare value. Pins verified 2026-09-14.
+Read when filling `<<runs_on>>`, `<<setup_steps>>`, `<<dependabot_stack>>`, `<<image>>` and `<<before_script>>`. One section per `ci.runtime.stack`. Values in `<<…>>` come from `ci.runtime`; the snippets already quote them, so insert the bare value. Pins verified 2026-09-14.
+
+GitHub uses every section. GitLab and Forgejo have entries for `node` only, verified on 2026-09-14; for another stack there, stop and name the gap, since a runtime template written without a project to run it is a guess.
 
 ## node
 
@@ -34,6 +36,18 @@ Dependabot:
     labels:
       - dependencies
 ```
+
+GitLab, as `<<image>>` and `<<before_script>>`:
+
+```yaml
+node:<<node>>-bookworm
+```
+
+```yaml
+    - npm ci
+```
+
+Forgejo, as `<<setup_steps>>`: the GitHub setup steps above, unchanged. `actions/setup-node` resolves through the instance's actions mirror like `actions/checkout`.
 
 ## elixir
 

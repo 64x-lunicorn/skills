@@ -128,13 +128,15 @@ interview  -->  .claude/64x-lunicorn.yml  -->  configure-ci-gate      -->  workf
 | :--- | :--- | :--- | :--- |
 | GitHub | One matrix job per check, Workflow lint, Secret scan, and `CI gate` as the only required check | Pull request, squash only, signed commits, linear history, no force push | Bug and Request forms, closed label set |
 | None | `pre-commit` and `pre-push` hooks run the local command | Direct commits rejected, squash merges pass the gate first | Markdown files in `issues/` |
-| GitLab, Forgejo | Not yet: their details are verified first | | |
+| GitLab | One job per check, Secret scan, and `CI gate` last; "Pipelines must succeed" blocks | Protected branch, squash always, fast-forward merges; signed commits and code owners are Premium gaps | Bug and Request templates, closed label set |
+| Forgejo | Required and advisory matrices, Workflow lint, Secret scan, and `CI gate` as the only required status | Pushes disabled, squash only, up-to-date branch; signed commits when the instance signs merges | Bug and Request forms, closed label set |
 
 A re-run reports every generated file as new, unchanged or drift, and remote settings change only
 after an explicit yes. Documents keep the project's own content in project sections, drafted once
 and never overwritten, so only the fixed parts can drift. The design is in
-[ADR 0010](docs/adr/0010-ci-gate-and-issue-templates.md) and
-[ADR 0011](docs/adr/0011-readme-community-files-and-agent-docs.md).
+[ADR 0010](docs/adr/0010-ci-gate-and-issue-templates.md),
+[ADR 0011](docs/adr/0011-readme-community-files-and-agent-docs.md) and
+[ADR 0012](docs/adr/0012-gitlab-and-forgejo.md).
 
 ## Research
 
@@ -288,7 +290,7 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | :--- | :--- |
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
 | [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec, ticket, wayfinder, seam, Spec verification, marker, CI gate, project section. |
-| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, how they are split into tickets, how tickets are implemented, how a Spec is verified and closed, and how the CI gate and issue templates are set up, and how README, community files and agent docs are generated. |
+| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, how they are split into tickets, how tickets are implemented, how a Spec is verified and closed, and how the CI gate and issue templates are set up, how README, community files and agent docs are generated, and how GitLab and Forgejo are supported. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |

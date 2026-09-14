@@ -11,4 +11,4 @@ Plan the tickets, then fan them out.
 Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in every case:
 
 - File missing: print `Project setup missing. Run /64x-lunicorn:setup-project.`
-- `setup_version` below 2: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
+- `setup_version` below 3: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`

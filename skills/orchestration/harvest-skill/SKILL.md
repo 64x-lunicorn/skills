@@ -12,7 +12,7 @@ Creates one new skill in `64x-lunicorn`. `skill-creator` does the drafting and t
 Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in every case; the notice informs, it does not block:
 
 - File missing: print `Project setup missing. Run /64x-lunicorn:setup-project.`
-- `setup_version` below 2: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
+- `setup_version` below 3: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
 
 ## 1. Gate
 

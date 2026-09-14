@@ -42,9 +42,9 @@
 
 **Spec verification**: the check `verify-spec` runs once every ticket of a Spec is merged, over the whole Spec instead of one ticket. It ends in follow-up tickets, a conflict for Daniel, or the Spec closed together with its architecture issue and wayfinder (ADR 0009).
 
-**Marker**: `.claude/64x-lunicorn.yml`, committed, written by `setup-project`. Every skill reads forge, default branch, research location, issue tracker, `ci.command`, `ci.runtime` and `ci.checks` from it. `setup_version` is 2 since `ci.runtime` was added (ADR 0010).
+**Marker**: `.claude/64x-lunicorn.yml`, committed, written by `setup-project`. Every skill reads forge, default branch, research location, issue tracker, `ci.command`, `ci.runtime`, `ci.runner` and `ci.checks` from it. `setup_version` is 3 since `ci.runner` was added (ADR 0012).
 
-**CI gate**: the only required status check in every project, always named `CI gate`. It runs after the checks from `ci.checks`, Workflow lint and Secret scan, and is green only when every blocking job succeeded. Without a forge, git hooks run `ci.command` instead.
+**CI gate**: the only required status check in every project, always named `CI gate`. It runs after the checks from `ci.checks`, Workflow lint and Secret scan, and is green only when every blocking job succeeded. On GitLab it is the last pipeline job and "Pipelines must succeed" does the blocking; on Forgejo its status is `CI / CI gate (pull_request)`. Without a forge, git hooks run `ci.command` instead.
 
 **Project section**: the part of a generated file that holds the project's own content, such as a README pitch, a CONTRIBUTING setup or the conventions in `CLAUDE.md`. Drafted once from the repository, confirmed by Daniel, then kept word for word on every re-run, so only the fixed parts around it can drift (ADR 0011).
 

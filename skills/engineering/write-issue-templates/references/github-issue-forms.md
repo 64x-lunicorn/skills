@@ -2,6 +2,8 @@
 
 Read when writing `.github/ISSUE_TEMPLATE/`. Each file is the content of its fenced block, ending with exactly one newline. Syntax verified 2026-09-14 against the GitHub docs on issue forms: `name`, `description` and `body` are required at the top level, and `validations: required: true` makes a field mandatory.
 
+Forgejo reads the same three files from `.forgejo/ISSUE_TEMPLATE/`. Verified 2026-09-14 on Forgejo 16.0.4: both forms were listed with their labels, blank issues were disabled, and Forgejo's config validation passed.
+
 ## `bug.yml`
 
 ```yaml
