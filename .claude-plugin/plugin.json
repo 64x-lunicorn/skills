@@ -21,6 +21,7 @@
     "./skills/engineering/write-commit-message",
     "./skills/engineering/write-skill",
     "./skills/orchestration/harvest-skill",
+    "./skills/orchestration/promote-research",
     "./skills/orchestration/research-idea"
   ]
 }

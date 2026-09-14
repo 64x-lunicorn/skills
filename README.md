@@ -41,9 +41,9 @@ waits in the inbox, word for word.
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds five skills today:
-> two for creating the rest, two for researching ideas before anything is built, and one
-> for commits. More arrive as they are harvested.
+> This collection is young and grows slowly on purpose. It holds six skills today:
+> two for creating the rest, three for researching and promoting ideas before anything is
+> built, and one for commits. More arrive as they are harvested.
 
 ## How it works
 
@@ -74,6 +74,7 @@ Skills trigger on their own when a request matches their description, or run as
 | Skill | Invocation | What it does |
 | :--- | :--- | :--- |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
+| [`promote-research`](skills/orchestration/promote-research/SKILL.md) | user-invoked | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | user-invoked | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
@@ -119,8 +120,8 @@ research/NNNN-<slug>/
 
 **Never implementable.** Every object carries `implementable: false`. The only path to code is
 promotion through the quality gates: deterministic checks in the validator, and judgement
-checks with Daniel (problem in one sentence, "do nothing" considered, explicit go). The
-promotion skill and the epic/spec format are still open. The design is in
+checks with Daniel (problem in one sentence, "do nothing" considered, explicit go).
+`/64x-lunicorn:promote-research` runs them and produces one self-contained Spec issue. The design is in
 [ADR 0005](docs/adr/0005-research-objects-before-specs.md); this repo's own research lives
 only locally in a gitignored `research/`.
 
