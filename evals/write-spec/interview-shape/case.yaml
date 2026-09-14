@@ -1,0 +1,31 @@
+schema_version: "1.1"
+name: Every calling skill interviews the same way (write-spec)
+description: Spec #16. write-spec needs a series of decisions from Daniel in its light gates; each question comes with a recommended answer and the number of open decisions.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:write-spec csv2json should skip empty lines in a CSV file instead of turning them into empty JSON objects.
+
+    What Daniel said earlier in this conversation, quoted:
+
+    Daniel: every export from our accounting tool ends with two empty lines, and csv2json turns them into {} at the end of the array
+    Daniel: nobody wants those empty objects, skip them
+    Daniel: not sure yet whether we print a warning when lines are skipped
+  max_turns: 30
+  allowed_tools: [Read, Glob, Grep, Skill]
+graders:
+  - type: tool_used
+    name: interview-user called
+    tool: Skill
+    input_match: 'interview-user'
+  - type: regex
+    name: exactly one open decisions line
+    pattern: '^Open decisions: \d+$'
+    match: count:1
+    flags: m
+  - type: regex
+    name: recommended answer line
+    pattern: '^Recommended answer: .+\. \S.*$'
+    flags: m

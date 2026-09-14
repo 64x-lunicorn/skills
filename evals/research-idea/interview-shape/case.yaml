@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: Every calling skill interviews the same way (research-idea)
+description: Spec #16. research-idea needs a series of decisions from Daniel while challenging an idea; each question comes with a recommended answer and the number of open decisions.
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:research-idea 0001 Let us go on with this one and settle what is still open.
+  max_turns: 30
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: interview-user called
+    tool: Skill
+    input_match: 'interview-user'
+  - type: regex
+    name: exactly one open decisions line
+    pattern: '^Open decisions: \d+$'
+    match: count:1
+    flags: m
+  - type: regex
+    name: recommended answer line
+    pattern: '^Recommended answer: .+\. \S.*$'
+    flags: m

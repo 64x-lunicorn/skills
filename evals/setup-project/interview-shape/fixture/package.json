@@ -1,0 +1,14 @@
+{
+  "name": "csv2json",
+  "private": true,
+  "type": "module",
+  "bin": { "csv2json": "./src/cli.js" },
+  "scripts": {
+    "test": "node --test",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm test"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
