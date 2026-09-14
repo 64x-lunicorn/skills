@@ -14,14 +14,15 @@ Read when collecting project sections and generating `README.md`. The skeleton f
 
 | Placeholder | Value |
 | :--- | :--- |
-| `<<name>>` | The repository name from `origin`, otherwise the project directory name |
+| `<<name>>` | The repository name from `origin`, on GitLab the last segment of the project path, otherwise the project directory name |
 | `<<tagline>>` | The H3 tagline, one line |
 | `<<pitch_headline>>`, `<<pitch_paragraph>>`, `<<pitch_one_liner>>` | The pitch, the paragraph as one line |
 | `<<license_badge>>`, `<<license_name>>` | From the license table |
 | `<<stack_badge>>` | From the stack table |
-| `<<nav_fixed>>` | GitHub: `[Contributing](CONTRIBUTING.md) &nbsp; / &nbsp;` and `[Report a bug](https://github.com/<owner>/<repo>/issues)` on two lines. No forge: `[Contributing](CONTRIBUTING.md)` |
+| `<<nav_fixed>>` | With a forge: `[Contributing](CONTRIBUTING.md) &nbsp; / &nbsp;` and the Report a bug link on two lines. No forge: `[Contributing](CONTRIBUTING.md)` |
+| Report a bug link | GitHub: `[Report a bug](https://github.com/<owner>/<repo>/issues)`. GitLab: `[Report a bug](https://<host>/<project path>/-/issues)`. Forgejo: `[Report a bug](https://<host>/<owner>/<repo>/issues)` |
 | `<<doc_rows_fixed>>` | The Documentation rows below, in their order |
-| `<<contributing_intro>>` | GitHub: `Bug reports and focused pull requests are welcome.` No forge: `Focused changes are welcome.` |
+| `<<contributing_intro>>` | GitHub and Forgejo: `Bug reports and focused pull requests are welcome.` GitLab: `Bug reports and focused merge requests are welcome.` No forge: `Focused changes are welcome.` |
 | `<<ci_command>>` | `ci.command` from the marker |
 | `<<year>>`, `<<holder>>` | The copyright year and holder |
 | `<<license_file>>` | `COPYING` when a `COPYING` file exists at the root and no `LICENSE` does, otherwise `LICENSE` |

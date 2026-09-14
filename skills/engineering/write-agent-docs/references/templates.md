@@ -14,10 +14,10 @@ Read when collecting project sections and generating `CLAUDE.md`, `CONTEXT.md` a
 
 | Placeholder | Value |
 | :--- | :--- |
-| `<<name>>` | The repository name from `origin`, otherwise the project directory name |
+| `<<name>>` | The repository name from `origin`, on GitLab the last segment of the project path, otherwise the project directory name |
 | `<<ci_command>>` | `ci.command` from the marker |
-| `<<change_flow>>` | GitHub: ``Work on a branch; `<default_branch>` changes only through a squash-merged pull request that passed `CI gate`.`` No forge: ``Work on a branch; `<default_branch>` changes only through `git merge --squash`, whose commit runs the gate.`` |
-| `<<issues_line>>` | `tracker: forge` on GitHub: ``Issues live in GitHub Issues of `<owner>/<repo>`, with the closed label set.`` `tracker: local`: ``Issues are Markdown files in `issues/`, in the format [issues/README.md](issues/README.md) describes.`` |
+| `<<change_flow>>` | GitHub and Forgejo: ``Work on a branch; `<default_branch>` changes only through a squash-merged pull request that passed `CI gate`.`` GitLab: ``Work on a branch; `<default_branch>` changes only through a squash-merged merge request whose pipeline passed `CI gate`.`` No forge: ``Work on a branch; `<default_branch>` changes only through `git merge --squash`, whose commit runs the gate.`` |
+| `<<issues_line>>` | `tracker: forge`: ``Issues live in the <GitHub, GitLab or Forgejo> issues of `<project path>`, with the closed label set.`` `tracker: local`: ``Issues are Markdown files in `issues/`, in the format [issues/README.md](issues/README.md) describes.`` |
 | `<<research_line>>` | `tracked: true`: ``Ideas live in `research/` and reach code only after promotion to a Spec.`` `tracked: false`: ``Ideas live in `research/`, gitignored and local only, and reach code only after promotion to a Spec.`` |
 | `<<adr_index>>` | The index below |
 
