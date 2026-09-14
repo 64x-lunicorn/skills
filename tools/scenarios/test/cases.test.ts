@@ -1,4 +1,7 @@
+import fs from "node:fs";
+import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { parse } from "yaml";
 import { type ScenarioCase, evalArgs, loadCases, selectScenarios } from "../src/cases.ts";
 import { removeRepos, repoWith } from "./repo.ts";
 import { repoRoot } from "./root.ts";
@@ -111,6 +114,15 @@ describe("cases of this repository", () => {
 
   it.each(cases.map((c) => [c.path, c] as const))("%s is a scenario", (_, c) => {
     expect(c.tags).toContain("scenario");
+  });
+
+  it.each(cases.map((c) => [c.path] as const))("%s keeps its whole description through parsing", (rel) => {
+    const text = fs.readFileSync(path.join(repoRoot, rel), "utf8");
+    const raw = text.match(/^description: (.*)$/m)?.[1] ?? "";
+    const { description } = parse(text) as { description?: unknown };
+
+    // An unquoted " #" starts a YAML comment, so "Spec #16. ..." would parse as "Spec".
+    if (raw.includes("#")) expect(description).toEqual(expect.stringContaining("#"));
   });
 
   it("gives every case a unique name", () => {
