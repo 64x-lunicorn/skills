@@ -1,4 +1,4 @@
-import { SETUP_MISSING_NOTICE, SETUP_STEP_HEADING, SETUP_VERSION } from "../conventions.ts";
+import { SETUP_MISSING_NOTICE, SETUP_SKILL_NAME, SETUP_STEP_HEADING, SETUP_VERSION } from "../conventions.ts";
 import { isUserInvoked } from "../repo.ts";
 import type { Finding } from "../validate.ts";
 import type { Rule } from "./rule.ts";
@@ -6,8 +6,8 @@ import type { Rule } from "./rule.ts";
 const VERSION = /`setup_version` below (\d+)/;
 
 export const sk014: Rule = (repo) =>
-  repo.skillDirs.flatMap(({ skillMd }): Finding[] => {
-    if (!skillMd || !isUserInvoked(skillMd)) return [];
+  repo.skillDirs.flatMap(({ name, skillMd }): Finding[] => {
+    if (!skillMd || !isUserInvoked(skillMd) || name === SETUP_SKILL_NAME) return [];
     const finding = (line: number, message: string): Finding[] => [
       { rule: "SK014", path: skillMd.path, line, message },
     ];

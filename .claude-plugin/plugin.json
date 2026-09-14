@@ -22,6 +22,7 @@
     "./skills/engineering/write-skill",
     "./skills/orchestration/harvest-skill",
     "./skills/orchestration/promote-research",
-    "./skills/orchestration/research-idea"
+    "./skills/orchestration/research-idea",
+    "./skills/orchestration/setup-project"
   ]
 }

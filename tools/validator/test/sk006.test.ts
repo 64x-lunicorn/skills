@@ -48,4 +48,8 @@ describe("SK006: skill name lowercase, hyphenated, verb-noun", () => {
   it("accepts promote as the verb of the research-promoting orchestrator", () => {
     expect(validate(fixture("sk006/pass-promote"))).toEqual([]);
   });
+
+  it("accepts setup as the verb of the project-setup orchestrator", () => {
+    expect(validate(fixture("sk006/pass-setup"))).toEqual([]);
+  });
 });

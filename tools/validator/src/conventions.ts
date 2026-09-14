@@ -22,6 +22,9 @@ export const SETUP_MISSING_NOTICE = "Project setup missing. Run /64x-lunicorn:se
 /** SK014: current `setup_version` of `.claude/64x-lunicorn.yml`. Raising it fails every skill still checking the old value. */
 export const SETUP_VERSION = 1;
 
+/** SK014: the skill the notice points to. It creates the setup, so it does not check for it. */
+export const SETUP_SKILL_NAME = "setup-project";
+
 /** SK008: category whose skills only Daniel invokes, never the model. */
 export const ORCHESTRATION_CATEGORY = "orchestration";
 
@@ -65,6 +68,7 @@ export const SKILL_NAME_VERBS = [
   "resolve",
   "review",
   "run",
+  "setup",
   "test",
   "triage",
   "verify",

@@ -26,4 +26,8 @@ describe("SK014: user-invoked skills check the project setup as step 0", () => {
   it("accepts user-invoked skills with step 0 and leaves model-invoked skills alone", () => {
     expect(validate(fixture("sk014/pass"))).toEqual([]);
   });
+
+  it("exempts setup-project, which the notice points to", () => {
+    expect(validate(fixture("sk014/pass-setup-project"))).toEqual([]);
+  });
 });
