@@ -50,6 +50,17 @@ describe("loadCases", () => {
 
     expect(() => loadCases(root)).toThrow("evals/interview-me/tag-string/case.yaml: tags must be a list");
   });
+
+  it.each([
+    ["a name that is not a string", "name: 2024\nexecution:\n  prompt: p\ngraders: [{}]\n", "name must be a non-empty string"],
+    ["a prompt that is not a string", "name: x\nexecution:\n  prompt: [p]\ngraders: [{}]\n", "prompt must be a string"],
+    ["graders that are not a list", "name: x\nexecution:\n  prompt: p\ngraders: not-a-list\n", "graders must be a non-empty list"],
+    ["an empty graders list", "name: x\nexecution:\n  prompt: p\ngraders: []\n", "graders must be a non-empty list"],
+  ])("names the file of a case.yaml with %s", (_, content, reason) => {
+    const root = repoWith({ "evals/interview-me/malformed/case.yaml": content });
+
+    expect(() => loadCases(root)).toThrow(`evals/interview-me/malformed/case.yaml: ${reason}`);
+  });
 });
 
 function scenario(name: string, tags: string[]): ScenarioCase {

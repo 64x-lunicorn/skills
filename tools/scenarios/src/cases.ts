@@ -16,10 +16,10 @@ export interface ScenarioCase {
 }
 
 interface CaseYaml {
-  name?: string;
+  name?: unknown;
   tags?: unknown;
-  execution?: { prompt?: string };
-  graders?: unknown[];
+  execution?: { prompt?: unknown };
+  graders?: unknown;
 }
 
 /** Loads every `case.yaml` below `evals/`, sorted by path. */
@@ -82,7 +82,12 @@ function readCase(root: string, rel: string): ScenarioCase {
     throw new Error(`${rel}: ${(error as Error).message}`);
   }
   if (!data?.name) throw new Error(`${rel}: missing name`);
+  if (typeof data.name !== "string") throw new Error(`${rel}: name must be a non-empty string`);
   if (data.tags !== undefined && !isStringList(data.tags)) throw new Error(`${rel}: tags must be a list`);
+  if (typeof data.execution?.prompt !== "string") throw new Error(`${rel}: prompt must be a string`);
+  if (!Array.isArray(data.graders) || data.graders.length === 0) {
+    throw new Error(`${rel}: graders must be a non-empty list`);
+  }
   return {
     path: rel,
     name: data.name,
