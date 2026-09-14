@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: 'An ADR is written after Daniel''s ok'
-description: 'Spec #23. Daniel gives his ok to a proposed ADR; the ADR is written with every section and the ADR index lists it.'
+description: 'Spec #23. Daniel gives his ok to a proposed ADR; the ADR is written with every section and the ADR index lists it. The ADR file name comes from the proposal Daniel confirmed, which the prompt quotes, so the sections are read from that exact file.'
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh
