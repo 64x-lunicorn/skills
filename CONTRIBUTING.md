@@ -39,7 +39,7 @@ Documentation-only changes do not need a test run. Verify links and examples ins
 
 ## Scenario tests
 
-Scenarios of a Spec that need a model to observe run as `claude plugin eval` cases in `case.yaml` files under `evals/`. A case tagged `scenario` automates one scenario and carries the scenario name verbatim; a case for one example of a Scenario Outline adds its skill in parentheses, as in `Every calling skill interviews the same way (write-spec)`. A case also tagged `pending` waits for its feature ticket, which removes the tag. Run every scenario that is not pending, or one case by its name:
+Scenarios of a Spec that need a model to observe run as `claude plugin eval` cases in `case.yaml` files under `evals/`. A case tagged `scenario` automates one scenario and carries the scenario name verbatim; a case for one example of a Scenario Outline, or a second case of the same scenario, adds its skill in parentheses, as in `Every calling skill interviews the same way (write-spec)`. A case also tagged `pending` waits for its feature ticket, which removes the tag. Run every scenario that is not pending, or one case by its name:
 
 ```bash
 npm run scenarios
