@@ -32,6 +32,14 @@
 
 **Wayfinder**: an issue labelled `wayfinder`, a sub-issue of its Spec. The living order of work: phases, a progress graph and a checklist agents work through.
 
+**Frontier**: the unchecked tickets of a wayfinder whose blockers are all closed. The only tickets `implement-tickets` starts.
+
+**Seam**: the public boundary where behaviour is observed without reaching inside, such as an exported interface, an endpoint or a command. Tests live at seams; a ticket's seams come from its implementation notes (ADR 0008).
+
+**Reuse inventory**: the list `implement-ticket` writes before the first test, naming the existing code it reuses and why everything new is new. The standards review checks duplication against it.
+
+**Review finding**: one result of `review-change`, classed `hard` (fixed without asking) or `judgement` (decided by Daniel). Not to be confused with a validator finding.
+
 **Gate A**: the validator. Deterministic, no API, blocks the merge.
 
 **Gate B**: the eval runner from phase 2 on. Non-deterministic, costs tokens, not blocking at first.
