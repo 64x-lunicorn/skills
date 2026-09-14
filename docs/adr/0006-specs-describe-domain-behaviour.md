@@ -25,9 +25,9 @@ This is a gap Daniel named explicitly, so it passes the harvest gate (ADR 0004).
 
 **Template sections:** not-implementable note, Goal, Problem, Domain flow, Behaviour change, Domain rules, Terms, Decisions, Non-goals, Acceptance criteria, Open questions and risks, Origin. The Tasks checklist from ADR 0005 is dropped: tickets are attached as sub-issues instead.
 
-## Planned: splitting a Spec (`plan-tickets`)
+## Splitting a Spec (`plan-tickets`)
 
-Recorded now so the Spec format serves it; built as its own skill later.
+Recorded here so the Spec format serves it; realised in [ADR 0007](0007-splitting-specs-into-tickets.md).
 
 - Every ticket is attached to the Spec as a sub-issue.
 - An **architecture issue** with Mermaid diagrams. Once the tickets exist and are agreed with Daniel, an architecture review agent reviews the best approach and implementation order, and records them there.

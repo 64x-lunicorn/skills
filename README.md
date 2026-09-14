@@ -18,6 +18,7 @@ real corrections, and a validator that holds every `SKILL.md` to the same conven
 [Skills](#skills) &nbsp; / &nbsp;
 [Research](#research) &nbsp; / &nbsp;
 [Specs](#specs) &nbsp; / &nbsp;
+[Tickets](#tickets) &nbsp; / &nbsp;
 [Contributing](CONTRIBUTING.md) &nbsp; / &nbsp;
 [Report a bug](https://github.com/64x-lunicorn/skills/issues)
 
@@ -42,10 +43,10 @@ waits in the inbox, word for word.
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds nine skills today:
+> This collection is young and grows slowly on purpose. It holds twelve skills today:
 > two for creating the rest, three for researching and promoting ideas before anything is
-> built, two for writing specs, one for setting up projects and one for commits. More arrive
-> as they are harvested.
+> built, two for writing specs, three for splitting them into tickets, one for setting up
+> projects and one for commits. More arrive as they are harvested.
 
 ## How it works
 
@@ -76,9 +77,12 @@ Skills trigger on their own when a request matches their description, or run as
 | Skill | Invocation | What it does |
 | :--- | :--- | :--- |
 | [`design-spec`](skills/engineering/design-spec/SKILL.md) | model-invoked | Drafts a Spec that describes domain behaviour only, with a Mermaid domain flow and Gherkin acceptance criteria. |
+| [`design-ticket`](skills/engineering/design-ticket/SKILL.md) | model-invoked | Cuts a Spec into vertical-slice tickets, one pull request each, with the Spec's scenarios as acceptance criteria. |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
+| [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | user-invoked | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
 | [`promote-research`](skills/orchestration/promote-research/SKILL.md) | user-invoked | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | user-invoked | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
+| [`review-architecture`](skills/engineering/review-architecture/SKILL.md) | model-invoked | Reviews the technical approach and order for a Spec's tickets in a forked agent and returns diagrams and proposals. |
 | [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults and writes the marker every other skill checks. |
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
@@ -87,7 +91,7 @@ Skills trigger on their own when a request matches their description, or run as
 
 User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` uses
 `write-skill`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
-use `design-spec`.
+use `design-spec`, `plan-tickets` uses `design-ticket` and `review-architecture`.
 
 ## Research
 
@@ -159,9 +163,33 @@ promotion path instead.
 | Acceptance criteria | Gherkin scenarios for every behaviour change and rule, ready to become integration tests. |
 | Open questions and risks, Origin | What was accepted on purpose, and the source with Daniel's words verbatim. |
 
-Technologies, APIs and schemas stay out of the Spec. Splitting it into sub-issues comes next,
-with an architecture issue, a wayfinder issue and an integration test issue; the design is in
-[ADR 0006](docs/adr/0006-specs-describe-domain-behaviour.md).
+Technologies, APIs and schemas stay out of the Spec; they are kept as a comment on it for the
+architecture issue. The design is in [ADR 0006](docs/adr/0006-specs-describe-domain-behaviour.md).
+
+## Tickets
+
+An agreed Spec is split into work agents can pick up in the right order, with
+`/64x-lunicorn:plan-tickets <spec>`.
+
+```text
+Spec  -->  cut with Daniel  -->  sub-issues  -->  architecture review  -->  architecture issue  -->  wayfinder
+             |                     |                |
+             |                     |                +-- forked agent proposes, Daniel decides
+             |                     +-- tickets, integration test ticket, architecture issue
+             +-- vertical slices, every scenario in exactly one ticket
+```
+
+| Issue | Label | What it holds |
+| :--- | :--- | :--- |
+| Ticket | `task` | One vertical slice, one pull request. Acceptance criteria are the Spec's scenarios, verbatim. |
+| Integration test ticket | `task` | Every scenario as a pending test, first in the order. Feature tickets turn their scenarios green. |
+| Architecture issue | `architecture` | Components, flow, decisions, ticket dependencies and order, all reviewed against the codebase. |
+| Wayfinder | `wayfinder` | Phases, a progress graph and the checklist agents work through. |
+
+Every issue is a sub-issue of the Spec, and dependencies are native "blocked by" relations.
+The tickets are agreed before the architecture review, and no proposal of the review is
+applied without Daniel's decision. The design is in
+[ADR 0007](docs/adr/0007-splitting-specs-into-tickets.md).
 
 ## The validator
 
@@ -184,8 +212,8 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | Guide | Start here when you want to... |
 | :--- | :--- |
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
-| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec. |
-| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, and why specs describe domain behaviour. |
+| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec, ticket, wayfinder. |
+| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, and how they are split into tickets. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |

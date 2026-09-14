@@ -18,10 +18,13 @@
   ],
   "skills": [
     "./skills/engineering/design-spec",
+    "./skills/engineering/design-ticket",
+    "./skills/engineering/review-architecture",
     "./skills/engineering/verify-claims",
     "./skills/engineering/write-commit-message",
     "./skills/engineering/write-skill",
     "./skills/orchestration/harvest-skill",
+    "./skills/orchestration/plan-tickets",
     "./skills/orchestration/promote-research",
     "./skills/orchestration/research-idea",
     "./skills/orchestration/setup-project",
