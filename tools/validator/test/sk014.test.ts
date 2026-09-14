@@ -25,7 +25,7 @@ describe("SK014: user-invoked skills check the project setup as step 0", () => {
 
   it("reports a step 0 section without the setup_version line at its heading", () => {
     expect(validate(fixture("sk014/fail-version-missing"))).toEqual([
-      { rule: "SK014", path: skillMd, line: 7, message: expect.stringContaining("`setup_version` below 1") },
+      { rule: "SK014", path: skillMd, line: 7, message: expect.stringContaining("`setup_version` below 2") },
     ]);
   });
 

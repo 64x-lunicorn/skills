@@ -17,6 +17,7 @@
     "skills"
   ],
   "skills": [
+    "./skills/engineering/configure-ci-gate",
     "./skills/engineering/design-spec",
     "./skills/engineering/design-ticket",
     "./skills/engineering/implement-ticket",
@@ -25,6 +26,7 @@
     "./skills/engineering/verify-claims",
     "./skills/engineering/verify-spec",
     "./skills/engineering/write-commit-message",
+    "./skills/engineering/write-issue-templates",
     "./skills/engineering/write-skill",
     "./skills/engineering/write-tests",
     "./skills/orchestration/harvest-skill",

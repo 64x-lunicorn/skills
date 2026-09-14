@@ -61,7 +61,7 @@ Every scenario of Spec #<spec> runs as an automated integration test, so each fe
 
 - Test harness that runs the scenarios against the system from outside.
 - Every scenario below as a test tagged pending.
-- The required CI gate skips pending tests; a separate, non-required job runs them.
+- The required checks skip pending tests. A `ci.checks` entry with `required: false` in `.claude/64x-lunicorn.yml` runs them, and `configure-ci-gate` regenerates the workflow from it.
 
 ## Acceptance criteria
 

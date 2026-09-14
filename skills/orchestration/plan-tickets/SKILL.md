@@ -12,7 +12,7 @@ Turns one Spec into work agents can pick up in the right order. The tickets are 
 Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in every case; the notice informs, it does not block:
 
 - File missing: print `Project setup missing. Run /64x-lunicorn:setup-project.`
-- `setup_version` below 1: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
+- `setup_version` below 2: print `Project setup outdated. Re-run /64x-lunicorn:setup-project.`
 
 ## 1. Pick the Spec
 

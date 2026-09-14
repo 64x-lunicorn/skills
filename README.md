@@ -16,6 +16,7 @@ real corrections, and a validator that holds every `SKILL.md` to the same conven
 
 [Install](#install) &nbsp; / &nbsp;
 [Skills](#skills) &nbsp; / &nbsp;
+[Project setup](#project-setup) &nbsp; / &nbsp;
 [Research](#research) &nbsp; / &nbsp;
 [Specs](#specs) &nbsp; / &nbsp;
 [Tickets](#tickets) &nbsp; / &nbsp;
@@ -44,11 +45,11 @@ waits in the inbox, word for word.
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds seventeen skills today:
-> two for creating the rest, three for researching and promoting ideas before anything is
-> built, two for writing specs, three for splitting them into tickets, five for implementing
-> tickets and verifying the result, one for setting up projects and one for commits. More
-> arrive as they are harvested.
+> This collection is young and grows slowly on purpose. It holds nineteen skills today:
+> two for creating the rest, three for setting up projects, three for researching and
+> promoting ideas before anything is built, two for writing specs, three for splitting them
+> into tickets, five for implementing tickets and verifying the result, and one for commits.
+> More arrive as they are harvested.
 
 ## How it works
 
@@ -78,6 +79,7 @@ Skills trigger on their own when a request matches their description, or run as
 
 | Skill | Invocation | What it does |
 | :--- | :--- | :--- |
+| [`configure-ci-gate`](skills/engineering/configure-ci-gate/SKILL.md) | model-invoked | Generates the workflow with the single required `CI gate`, the ruleset and merge settings, or git hooks without a forge, and reports drift. |
 | [`design-spec`](skills/engineering/design-spec/SKILL.md) | model-invoked | Drafts a Spec that describes domain behaviour only, with a Mermaid domain flow and Gherkin acceptance criteria. |
 | [`design-ticket`](skills/engineering/design-ticket/SKILL.md) | model-invoked | Cuts a Spec into vertical-slice tickets, one pull request each, with the Spec's scenarios as acceptance criteria. |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
@@ -88,19 +90,42 @@ Skills trigger on their own when a request matches their description, or run as
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | user-invoked | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
 | [`review-architecture`](skills/engineering/review-architecture/SKILL.md) | model-invoked | Reviews the technical approach and order for a Spec's tickets in a forked agent and returns diagrams and proposals. |
 | [`review-change`](skills/engineering/review-change/SKILL.md) | model-invoked | Reviews a branch on the spec or the standards axis, including smells and duplication across the codebase, without changing anything. |
-| [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults and writes the marker every other skill checks. |
+| [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults, writes the marker every other skill checks, and configures the CI gate and issue templates from it. |
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
 | [`verify-spec`](skills/engineering/verify-spec/SKILL.md) | model-invoked | Verifies a Spec once all its tickets are merged: scenarios, domain rules, duplication and drift across tickets, leftovers. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
+| [`write-issue-templates`](skills/engineering/write-issue-templates/SKILL.md) | model-invoked | Writes the user issue templates Bug and Request and keeps the labels to the closed house set, or documents local issue files. |
 | [`write-skill`](skills/engineering/write-skill/SKILL.md) | model-invoked | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
 | [`write-spec`](skills/orchestration/write-spec/SKILL.md) | user-invoked | Turns a functional change from a conversation into a Spec issue after light quality gates. |
 | [`write-tests`](skills/engineering/write-tests/SKILL.md) | model-invoked | Writes tests first at agreed seams, against independent expected values, mocking only at system boundaries. |
 
 User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` uses
-`write-skill`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
+`write-skill`, `setup-project` uses `configure-ci-gate` and `write-issue-templates`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
 use `design-spec`, `plan-tickets` uses `design-ticket` and `review-architecture`,
 `implement-tickets` uses `implement-ticket`, which builds with `write-tests`, `review-change`
 and `verify-spec`.
+
+## Project setup
+
+Every project starts with `/64x-lunicorn:setup-project`. It detects forge, stack and checks,
+asks one question at a time, and writes `.claude/64x-lunicorn.yml`, the marker every other
+skill reads. The gate and the issues are generated from that marker, so the local command, the
+workflow and the documentation cannot disagree.
+
+```text
+interview  -->  .claude/64x-lunicorn.yml  -->  configure-ci-gate      -->  workflow, ruleset, docs/ci-cd.md
+                                          -->  write-issue-templates  -->  issue forms, label set
+```
+
+| Forge | Gate | Rules on the default branch | Issues |
+| :--- | :--- | :--- | :--- |
+| GitHub | One matrix job per check, Workflow lint, Secret scan, and `CI gate` as the only required check | Pull request, squash only, signed commits, linear history, no force push | Bug and Request forms, closed label set |
+| None | `pre-commit` and `pre-push` hooks run the local command | Direct commits rejected, squash merges pass the gate first | Markdown files in `issues/` |
+| GitLab, Forgejo | Not yet: their details are verified first | | |
+
+A re-run reports every generated file as new, unchanged or drift, and remote settings change only
+after an explicit yes. The design is in
+[ADR 0010](docs/adr/0010-ci-gate-and-issue-templates.md).
 
 ## Research
 
@@ -253,8 +278,8 @@ live in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md).
 | Guide | Start here when you want to... |
 | :--- | :--- |
 | [CLAUDE.md](CLAUDE.md) | Learn the conventions no validator can check, and how a new skill is added. |
-| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec, ticket, wayfinder, seam, Spec verification. |
-| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, how they are split into tickets, how tickets are implemented, and how a Spec is verified and closed. |
+| [CONTEXT.md](CONTEXT.md) | Look up a term: harvest, layering, Gate A, rule ID, research object, promotion, Spec, ticket, wayfinder, seam, Spec verification, marker, CI gate. |
+| [Architecture decisions](docs/adr/) | Understand why this is a plugin, why the rules are stricter than the spec, why skills are created with own skills only, why research comes before specs, why specs describe domain behaviour, how they are split into tickets, how tickets are implemented, how a Spec is verified and closed, and how the CI gate and issue templates are set up. |
 | [GitHub setup](docs/setup-github.md) | Reproduce the branch protection, signing and release flow. |
 | [Changelog](CHANGELOG.md) | See what changed in each release. |
 | [Contributing](CONTRIBUTING.md) | Set up development, propose a skill or a rule, and submit a focused change. |

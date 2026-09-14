@@ -20,7 +20,7 @@ export const SETUP_STEP_HEADING = "## 0. Check project setup";
 export const SETUP_MISSING_NOTICE = "Project setup missing. Run /64x-lunicorn:setup-project.";
 
 /** SK014: current `setup_version` of `.claude/64x-lunicorn.yml`. Raising it fails every skill still checking the old value. */
-export const SETUP_VERSION = 1;
+export const SETUP_VERSION = 2;
 
 /** SK014: the skill the notice points to. It creates the setup, so it does not check for it. */
 export const SETUP_SKILL_NAME = "setup-project";
@@ -57,6 +57,7 @@ export const ALLOWED_FRONTMATTER_FIELDS = [
 
 /** SK006: allowed verbs as the first name segment. Grows through TDD, never in advance. */
 export const SKILL_NAME_VERBS = [
+  "configure",
   "design",
   "diagnose",
   "harvest",
