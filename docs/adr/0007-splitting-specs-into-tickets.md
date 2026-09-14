@@ -35,7 +35,7 @@ This is a gap Daniel named explicitly, so it passes the harvest gate (ADR 0004).
 
 - **Other forges.** GitLab and Forgejo have no verified procedure for sub-issues and dependencies; `plan-tickets` stops there and names the gap.
 - **Re-planning.** Splitting a Spec that already has sub-issues is not covered yet.
-- **Implementation.** The skill that picks up tickets from the wayfinder does not exist yet.
+- **Implementation.** Resolved by [ADR 0008](0008-implementing-tickets.md): `implement-tickets` works the frontier of the wayfinder.
 
 ## Consequences
 
