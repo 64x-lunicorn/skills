@@ -36,7 +36,7 @@ execution:
 graders:
   - type: regex
     name: next command named
-    pattern: '/64x-lunicorn:[a-z]+(-[a-z]+)+'
+    pattern: '/64x-lunicorn:(?!interview-)[a-z]+(-[a-z]+)+'
   - type: tool_used
     name: no other command started
     tool: Skill

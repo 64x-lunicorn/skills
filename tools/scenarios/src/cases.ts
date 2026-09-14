@@ -10,9 +10,9 @@ export interface ScenarioCase {
   /** Path relative to the repo root, with forward slashes. */
   path: string;
   name: string;
-  tags: string[];
+  tags?: string[];
   prompt?: string;
-  graders: unknown[];
+  graders?: unknown[];
 }
 
 interface CaseYaml {
@@ -47,7 +47,7 @@ export function selectScenarios(
   cases: ScenarioCase[],
   names: string[],
 ): { cases: ScenarioCase[]; unknown: string[] } {
-  const runnable = cases.filter((c) => c.tags.includes(SCENARIO_TAG) && !c.tags.includes(PENDING_TAG));
+  const runnable = cases.filter((c) => c.tags?.includes(SCENARIO_TAG) && !c.tags.includes(PENDING_TAG));
   if (names.length === 0) return { cases: runnable, unknown: [] };
   return {
     cases: runnable.filter((c) => names.includes(c.name)),
@@ -72,17 +72,18 @@ export function evalArgs(scenario: ScenarioCase): string[] {
 }
 
 function readCase(root: string, rel: string): ScenarioCase {
-  let data: CaseYaml;
+  let data: CaseYaml | null;
   try {
-    data = (parse(fs.readFileSync(path.join(root, rel), "utf8")) ?? {}) as CaseYaml;
+    data = parse(fs.readFileSync(path.join(root, rel), "utf8")) as CaseYaml | null;
   } catch (error) {
     throw new Error(`${rel}: ${(error as Error).message}`);
   }
+  if (!data?.name) throw new Error(`${rel}: missing name`);
   return {
     path: rel,
-    name: data.name ?? "",
-    tags: data.tags ?? [],
+    name: data.name,
+    tags: data.tags,
     prompt: data.execution?.prompt,
-    graders: data.graders ?? [],
+    graders: data.graders,
   };
 }
