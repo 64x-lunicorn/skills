@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: Resolving never pushes
-description: Spec #24. resolve-merge records the merge of main into a ticket branch locally; the ticket branch on origin keeps the commit it had before the run.
+description: "Spec #24. resolve-merge records the merge of main into a ticket branch locally; the ticket branch on origin keeps the commit it had before the run."
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh

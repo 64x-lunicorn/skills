@@ -2,8 +2,8 @@
 # Copies the case's project state into the run workspace and builds its git history:
 # main carries the squash commit of ticket #0004; ticket/5-missing-name
 # is behind main without merge conflicts, and ticket/6-greet-several-names is up to
-# date with it. A post-commit hook stands in for Daniel merging a pull request while
-# the run goes on: the first commit on a ticket branch moves main one commit ahead,
+# date with it. A post-commit and post-merge hook stands in for Daniel merging a pull request
+# while the run goes on: the first commit or merge on a ticket branch moves main one commit ahead,
 # locally and on origin,
 # which puts ticket/6-greet-several-names behind during the run.
 # Fixed identities and dates keep every commit id the same on every run.
@@ -93,18 +93,23 @@ commit 4 -m "docs: describe how to call greet"
 git update-ref refs/fixture/merged-during-run HEAD
 git checkout -q main
 
+# post-commit fires on git commit, post-merge on a one-step git merge; the hook moves main
+# only while main is not yet the merged commit, so it fires at most once.
 cat > .git/hooks/post-commit <<'SH'
 #!/bin/sh
 case "$(git symbolic-ref --short -q HEAD)" in
   ticket/*)
-    if git merge-base --is-ancestor refs/heads/main refs/fixture/merged-during-run; then
-      git update-ref refs/heads/main refs/fixture/merged-during-run
-      git --git-dir="$(git config remote.origin.url)" update-ref refs/heads/main refs/fixture/merged-during-run
+    merged=$(git rev-parse refs/fixture/merged-during-run)
+    if [ "$(git rev-parse refs/heads/main)" != "$merged" ] &&
+      git merge-base --is-ancestor refs/heads/main "$merged"; then
+      git update-ref refs/heads/main "$merged"
+      git --git-dir="$(git config remote.origin.url)" update-ref refs/heads/main "$merged"
     fi
     ;;
 esac
 SH
-chmod +x .git/hooks/post-commit
+cp .git/hooks/post-commit .git/hooks/post-merge
+chmod +x .git/hooks/post-commit .git/hooks/post-merge
 
 git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"

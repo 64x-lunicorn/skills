@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: The project's checks run before the merge is recorded
-description: Spec #24. While main is merged into a ticket branch and its merge conflicts are resolved, the project's ci.command runs before the merge commit is made.
+description: "Spec #24. While main is merged into a ticket branch and its merge conflicts are resolved, the project's ci.command runs before the merge commit is made."
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh
@@ -25,5 +25,6 @@ graders:
     after: { tool: Bash, input_match: 'git\s+(commit|merge\s+--continue)' }
   - type: tool_order
     name: checks run on the merged tree
-    before: { tool: Bash, input_match: 'git\s+merge\s+(--no-commit\s+)?(origin/)?main\b' }
+    # Any options and spelling of the merge of main; git merge-base does not match.
+    before: { tool: Bash, input_match: 'git\b[^|;&"]*\bmerge\s[^|;&"]*\b(origin/)?main\b' }
     after: { tool: Bash, input_match: 'scripts/check\.sh' }
