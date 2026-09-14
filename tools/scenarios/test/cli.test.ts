@@ -89,6 +89,7 @@ describe("CLI", () => {
     const result = run(root, [], { ...process.env, PATH: path.join(root, "bin") });
 
     expect(result.status).toBe(1);
+    expect(result.stderr).toContain("Could not start claude:");
     expect(result.stderr).toContain("ENOENT");
     expect(result.stderr).toContain("Failed: A question carries a recommended answer");
   });
