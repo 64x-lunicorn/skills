@@ -41,17 +41,17 @@ const PENDING_TAG = "pending";
 
 /**
  * Keeps the scenarios that are not pending, narrowed to `names` when any are
- * given. `unknown` holds the names that match no runnable scenario.
+ * given. `notRunnable` holds the names that match no runnable scenario.
  */
 export function selectScenarios(
   cases: ScenarioCase[],
   names: string[],
-): { cases: ScenarioCase[]; unknown: string[] } {
+): { cases: ScenarioCase[]; notRunnable: string[] } {
   const runnable = cases.filter((c) => c.tags?.includes(SCENARIO_TAG) && !c.tags.includes(PENDING_TAG));
-  if (names.length === 0) return { cases: runnable, unknown: [] };
+  if (names.length === 0) return { cases: runnable, notRunnable: [] };
   return {
     cases: runnable.filter((c) => names.includes(c.name)),
-    unknown: names.filter((name) => !runnable.some((c) => c.name === name)),
+    notRunnable: names.filter((name) => !runnable.some((c) => c.name === name)),
   };
 }
 

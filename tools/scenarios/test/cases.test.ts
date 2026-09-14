@@ -73,7 +73,7 @@ describe("selectScenarios", () => {
   const other = scenario("basic", ["triggers"]);
 
   it("runs every scenario that is not pending when no name is given", () => {
-    expect(selectScenarios([active, pending, other], [])).toEqual({ cases: [active], unknown: [] });
+    expect(selectScenarios([active, pending, other], [])).toEqual({ cases: [active], notRunnable: [] });
   });
 
   it("narrows the run to the scenarios named", () => {
@@ -81,14 +81,14 @@ describe("selectScenarios", () => {
 
     expect(selectScenarios([active, second], ["No emojis in questions"])).toEqual({
       cases: [second],
-      unknown: [],
+      notRunnable: [],
     });
   });
 
   it("reports a name that matches no runnable scenario, such as a pending one", () => {
     expect(selectScenarios([active, pending], ["One question at a time"])).toEqual({
       cases: [],
-      unknown: ["One question at a time"],
+      notRunnable: ["One question at a time"],
     });
   });
 });
