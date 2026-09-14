@@ -21,14 +21,25 @@ function trackedFiles(): string[] {
     .filter((file) => file !== "" && file !== ownFile && fs.existsSync(path.join(root, file)));
 }
 
-function offendingLines(file: string): string[] {
-  let text = fs.readFileSync(path.join(root, file), "utf8");
-  if (file === "CONTEXT.md") text = text.replaceAll(AVOID_CLAUSE, "");
-  return text
+/** Lines of `text`, read from `file`, that use the word to avoid, as `<file>:<line> <content>`. */
+function offendingLines(file: string, text: string): string[] {
+  const checked = file === "CONTEXT.md" ? text.replaceAll(AVOID_CLAUSE, "") : text;
+  return checked
     .split(/\r?\n/)
     .flatMap((line, index) => (FORBIDDEN.test(line) ? [`${file}:${index + 1} ${line.trim()}`] : []));
 }
 
+it("exempts the _Avoid_: clause of a term in CONTEXT.md", () => {
+  expect(offendingLines("CONTEXT.md", "**Interview**:\nAsks one question at a time.\n_Avoid_: grill\n")).toEqual([]);
+});
+
+it("reports grill on a CONTEXT.md line without an _Avoid_: clause", () => {
+  expect(offendingLines("CONTEXT.md", "**Interview**:\nNever grill the user.\n")).toEqual([
+    "CONTEXT.md:2 Never grill the user.",
+  ]);
+});
+
 it(SCENARIO, () => {
-  expect(trackedFiles().flatMap(offendingLines)).toEqual([]);
+  const lines = trackedFiles().flatMap((file) => offendingLines(file, fs.readFileSync(path.join(root, file), "utf8")));
+  expect(lines).toEqual([]);
 });
