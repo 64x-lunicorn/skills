@@ -2,6 +2,8 @@ schema_version: "1.1"
 name: interview-me names the next command
 description: Spec #16. When an interview started with interview-me has ended with confirmed decisions, the next command for Daniel to start is named, and no other command is started and nothing is saved.
 tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
 execution:
   prompt: |
     /64x-lunicorn:interview-me I want to publish csv2json, a small command line tool that converts CSV files to JSON, as an open source package. The license and the package name are still open.
@@ -36,7 +38,7 @@ execution:
 graders:
   - type: regex
     name: next command named
-    pattern: '/64x-lunicorn:(?!interview-)[a-z]+(-[a-z]+)+'
+    pattern: '/64x-lunicorn:(?!interview-|setup-project)[a-z]+(-[a-z]+)+'
   - type: tool_used
     name: no other command started
     tool: Skill
