@@ -1,19 +1,13 @@
 # Contributing to skills
 
-Thanks for helping make agent skills more predictable.
-Bug reports, harvest candidates, clearer documentation and focused changes are welcome.
+Thanks for helping make agent skills more predictable. Bug reports, harvest candidates, clearer documentation and focused changes are welcome.
 
 ## Before you start
 
-- Search [existing issues](https://github.com/64x-lunicorn/skills/issues) before
-  opening a new one. Discuss new skills and new validator rules in an issue
-  before starting a pull request.
+- Search [existing issues](https://github.com/64x-lunicorn/skills/issues) before opening a new one, and discuss larger changes in an issue before starting a pull request.
 - Read the [project overview](README.md) and [CLAUDE.md](CLAUDE.md).
-  Harvesting instead of inventing, layering and the description as the only API
-  are deliberate constraints, not missing features.
 - Keep discussions respectful, constructive and focused on the work.
-- For vulnerabilities, follow [SECURITY.md](SECURITY.md) rather than opening a
-  public issue.
+- For vulnerabilities, follow [SECURITY.md](SECURITY.md) rather than opening a public issue.
 
 ## Development setup
 
@@ -29,52 +23,41 @@ npm test
 
 ## Checks
 
-Before pushing, run the same checks as CI:
+Before pushing, run the whole gate in one command:
 
 ```bash
-npm run validate
-npm run typecheck
-npm run coverage
+npm run ci
 ```
 
-`validate` runs the validator against the repository, `typecheck` runs the
-TypeScript compiler without emitting, and `coverage` runs the test suite with a
-100 % line and function threshold. [`ci.yml`](.github/workflows/ci.yml) runs
-them as a matrix on every pull request into `main`, together with a workflow
-lint and a secret scan, and ends in the `CI gate` job. That gate is the only
-required status check.
+It runs every check CI runs: Validator, Type check, Tests. On a pull request, CI also runs Workflow lint and Secret scan and ends in `CI gate`, the only required status check. [docs/ci-cd.md](docs/ci-cd.md) describes the gate and the rules on `main`.
 
-Documentation-only changes do not need a test run. Verify links and examples
-instead.
+## What the checks do
+
+`validate` runs the validator against the repository, `typecheck` runs the TypeScript compiler without emitting, and `coverage` runs the test suite with a 100 % line and function threshold.
+
+Documentation-only changes do not need a test run. Verify links and examples instead.
 
 ## Proposing a skill
 
-Skills here are harvested, not invented. Open an issue with:
+Skills here are harvested, not invented. Harvesting instead of inventing, layering and the description as the only API are deliberate constraints, not missing features. Open an issue with:
 
 - The correction, word for word, as it was given to the assistant.
 - How often it was needed, and in which kind of project.
 - What goes wrong when the skill does not kick in, in one sentence.
 
-Once the same correction has been needed three times, it becomes a skill,
-following the steps under "New skill" in [CLAUDE.md](CLAUDE.md). Every skill
-needs at least one eval case under `evals/<skill-name>/`.
+Once the same correction has been needed three times, it becomes a skill, following the steps under "New skill" in [CLAUDE.md](CLAUDE.md). Every skill needs at least one eval case under `evals/<skill-name>/`.
 
 ## Changing the validator
 
-A new rule is a proposal first: open an issue naming the convention and a real
-mistake it would have caught.
+A new rule is a proposal first: open an issue naming the convention and a real mistake it would have caught.
 
 Rules are born through TDD:
 
-1. Add a fixture under `tools/validator/fixtures/skNNN/` that violates exactly
-   this rule, plus a `pass` fixture for its edge cases.
+1. Add a fixture under `tools/validator/fixtures/skNNN/` that violates exactly this rule, plus a `pass` fixture for its edge cases.
 2. Write the test and watch it fail.
 3. Implement the rule until the test passes.
 
-Thresholds and lists live in
-[`tools/validator/src/conventions.ts`](tools/validator/src/conventions.ts) and in
-[ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md). Change both
-in the same pull request.
+Thresholds and lists live in [`tools/validator/src/conventions.ts`](tools/validator/src/conventions.ts) and in [ADR 0002](docs/adr/0002-own-conventions-stricter-than-the-spec.md). Change both in the same pull request.
 
 ## Writing a useful issue
 
@@ -89,14 +72,9 @@ Redact tokens, private repository URLs and personal data.
 ## Submitting a pull request
 
 1. Keep the change focused and avoid unrelated formatting or refactors.
-2. Explain the problem and solution, and link the relevant issue.
-3. Add a fixture and test for validator changes, and an eval case for skill
-   changes. Update the affected docs.
-4. Add a changeset with `npx changeset` when the plugin itself changes.
-5. Write commits as Conventional Commits in English imperative mood, as
-   [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md)
-   describes. Commits to `main` must be signed.
-6. List the checks you ran and any known limitations.
+2. Explain the problem and the solution, and link the issue.
+3. Add or update tests for changed behaviour, and update the affected documentation.
+4. Write commits as Conventional Commits in English imperative mood.
+5. List the checks you ran and any known limitations.
 
-Only contribute material you have the right to submit. Contributions are made
-under the existing [MIT License](LICENSE).
+Only contribute material you have the right to submit. Contributions are made under the existing [MIT License](LICENSE).
