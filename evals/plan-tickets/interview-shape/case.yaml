@@ -17,9 +17,10 @@ graders:
     input_match: 'interview-user'
   - type: regex
     name: exactly one open decisions line
-    pattern: 'Open decisions:'
+    pattern: '^Open decisions: \d+$'
     match: count:1
+    flags: m
   - type: regex
     name: recommended answer line
-    pattern: '^Recommended answer: .+$'
+    pattern: '^Recommended answer: .+\. \S.*$'
     flags: m
