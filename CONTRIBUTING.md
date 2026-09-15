@@ -48,6 +48,8 @@ npm run scenarios -- "One question at a time"
 
 A name must belong to a scenario that is not pending; the runner rejects any other name and exits 1. A pending case runs by name only after its `pending` tag is removed.
 
+Scenario tests need a local Claude Code install signed in with model access; every scenario is granted `Bash`, `Write` and `Edit`. The `Bash` sandbox of `claude plugin eval` refuses to start when the Docker credential store (`~/.docker`, `DOCKER_CONFIG`) holds a symbolic link inside it; pointing `DOCKER_CONFIG` at another directory does not avoid the check. When every run of a scenario is refused before it starts, the runner reports `Setup error in <scenario>` with the refusal, runs no further scenario, names the ones not run and exits 1. Fix the machine and run again; a setup error says nothing about the skill.
+
 The required CI checks do not run scenario tests. They only check the structure of the cases and run the deterministic scenarios as ordinary tests.
 
 ## Proposing a skill

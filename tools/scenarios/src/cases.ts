@@ -53,8 +53,8 @@ export function selectScenarios(
   };
 }
 
-/** Arguments for `claude` that run one scenario case against this plugin. */
-export function evalArgs(scenario: ScenarioCase): string[] {
+/** Arguments for `claude` that run one scenario case against this plugin and write the result as JSON to `jsonPath`. */
+export function evalArgs(scenario: ScenarioCase, jsonPath: string): string[] {
   return [
     "plugin",
     "eval",
@@ -70,6 +70,8 @@ export function evalArgs(scenario: ScenarioCase): string[] {
     "--no-publish",
     "--ablation",
     "none",
+    "--json",
+    jsonPath,
   ];
 }
 
