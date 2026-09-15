@@ -28,6 +28,7 @@ graders:
   - type: tool_used
     name: nothing pushed
     tool: Bash
-    input_match: 'git\s+push'
+    # Matched against the Bash input as JSON; anchored to the command, so a description that names git push does not count.
+    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b[^|;&"]*\bpush\b'
     min: 0
     max: 0

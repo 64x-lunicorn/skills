@@ -21,8 +21,9 @@ graders:
     input_match: 'git\s+(commit|merge\s+--continue)'
   - type: regex
     name: checks run on the merge before it is recorded
-    # scripts/check.sh appends a line here only while .git/MERGE_HEAD exists, which is between the start
-    # of the merge and its commit; checks run before the merge or after its commit leave no line.
+    # scripts/check.sh appends a line here only after every test passed while .git/MERGE_HEAD exists and no
+    # file is still unmerged, which is between resolving the merge conflicts and the merge commit; checks that
+    # fail, run with merge conflicts left, before the merge or after its commit leave no line.
     target: { source: file, path: .git/64x-merge-checks.log }
-    pattern: '^checks ran on the open merge of [0-9a-f]{40}$'
+    pattern: '^checks passed on the resolved open merge of [0-9a-f]{40}$'
     flags: m
