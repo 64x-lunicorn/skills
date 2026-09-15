@@ -12,6 +12,12 @@ execution:
   allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
 graders:
   - type: tool_used
+    name: implement-ticket called for ticket 5 in update mode
+    # The Skill input is graded as JSON, {"skill":"64x-lunicorn:implement-ticket","args":"5 update"}; 0005 counts as 5,
+    # and words between the number and update, as in "ticket 5, update mode", still count.
+    tool: Skill
+    input_match: '"skill":"(64x-lunicorn:)?implement-ticket"[\s\S]*"args":"[^"]*\b0*5\b[^"]*\bupdate\b'
+  - type: tool_used
     name: resolved with resolve-merge
     tool: Skill
     input_match: 'resolve-merge'
@@ -22,3 +28,9 @@ graders:
     # the branch name ticket/5-missing-name alone does not.
     tool: Skill
     input_match: 'resolve-merge[\s\S]*(#0*5\b|\b[Tt]icket\s+#?0*5\b|0005-missing-name|never prints an empty name|\bSpec\s+#?0*1\b|0001-friendly-greetings|A missing name is greeted as stranger)'
+  - type: regex
+    name: "last commit message names ticket #0005, Spec #0001 or the ticket's scenario"
+    # git writes the last commit's message, body included, to COMMIT_EDITMSG. The scaffold leaves "Closes #0004."
+    # there, and the branch name ticket/5-missing-name alone does not match.
+    target: { source: file, path: .git/COMMIT_EDITMSG }
+    pattern: '#0*5\b|0005-missing-name|\bSpec\s+#?0*1\b|0001-friendly-greetings|A missing name is greeted as stranger'
