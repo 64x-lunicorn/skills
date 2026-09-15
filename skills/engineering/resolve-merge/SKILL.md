@@ -7,7 +7,7 @@ Input: the intent of this side, what the current branch set out to achieve, as t
 
 A merge conflict is where both sides changed the same lines. Resolving it by taste loses one side's work or adds behaviour nobody asked for, and both slip past review because a merge commit looks like bookkeeping. So every line of the result is traced to one of the two sides, and where both cannot stand, Daniel decides.
 
-Never push, never run `git merge --abort`, never rebase and never edit issues. Pushing belongs to the caller; an aborted merge throws away the state Daniel needs to decide; a rebase rewrites commits a review already saw.
+Never push, never run `git merge --abort`, never rebase and never edit issues. Pushing belongs to the caller; an aborted merge throws away the state Daniel needs to decide; a rebase rewrites commits a review already saw; issues belong to the caller and to Daniel.
 
 ## 1. Read the marker and the intent of this side
 
@@ -28,8 +28,8 @@ When git reports that the branch is already up to date, return `merged` with no 
 For each conflicting file, read what the default branch set out to achieve, from its primary sources:
 
 - `git log <merge-base>..<default> -- <file>`, with `<merge-base>` from `git merge-base HEAD MERGE_HEAD`, and each commit's message and diff for that file.
-- A squash commit subject ends in `(#<pr>)`. With `forge: github`, `gh pr view <pr> --json title,body` gives its `Closes #<ticket>`; read that ticket and its Spec.
-- Without a forge, or with local issues, read every issue a commit message references (`#<n>`, `Closes #<n>`, `Refs #<n>`) from `issues.path`, the file whose name starts with the number zero-padded to four digits, and the Spec it names.
+- A squash commit subject ends in `(#<pr>)`. With `forge: github`, `gh pr view <pr> --json title,body` gives its `Closes #<ticket>`. Without a pull request, take every issue a commit message references (`#<n>`, `Closes #<n>`, `Refs #<n>`).
+- Read each of those tickets and the Spec it names. With `issues.tracker: forge`, read issues with `gh issue view <n> --comments`. With `local`, issue `<n>` is the file in `issues.path` whose name starts with the number, zero-padded to four digits.
 
 Read both sides of the file too: `git show :2:<file>` is this side, `git show :3:<file>` the default branch, `git show :1:<file>` the merge-base.
 
