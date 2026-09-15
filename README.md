@@ -43,10 +43,11 @@ Most skill collections start from ideas. This one starts from friction: when an 
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds twenty-seven skills today:
+> This collection is young and grows slowly on purpose. It holds twenty-eight skills today:
 > two for creating the rest, six for setting up projects, three for researching and
 > promoting ideas before anything is built, two for writing specs, three for splitting them
-> into tickets, five for implementing tickets and verifying the result, two for interviewing
+> into tickets, six for implementing tickets, bringing their branches up to date and
+> verifying the result, two for interviewing
 > Daniel, one for recording terms, one for writing ADRs, one for designing HTTP APIs, and
 > one for commits.
 > More arrive as they are harvested.
@@ -98,6 +99,7 @@ Skills trigger on their own when a request matches their description, or run as
 | [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | user-invoked | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
 | [`promote-research`](skills/orchestration/promote-research/SKILL.md) | user-invoked | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | user-invoked | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
+| [`resolve-merge`](skills/engineering/resolve-merge/SKILL.md) | model-invoked | Merges the default branch into a branch, resolves merge conflicts keeping both intents and inventing no behaviour, stops on incompatible intents, and records the merge only after the checks passed, never pushing. |
 | [`review-architecture`](skills/engineering/review-architecture/SKILL.md) | model-invoked | Reviews the technical approach and order for a Spec's tickets in a forked agent and returns diagrams and proposals. |
 | [`review-change`](skills/engineering/review-change/SKILL.md) | model-invoked | Reviews a branch on the spec or the standards axis, including smells and duplication across the codebase, without changing anything. |
 | [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults, writes the marker every other skill checks, and generates the CI gate, issue templates, agent docs, community files and README from it. |
