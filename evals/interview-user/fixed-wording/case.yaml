@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: A question with fixed wording is asked word for word
-description: Spec #16. When a calling skill fixes the wording of a question as "Promote 0003-interview to a Spec?", the interview asks it word for word.
-tags: [scenario, pending]
+description: "Spec #16. When a calling skill fixes the wording of a question as \"Promote 0003-interview to a Spec?\", the interview asks it word for word."
+tags: [scenario]
 execution:
   prompt: |
     /64x-lunicorn:interview-user

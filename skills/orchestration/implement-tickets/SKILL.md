@@ -28,7 +28,7 @@ Skip this step while any ticket in the wayfinder is unchecked.
 
 When every ticket is checked off, the Spec is built but not yet proven as a whole: each review saw one ticket. Invoke `verify-spec` with the Spec number from the wayfinder's reference line. It runs in a fresh subagent and returns completeness, findings and a closing summary without changing anything.
 
-Present the result to Daniel: completeness first, then conflicts, hard findings, and judgement findings one at a time, keeping his decisions verbatim.
+Present the result to Daniel: completeness first, then conflicts and hard findings. Then interview him on the judgement findings with `interview-user`, one decision per finding, keeping his decisions verbatim.
 
 - **Work to do** (hard findings, and judgement findings Daniel accepts): ask "Cut follow-up tickets for these findings as sub-issues of Spec #<spec>?" On a yes, cut them with `design-ticket`, fill their implementation notes from the findings' locations and the architecture decisions they name, create them as sub-issues labelled `task`, and add them to the wayfinder under a new phase `Verification follow-ups`. They are chosen in step 3 like any other ticket; the Spec stays open and is verified again once they are merged.
 - **Conflicts:** the Spec stays open. Which source gives way is Daniel's call, outside this run.
@@ -65,7 +65,7 @@ On `stopped`, show Daniel the reason and the passage it concerns, verbatim, and 
 Invoke `review-change` twice, as separate runs: `<ticket> <base> spec` and `<ticket> <base> standards`, with `<base>` the merge-base of the branch and the default branch. Separate runs keep one axis from masking the other, and neither shares the implementer's reasoning.
 
 - **Hard findings:** write them to a file in the scratchpad and invoke `implement-ticket` with `<ticket> fix <file>`. Then run both reviews again, fresh. After two fix rounds, hard findings still open go to Daniel.
-- **Judgement findings:** present them to Daniel one at a time and keep his decision verbatim. Accepted ones are fixed in one more fix round, followed by both reviews.
+- **Judgement findings:** interview Daniel on them with `interview-user`, one decision per finding, and keep his decisions verbatim. Accepted ones are fixed in one more fix round, followed by both reviews.
 - **Conflicts:** present them to Daniel before any fix round, with every quoted source. The ticket waits for his decision like a stop; which source gives way is his call, and a change to Spec, ticket or architecture issue happens outside this run.
 
 **Done when** no hard finding is open, every judgement finding has Daniel's decision, and no conflict is open.

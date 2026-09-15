@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: The interview ends with confirmed decisions
-description: Spec #16. When Daniel has answered every open decision, he is shown the list of his decisions in his words, and the interview ends only after he confirms it.
-tags: [scenario, pending]
+description: "Spec #16. When Daniel has answered every open decision, he is shown the list of his decisions in his words, and the interview ends only after he confirms it."
+tags: [scenario]
 execution:
   prompt: |
     /64x-lunicorn:interview-user
@@ -35,9 +35,22 @@ graders:
   - type: regex
     name: list holds the chosen name
     pattern: 'csv-to-json'
+  - type: regex
+    name: license answer in his words
+    pattern: 'yes, MIT is fine'
+  - type: regex
+    name: name answer in his words
+    pattern: 'use csv-to-json, csv2json is already taken'
+  - type: regex
+    name: list opens with its fixed line
+    pattern: '^Your decisions:$'
+    flags: m
+  - type: regex
+    name: list closes with its fixed question
+    pattern: '^Do you confirm this list\?$'
+    flags: m
   - type: llm
-    name: list in his words awaits confirmation
+    name: list awaits confirmation
     criteria: >-
-      The message shows Daniel the list of his decisions, the license MIT and
-      the package name csv-to-json, each in the wording of his answers. It asks
-      him to confirm the list and does not declare the interview finished.
+      The message shows Daniel a list of his decisions and asks him to confirm
+      it. It does not declare the interview finished.

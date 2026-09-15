@@ -30,7 +30,7 @@ Read the repo before asking anything, so each question can come with a default a
 
 ## 2. Interview
 
-Ask one question at a time and wait for the answer; show the detected default with each question.
+Interview Daniel on these questions with `interview-user`, passing each detected default as the recommended answer of its question.
 
 1. **Forge:** `github`, `gitlab`, `forgejo` or `none`.
 2. **Default branch.**
@@ -39,7 +39,7 @@ Ask one question at a time and wait for the answer; show the detected default wi
 5. **Runtime:** the stack, `node`, `elixir`, `swift` or `cpp-qt`, and its versions.
 6. **Runner** (GitLab and Forgejo): the runner tags on GitLab, `[]` for untagged runners; the runner label on Forgejo.
 7. **CI command:** the one command that runs every check locally. When step 1 prepared a new one, show it and ask whether to add it.
-8. **CI checks:** each check with `name`, `run` and `required`. On a re-run, existing checks keep their order and new ones are appended; on a first run, the order is the order the entry points were detected. A fixed order is what keeps the generated workflow byte-identical. `Secret scan`, `Workflow lint` and `CI gate` are not listed here; `configure-ci-gate` adds them to every project.
+8. **CI checks:** each check with `name`, `run` and `required`, and the names of the repository secrets it needs, such as an API key for an eval run; most checks need none. Ask for names only, never values: the answer is written into the committed marker. On a re-run, existing checks keep their order and new ones are appended; on a first run, the order is the order the entry points were detected. A fixed order is what keeps the generated workflow byte-identical. `Secret scan`, `Workflow lint` and `CI gate` are not listed here; `configure-ci-gate` adds them to every project.
 9. **Description and topics** (with a remote): the description is one sentence ending in the stack.
 10. **License:** `mit` or `gpl-3.0`, and the copyright holder. A different existing license is only reported, never replaced.
 11. **Code owners** (GitHub and Forgejo): the owner and the critical paths, which are listed separately so a change there is never skimmed. GitLab gets no CODEOWNERS, since code owners need GitLab Premium. On a re-run, existing paths keep their order and new ones are appended.
@@ -69,7 +69,10 @@ ci:
   runner: <runner>
   checks:
     - { name: <name>, run: <command>, required: <true | false> }
+    - { name: <name>, run: <command>, required: <true | false>, secrets: [<NAME>] }
 ```
+
+`secrets` is written only for a check that needs secrets, as a flow list of their names in the order given, so a check without secrets stays as it is and existing markers keep `setup_version: 3`.
 
 The stack keys, in this order, with versions double-quoted:
 

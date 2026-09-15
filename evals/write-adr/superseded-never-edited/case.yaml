@@ -1,0 +1,48 @@
+schema_version: "1.1"
+name: 'An accepted ADR is superseded, never edited'
+description: 'Spec #23. A confirmed decision replaces the accepted ADR 0002; a new ADR is written and ADR 0002 changes only in its status, which points to the new one.'
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We are in the architecture review of the Spec for member self-service in lendbook.
+
+    Earlier turns of this conversation, quoted:
+
+    Claude:
+    Decision to settle: how do members reach their loans and reservations now that they reserve books themselves?
+    Option A: keep the personal links from ADR 0002 and let members reserve through them.
+    Option B: accounts with email sign-in for every member.
+    Option B lets members reserve on their own and ends the forwarded-link problem, but brings a sign-in flow and stored credentials; it replaces ADR 0002, "No accounts for members". Option A needs nothing new, but anyone holding a forwarded link could reserve in that member's name.
+
+    Daniel: B. Reservations in someone else's name are not acceptable.
+
+    Claude:
+    This decision is hard to reverse, surprising without context and the result of a real trade-off, and it replaces ADR 0002. Proposed ADR:
+
+    docs/adr/0003-member-accounts-with-email-sign-in.md
+    Title: Member accounts with email sign-in
+    Decision: every member has an account and signs in by email; this supersedes ADR 0002.
+    Rejected: personal links for reserving.
+
+    Write ADR 0003 Member accounts with email sign-in?
+
+    Daniel: ok
+
+    Continue.
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: ADR written through write-adr
+    tool: Skill
+    input_match: 'write-adr'
+  - type: file_exists
+    name: new ADR written
+    path: 'docs/adr/0003-*.md'
+  - type: regex
+    name: old ADR unchanged except its status
+    target: { source: file, path: docs/adr/0002-no-accounts-for-members.md }
+    pattern: '^# 0002 — No accounts for members\n\nStatus: superseded by \[0003\]\(0003-[a-z0-9-]+\.md\), \d{4}-\d{2}-\d{2}\n\n## Context\n\nMembers borrow books in person at the circle''s meetings\. The organiser records every hand-over and return; members only look up what they have borrowed\.\n\n## Decision\n\nMembers have no accounts and no passwords\. The organiser is the only user who signs in; members see their loans through a personal link the organiser sends them\.\n\n## Consequences\n\n- No password resets and no stored credentials for members\.\n- A leaked personal link shows that member''s loans until the organiser renews it\.\n\n## Alternatives\n\n- \*\*Accounts with email sign-in for every member:\*\* a sign-in flow and stored credentials for a circle that meets in person\.\n$'

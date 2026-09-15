@@ -1,0 +1,43 @@
+schema_version: "1.1"
+name: 'A decision missing one criterion gets no ADR (easy to reverse, surprising without context and a real trade-off)'
+description: 'Spec #23. A decision that is surprising without context and a real trade-off but easy to reverse is confirmed; no ADR is proposed.'
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We are in the architecture review of the Spec for reservations in lendbook.
+
+    Earlier turns of this conversation, quoted:
+
+    Claude:
+    Decision to settle: when is a member told that a reserved book is back?
+    Option A: at the moment the organiser records the return.
+    Option B: once a day at 18:00, for every reserved book returned that day.
+    Option B never messages members at night and bundles several books into one email, but a notice can arrive hours after the return. Option A is immediate, but returns are often recorded late at night after a meeting.
+    The time is one setting in the configuration file and can be changed at any moment.
+
+    Daniel: B, 18:00 is fine.
+
+    Continue.
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: write-adr checks the criteria
+    tool: Skill
+    input_match: 'write-adr'
+  - type: file_exists
+    name: no ADR file written
+    path: 'docs/adr/0003-*.md'
+    exists: false
+  - type: llm
+    name: no ADR proposed
+    criteria: >-
+      The message does not propose an ADR for the decision on when members are told that a reserved book is back and does not ask Daniel whether to write one.
+  - type: regex
+    name: decision stays where it was made
+    target: { source: file, path: docs/adr/README.md }
+    pattern: '0003'
+    match: 'not_contains'

@@ -1,0 +1,54 @@
+schema_version: "1.1"
+name: 'An ADR is not written without Daniel''s ok'
+description: 'Spec #23. Daniel declines a proposed ADR; no ADR is written and the decision stays in the architecture review.'
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We are in the architecture review of the Spec for loan history in lendbook.
+
+    Earlier turns of this conversation, quoted:
+
+    Claude:
+    Decision to settle: how is the loan history stored?
+    Option A: keep updating the loans table in place and add a history table filled by database triggers.
+    Option B: store every hand-over, return and reservation as an event in an append-only table, and derive the current loans from the events.
+    Option B keeps the complete history the organiser asked for, but every query for current loans reads through the events, and going back to plain rows later means migrating every recorded event. Option A is simpler, but triggers miss changes made outside the application.
+
+    Daniel: B. The history has to be complete, even if it costs us the simple table.
+
+    Claude:
+    This decision is hard to reverse, surprising without context and the result of a real trade-off. Proposed ADR:
+
+    docs/adr/0003-loan-history-as-append-only-events.md
+    Title: Loan history as append-only events
+    Decision: every hand-over, return and reservation is stored as an event in an append-only table; current loans are derived from the events.
+    Rejected: updating the loans table in place with a trigger-filled history table.
+
+    Write ADR 0003 Loan history as append-only events?
+
+    Daniel: no, that does not need an ADR, it stays in the architecture issue
+
+    Continue.
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: answer handled by write-adr
+    tool: Skill
+    input_match: 'write-adr'
+  - type: file_exists
+    name: no ADR file written
+    path: 'docs/adr/0003-*.md'
+    exists: false
+  - type: regex
+    name: ADR index unchanged
+    target: { source: file, path: docs/adr/README.md }
+    pattern: '0003'
+    match: 'not_contains'
+  - type: llm
+    name: decision stays where it was made
+    criteria: >-
+      The message leaves the decision to store the loan history as append-only events in the architecture review and its architecture issue, and does not record it as an ADR or move it anywhere else.

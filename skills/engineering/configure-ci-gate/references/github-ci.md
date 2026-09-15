@@ -17,6 +17,20 @@ Read when generating `.github/workflows/ci.yml` and `.github/dependabot.yml`. Pl
               required: <true | false>
   ```
 
+  A check with `secrets` in the marker gets a fourth line, `secret_names`, with the names in marker order, each followed by one space and the first preceded by one. The matrix key is not `secrets`, since that already names the Secret scan job and the `secrets` context in the same workflow:
+
+  ```yaml
+              secret_names: " <NAME1> <NAME2> "
+  ```
+
+- `<<check_secrets>>`: one line per distinct secret across all checks, sorted by name, in exactly this shape and indentation, or nothing when no check names a secret:
+
+  ```yaml
+            <NAME>: ${{ contains(matrix.secret_names, ' <NAME> ') && secrets.<NAME> || '' }}
+  ```
+
+  The spaces around each name make `contains`, a substring test on a string, match whole names only, so a secret reaches only the checks that named it. A check that names none gets an empty value, and no `${{ }}` enters the `run` block.
+
 - `<<setup_steps>>`: the stack's setup steps from the runtime templates, inserted as they are; their lines are already indented.
 - `<<dependabot_stack>>`: the stack's Dependabot entry from the runtime templates, inserted as it is, or nothing when the stack has none.
 
@@ -75,6 +89,7 @@ jobs:
       - name: Run check
         env:
           CHECK_RUN: ${{ matrix.run }}
+<<check_secrets>>
         run: bash -c "${CHECK_RUN}"
 
   workflows:

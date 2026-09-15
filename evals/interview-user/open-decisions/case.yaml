@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: A question shows the decisions still open
-description: Spec #16. An interview with three open decisions shows that three decisions are open when it asks the next question.
-tags: [scenario, pending]
+description: "Spec #16. An interview with three open decisions shows that three decisions are open when it asks the next question."
+tags: [scenario]
 execution:
   prompt: |
     /64x-lunicorn:interview-user

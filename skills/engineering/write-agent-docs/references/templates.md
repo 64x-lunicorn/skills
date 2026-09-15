@@ -1,6 +1,6 @@
 # Agent doc templates
 
-Read when collecting project sections and generating `CLAUDE.md`, `CONTEXT.md` and `docs/adr/README.md`. The shape follows `64x-lunicorn/skills`.
+Read when collecting project sections and generating `CLAUDE.md`, `CONTEXT.md` and `docs/adr/README.md`. The shape follows `64x-lunicorn/skills`. The sections ADR index and `docs/adr/README.md` are copied verbatim to `skills/engineering/write-adr/references/adr-template.md`; change both copies together.
 
 ## Fill rules
 
@@ -28,7 +28,7 @@ Read when collecting project sections and generating `CLAUDE.md`, `CONTEXT.md` a
 | `CLAUDE.md` | `summary` | One sentence on what the project is | Drafted from the README or manifest |
 | `CLAUDE.md` | `conventions` | Bullets: conventions no linter, test or validator enforces, each with its reason | `- None recorded yet. A convention is added once the same correction was needed a second time.` |
 | `CLAUDE.md` | `project_sections` | Further `##` sections, such as architecture notes or commands | Empty |
-| `CONTEXT.md` | `terms` | One paragraph per term, `**Term**: meaning.` | Empty |
+| `CONTEXT.md` | `terms` | One line per term, `**Term**: meaning.`, optionally followed on the same line by `_Avoid_: x, y.` for other words that came up for the term | Empty |
 
 ## ADR index
 

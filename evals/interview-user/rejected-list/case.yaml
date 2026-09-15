@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: A rejected list reopens the interview
-description: Spec #16. When Daniel does not confirm the list of his decisions, the interview asks again about the decision he disagrees with.
-tags: [scenario, pending]
+description: "Spec #16. When Daniel does not confirm the list of his decisions, the interview asks again about the decision he disagrees with."
+tags: [scenario]
 execution:
   prompt: |
     /64x-lunicorn:interview-user
@@ -47,5 +47,8 @@ graders:
   - type: llm
     name: asks again about the package name
     criteria: >-
-      The message asks Daniel again which name the package is published under.
-      It does not ask about the license again and does not end the interview.
+      The message asks Daniel again which name the package is published under,
+      as a question he can answer now. A recommended answer for the name, even
+      the name he chose before, is part of that question and does not count
+      against it. It does not ask about the license again and does not end the
+      interview.

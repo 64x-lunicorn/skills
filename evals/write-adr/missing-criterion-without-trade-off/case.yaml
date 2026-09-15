@@ -1,0 +1,40 @@
+schema_version: "1.1"
+name: 'A decision missing one criterion gets no ADR (hard to reverse, surprising without context and without trade-off)'
+description: 'Spec #23. A decision that is hard to reverse and surprising without context but has no real trade-off is confirmed; no ADR is proposed.'
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We are in the architecture review of the Spec for reservations in lendbook.
+
+    Earlier turns of this conversation, quoted:
+
+    Claude:
+    Decision to settle: how is the ISBN of a reserved book stored?
+    ISBN-10 numbers can start with a zero and end with the check character X, so the ISBN is stored as text. A number column would drop leading zeros and cannot hold X; no other column type keeps every ISBN intact. Changing the column later means migrating every book record, and a reader without this context would expect a number.
+
+    Daniel: text then, there is nothing else that works.
+
+    Continue.
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: write-adr checks the criteria
+    tool: Skill
+    input_match: 'write-adr'
+  - type: file_exists
+    name: no ADR file written
+    path: 'docs/adr/0003-*.md'
+    exists: false
+  - type: llm
+    name: no ADR proposed
+    criteria: >-
+      The message does not propose an ADR for the decision on storing the ISBN as text and does not ask Daniel whether to write one.
+  - type: regex
+    name: decision stays where it was made
+    target: { source: file, path: docs/adr/README.md }
+    pattern: '0003'
+    match: 'not_contains'
