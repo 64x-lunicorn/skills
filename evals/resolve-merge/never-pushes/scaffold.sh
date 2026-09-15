@@ -58,3 +58,6 @@ git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"
 git push -q origin main ticket/5-missing-name
 git checkout -q ticket/5-missing-name
+
+# The graders pin this commit id; a fixture edit that changes it must fail here, not look like missing behaviour.
+[ "$(git rev-parse ticket/5-missing-name)" = a8bde2b652e2da1c030f8ad0df85ed0200a9e9a8 ] || { echo "fixture drifted: ticket/5-missing-name"; exit 1; }

@@ -116,3 +116,7 @@ git remote add origin "$PWD/origin.git"
 # The merged pull request's commit goes to origin too, so the hook can move main there.
 git push -q origin main ticket/5-missing-name ticket/6-greet-several-names refs/fixture/merged-during-run
 git checkout -q main
+
+# The graders pin these commit ids; a fixture edit that changes them must fail here, not look like missing behaviour.
+[ "$(git rev-parse refs/fixture/merged-during-run)" = c6cf142792815673981e66cdae6098142f5850e2 ] || { echo "fixture drifted: refs/fixture/merged-during-run"; exit 1; }
+[ "$(git rev-parse ticket/6-greet-several-names)" = 260f6361767eb4a420243ab5918cc8369218efbc ] || { echo "fixture drifted: ticket/6-greet-several-names"; exit 1; }

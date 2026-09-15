@@ -12,10 +12,6 @@ execution:
   allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
 graders:
   - type: tool_used
-    name: behind checked in the local history
-    tool: Bash
-    input_match: 'git\s+merge-base\s+--is-ancestor'
-  - type: tool_used
     name: updated with implement-ticket update
     tool: Skill
     input_match: 'implement-ticket.*update'

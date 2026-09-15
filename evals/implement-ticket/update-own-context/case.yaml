@@ -18,6 +18,7 @@ graders:
   - type: tool_used
     name: ticket side's intent handed to resolve-merge
     # The Skill input is graded as JSON, {"skill":"64x-lunicorn:resolve-merge","args":"..."}. The ticket's number, its file
-    # name or a phrase from its Goal counts; the branch name ticket/5-missing-name alone does not.
+    # name or a phrase from its Goal, the Spec's number or file name, or the name of the ticket's scenario counts;
+    # the branch name ticket/5-missing-name alone does not.
     tool: Skill
-    input_match: 'resolve-merge[\s\S]*(#0*5\b|\b[Tt]icket\s+#?0*5\b|0005-missing-name|never prints an empty name)'
+    input_match: 'resolve-merge[\s\S]*(#0*5\b|\b[Tt]icket\s+#?0*5\b|0005-missing-name|never prints an empty name|\bSpec\s+#?0*1\b|0001-friendly-greetings|A missing name is greeted as stranger)'

@@ -19,12 +19,10 @@ graders:
     name: merge recorded
     tool: Bash
     input_match: 'git\s+(commit|merge\s+--continue)'
-  - type: tool_order
-    name: checks run before the merge is recorded
-    before: { tool: Bash, input_match: 'scripts/check\.sh' }
-    after: { tool: Bash, input_match: 'git\s+(commit|merge\s+--continue)' }
-  - type: tool_order
-    name: checks run on the merged tree
-    # Any options and spelling of the merge of main; git merge-base does not match.
-    before: { tool: Bash, input_match: 'git\b[^|;&"]*\bmerge\s[^|;&"]*\b(origin/)?main\b' }
-    after: { tool: Bash, input_match: 'scripts/check\.sh' }
+  - type: regex
+    name: checks run on the merge before it is recorded
+    # scripts/check.sh appends a line here only while .git/MERGE_HEAD exists, which is between the start
+    # of the merge and its commit; checks run before the merge or after its commit leave no line.
+    target: { source: file, path: .git/64x-merge-checks.log }
+    pattern: '^checks ran on the open merge of [0-9a-f]{40}$'
+    flags: m
