@@ -34,7 +34,7 @@ Append each substantial statement of Daniel's to `discussion.md` under a dated h
 
 Aim for the best possible product, not agreement.
 
-- Ask one question at a time and wait for the answer; a list of ten questions gets skimmed.
+- Interview Daniel on what is still open with `interview-user`; a list of ten questions gets skimmed.
 - Put "do nothing" and at least one real alternative next to the idea.
 - For `domain`: who has the problem, how often, what it costs them today, what exists already.
 - For `technical`: constraints, options, trade-offs, risks, what would prove an option wrong.
