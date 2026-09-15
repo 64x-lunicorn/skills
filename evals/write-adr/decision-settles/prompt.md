@@ -1,0 +1,1 @@
+Settled for billbox: invoice numbers run without gaps per calendar year, even though every new invoice then has to wait for one lock in the database and we lose creating invoices offline. The tax office wants gapless numbers, and changing the scheme later would mean renumbering every invoice we already sent.

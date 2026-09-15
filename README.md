@@ -43,11 +43,12 @@ Most skill collections start from ideas. This one starts from friction: when an 
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds twenty-five skills today:
+> This collection is young and grows slowly on purpose. It holds twenty-six skills today:
 > two for creating the rest, six for setting up projects, three for researching and
 > promoting ideas before anything is built, two for writing specs, three for splitting them
 > into tickets, five for implementing tickets and verifying the result, one for interviewing
-> Daniel, one for recording terms, one for designing HTTP APIs, and one for commits.
+> Daniel, one for recording terms, one for writing ADRs, one for designing HTTP APIs, and
+> one for commits.
 > More arrive as they are harvested.
 
 ## How it works
@@ -101,6 +102,7 @@ Skills trigger on their own when a request matches their description, or run as
 | [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults, writes the marker every other skill checks, and generates the CI gate, issue templates, agent docs, community files and README from it. |
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
 | [`verify-spec`](skills/engineering/verify-spec/SKILL.md) | model-invoked | Verifies a Spec once all its tickets are merged: scenarios, domain rules, duplication and drift across tickets, leftovers. |
+| [`write-adr`](skills/engineering/write-adr/SKILL.md) | model-invoked | Proposes an ADR only for a decision that is hard to reverse, surprising without context and a real trade-off, and writes it with a regenerated index after Daniel's ok. |
 | [`write-agent-docs`](skills/engineering/write-agent-docs/SKILL.md) | model-invoked | Writes `CLAUDE.md`, `CONTEXT.md` and `docs/adr/` with a generated index, keeping recorded conventions, terms and decisions. |
 | [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
 | [`write-community-files`](skills/engineering/write-community-files/SKILL.md) | model-invoked | Writes the pull request template, CODEOWNERS, SECURITY, CONTRIBUTING and the license, keeping the project's own sections on re-runs. |

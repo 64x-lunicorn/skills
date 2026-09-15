@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: 'An accepted ADR is superseded, never edited'
 description: 'Spec #23. A confirmed decision replaces the accepted ADR 0002; a new ADR is written and ADR 0002 changes only in its status, which points to the new one.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
