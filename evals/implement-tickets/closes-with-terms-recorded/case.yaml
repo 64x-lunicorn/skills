@@ -22,7 +22,7 @@ execution:
 
     Terms: Reservation is missing from CONTEXT.md; Member and Loan are recorded.
 
-    Closing summary: Members can reserve a book that is lent out and get it next when it is returned. Tickets #0004 and #0005. Both scenarios pass.
+    Closing summary: Members can reserve a book that is lent out and get it next when it is returned. Tickets #0004 and #0005. Both scenarios pass. Finding 1 (hard) is open.
 
     Continue.
   max_turns: 40
