@@ -43,10 +43,10 @@ Most skill collections start from ideas. This one starts from friction: when an 
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds twenty-six skills today:
+> This collection is young and grows slowly on purpose. It holds twenty-seven skills today:
 > two for creating the rest, six for setting up projects, three for researching and
 > promoting ideas before anything is built, two for writing specs, three for splitting them
-> into tickets, five for implementing tickets and verifying the result, one for interviewing
+> into tickets, five for implementing tickets and verifying the result, two for interviewing
 > Daniel, one for recording terms, one for writing ADRs, one for designing HTTP APIs, and
 > one for commits.
 > More arrive as they are harvested.
@@ -93,6 +93,7 @@ Skills trigger on their own when a request matches their description, or run as
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
 | [`implement-ticket`](skills/engineering/implement-ticket/SKILL.md) | model-invoked | Builds one ticket in a fresh agent: reuse inventory, test-first at agreed seams, refactor under green, stop on any deviation. |
 | [`implement-tickets`](skills/orchestration/implement-tickets/SKILL.md) | user-invoked | Implements agreed tickets one at a time in wayfinder order, reviewed on two axes, one pull request each. |
+| [`interview-me`](skills/orchestration/interview-me/SKILL.md) | user-invoked | Interviews Daniel about a plan of his own and names the next command to start, without starting it or saving anything. |
 | [`interview-user`](skills/engineering/interview-user/SKILL.md) | model-invoked | Interviews Daniel one question at a time, with the open decision count and a recommended answer, and looks facts up instead of asking. |
 | [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | user-invoked | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
 | [`promote-research`](skills/orchestration/promote-research/SKILL.md) | user-invoked | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
