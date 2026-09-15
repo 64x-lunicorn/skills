@@ -1,0 +1,15 @@
+setup_version: 3
+forge: none
+default_branch: main
+research:
+  path: research/
+  tracked: false  # false = gitignored, local only
+issues:
+  tracker: local
+  path: issues/
+ci:
+  command: npm run ci
+  runtime: { stack: node, node: ">=24" }
+  runner: null
+  checks:
+    - { name: Tests, run: npm test, required: true }

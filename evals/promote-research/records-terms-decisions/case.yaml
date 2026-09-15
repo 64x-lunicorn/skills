@@ -1,0 +1,135 @@
+schema_version: "1.1"
+name: promote-research records the Spec's terms and decisions
+description: 'Ticket #32, per-caller check from architecture #27: once the Spec exists, promote-research hands its Terms to write-term and its Decisions to write-adr, so an ignored call shows up. Not a Spec scenario; tagged scenario so npm run scenarios can run it.'
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:promote-research 0001
+
+    Earlier turns of this run, quoted. The deterministic gates of step 2 all passed.
+
+    Claude:
+    Open decisions: 4
+    The question reads: "How should csv2json convert CSV files larger than the available memory?" Does it still state the problem?
+    Recommended answer: Yes. The reported 4 GB crash is still the reason for the object.
+
+    Daniel: yes, that is the problem
+
+    Claude:
+    Open decisions: 3
+    The object rejects "do nothing" because the reported export is a normal size for the users who asked. Was "do nothing" taken seriously?
+    Recommended answer: Yes. The rejection names the users it would fail.
+
+    Daniel: yes, taken seriously
+
+    Claude:
+    Open decisions: 2
+    The only open question is whether a progress indicator is shown for long conversions, marked as accepted. Is it resolved or explicitly accepted?
+    Recommended answer: Accepted. It does not change the conversion.
+
+    Daniel: accepted, later
+
+    Claude:
+    Open decisions: 1
+    Promote 0001-streaming-large-files to a Spec?
+    Recommended answer: Yes. Every gate has passed.
+
+    Daniel: yes, promote
+
+    Claude:
+    Your decisions:
+    - Problem: "yes, that is the problem"
+    - Do nothing: "yes, taken seriously"
+    - Open questions: "accepted, later"
+    - Go: "yes, promote"
+    Do you confirm this list?
+
+    Daniel: yes
+
+    Claude:
+    Draft:
+
+    > [!IMPORTANT]
+    > This Spec describes domain behaviour. It is never implemented directly; the work happens only in its sub-issues.
+
+    ## Goal
+
+    csv2json converts a CSV file of any size without running out of memory, and its output stays one JSON array.
+
+    ## Problem
+
+    csv2json reads the whole file into memory, so a 4 GB export crashes it.
+
+    ## Domain flow
+
+    ```mermaid
+    flowchart TD
+        A["Row read"] --> B["Object written to the array"]
+        B --> C{"More rows?"}
+        C -->|yes| A
+        C -->|no| D["Array closed"]
+    ```
+
+    ## Domain rules
+
+    - Every file is converted by streaming; there is no flag to read it whole.
+    - The output is one JSON array, byte-identical for files that fit in memory today.
+
+    ## Terms
+
+    - **Streaming**: converting a CSV file row by row, writing each object as soon as its row is parsed, so memory stays flat for any file size.
+
+    ## Decisions
+
+    - **Every file is streamed, with no flag to read it whole.** One code path for every size. Daniel: "streaming for everything, no flag".
+    - **The output stays one JSON array.** Consumers that already parse the output keep working. Daniel: "keep the array, I do not want to break the people who already parse our output".
+
+    Rejected:
+
+    - Do nothing: document a size limit; the reported export is a normal size for the users who asked.
+    - Newline-delimited JSON: changes the output format for every consumer.
+
+    ## Acceptance criteria
+
+    ```gherkin
+    Feature: csv2json converts files of any size
+
+      Scenario: A file larger than memory is converted
+        Given a CSV file larger than the available memory
+        When it is converted
+        Then the output is one JSON array holding every row
+
+      Scenario: Small files keep their output
+        Given a CSV file converted before this change
+        When it is converted again
+        Then the output is byte-identical
+    ```
+
+    ## Origin
+
+    Research object `0001-streaming-large-files`, promoted today. Gate answers: "yes, that is the problem", "yes, taken seriously", "accepted, later", "yes, promote".
+
+    Technical notes: None.
+
+    Create `Spec: Streaming large files` in issues/?
+
+    Daniel: yes
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: file_exists
+    name: Spec created
+    path: 'issues/0001-*-spec.md'
+  - type: tool_used
+    name: promote-research hands the terms to write-term
+    tool: Skill
+    input_match: 'write-term'
+  - type: tool_used
+    name: promote-research hands the decisions to write-adr
+    tool: Skill
+    input_match: 'write-adr'
