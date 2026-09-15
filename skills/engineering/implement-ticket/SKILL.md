@@ -90,9 +90,9 @@ With `update`, the ticket branch is brought up to date with the default branch. 
 3. On `merged`, run this ticket's scenario tests by their names, then steps 5 and 6. A scenario test that fails after the merge is a stop, returned with its failing output; steps 5 and 6 do not run then, since the required checks do not run scenario tests and nothing later would catch it.
 4. On `stopped: incompatible intents` or `stopped: checks failed`, return the stop verbatim as the outcome, quoted sources or failing output included. The merge stays open for Daniel.
 
-In update mode, the report parts of section 7 hold: Outcome, `done` after `merged`, or the stop from item 4; Branch and commits, the merge commit and any refactor commits, or `no merge commit, already up to date`; Scenarios, each of the ticket's scenarios with its test file and whether it passed in the run after the merge; Inventory, what was reused and what is new with its reason, from section 2; Deviations, the files the merge resolved, or `None`.
+In update mode, the report parts of section 7 hold: Outcome, `done` after `merged`, or the stop from item 3 or item 4; Branch and commits, the merge commit and any refactor commits, or `no merge commit, already up to date`; Scenarios, each of the ticket's scenarios with its test file and whether it passed in the run after the merge; Inventory, what was reused and what is new with its reason, from section 2; Deviations, the files the merge resolved, or `None`.
 
-**Done when** `resolve-merge` returned `merged`, this ticket's scenario tests pass and steps 5 and 6 are done, or its stop is returned verbatim with the merge still open.
+**Done when** `resolve-merge` returned `merged`, this ticket's scenario tests pass and steps 5 and 6 are done, or its stop is returned verbatim with the merge still open, or a scenario test failed after the merge and its stop is returned with its failing output.
 
 ## 7. Report
 
