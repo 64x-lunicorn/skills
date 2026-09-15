@@ -1,6 +1,6 @@
 schema_version: "1.1"
-name: 'The interview records nothing itself'
-description: 'Spec #23. A term settled during the interview write-spec ran; the interview has written nothing, and write-spec records the term once the Spec exists. The interview is quoted as already ended, so the run observes what follows it; the interview''s own saving is covered by Spec #16''s scenario "The interview saves nothing".'
+name: write-spec records the Spec's terms and decisions
+description: 'Ticket #32, per-caller check from architecture #27: once the Spec exists, write-spec hands its Terms to write-term and its Decisions to write-adr, so an ignored call shows up. Not a Spec scenario; tagged scenario so npm run scenarios can run it.'
 tags: [scenario]
 context:
   scaffold_script: scaffold.sh
@@ -13,15 +13,23 @@ execution:
     Daniel: members should be able to reserve a book that is lent out, and get it next when it comes back
 
     Claude:
-    Open decisions: 1
+    Open decisions: 2
     Which word does lendbook use for a member's claim on a book that is lent out?
     Recommended answer: Reservation. It is the word you used and says what the member does.
 
     Daniel: reservation, and it means the member gets the book next when it is returned
 
     Claude:
+    Open decisions: 1
+    Can more than one member reserve the same book?
+    Recommended answer: No. One reservation per book keeps the hand-over clear for the organiser.
+
+    Daniel: no, one reservation is enough, no waiting list, the circle is small and someone else can ask again after the return
+
+    Claude:
     Your decisions:
     - Word for the claim: "reservation, and it means the member gets the book next when it is returned"
+    - Reservations per book: "no, one reservation is enough, no waiting list, the circle is small and someone else can ask again after the return"
     Do you confirm this list?
 
     Daniel: yes
@@ -59,14 +67,17 @@ execution:
 
     ```mermaid
     flowchart TD
-        A["A member wants a book that is lent out"] --> B["The member reserves the book"]
-        B --> C["The book is returned"]
-        C --> D["The organiser hands it to the member who reserved it"]
+        A["A member wants a book that is lent out"] --> B{"Book already reserved?"}
+        B -->|no| C["The member reserves the book"]
+        B -->|yes| D["No reservation; the member asks again after the return"]
+        C --> E["The book is returned"]
+        E --> F["The organiser hands it to the member who reserved it"]
     ```
 
     ## Domain rules
 
     - A book that is not lent out cannot be reserved.
+    - A book has at most one reservation at a time.
     - A returned book with a reservation goes to the member who reserved it.
 
     ## Terms
@@ -74,6 +85,14 @@ execution:
     - **Member**: a person registered with the lending circle who may borrow books.
     - **Loan**: one book lent to one member, from hand-over until its return.
     - **Reservation**: a member's claim on a book that is currently lent out; the member gets the book next when it is returned.
+
+    ## Decisions
+
+    - **A book has at most one reservation at a time, with no waiting list.** The circle is small and another member can ask again after the return. Daniel: "no, one reservation is enough, no waiting list, the circle is small and someone else can ask again after the return".
+
+    Rejected:
+
+    - A waiting list per book: an order of members to keep and explain for a circle where a second claim is rare.
 
     ## Acceptance criteria
 
@@ -84,6 +103,11 @@ execution:
         Given a book is lent out to one member
         When another member reserves the book
         Then the reservation is recorded for that member
+
+      Scenario: A reserved book cannot be reserved again
+        Given a book that is lent out has a reservation
+        When a third member tries to reserve the book
+        Then no second reservation is recorded
 
       Scenario: A returned book goes to the member who reserved it
         Given a book with a reservation is lent out
@@ -106,18 +130,10 @@ graders:
     name: Spec created
     path: 'issues/0001-*-spec.md'
   - type: tool_used
-    name: write-spec records the term
+    name: write-spec hands the terms to write-term
     tool: Skill
     input_match: 'write-term'
   - type: tool_used
-    name: nothing written to CONTEXT.md in the run
-    tool: Write
-    input_match: 'CONTEXT\.md'
-    min: 0
-    max: 0
-  - type: tool_used
-    name: nothing edited in CONTEXT.md in the run
-    tool: Edit
-    input_match: 'CONTEXT\.md'
-    min: 0
-    max: 0
+    name: write-spec hands the decisions to write-adr
+    tool: Skill
+    input_match: 'write-adr'
