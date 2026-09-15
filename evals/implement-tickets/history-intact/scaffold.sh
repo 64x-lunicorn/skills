@@ -18,6 +18,8 @@ commit() {
 }
 
 git init -q
+# The graders read ref and reflog files, so packing is off in every repository they read.
+git config gc.auto 0
 git symbolic-ref HEAD refs/heads/main
 printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
@@ -59,6 +61,7 @@ SH
 commit 2 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 
 git init -q --bare origin.git
+git -C origin.git config gc.auto 0
 git remote add origin "$PWD/origin.git"
 git push -q origin main ticket/5-missing-name
 

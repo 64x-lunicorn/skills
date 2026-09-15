@@ -22,6 +22,8 @@ commit() {
 }
 
 git init -q
+# The graders read ref and reflog files, so packing is off in every repository they read.
+git config gc.auto 0
 git symbolic-ref HEAD refs/heads/main
 printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
@@ -112,6 +114,7 @@ cp .git/hooks/post-commit .git/hooks/post-merge
 chmod +x .git/hooks/post-commit .git/hooks/post-merge
 
 git init -q --bare origin.git
+git -C origin.git config gc.auto 0
 git remote add origin "$PWD/origin.git"
 # The merged pull request's commit goes to origin too, so the hook can move main there.
 git push -q origin main ticket/5-missing-name ticket/6-greet-several-names refs/fixture/merged-during-run

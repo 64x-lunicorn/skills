@@ -19,6 +19,8 @@ commit() {
 }
 
 git init -q
+# The graders read ref and reflog files, so packing is off in every repository they read.
+git config gc.auto 0
 git symbolic-ref HEAD refs/heads/main
 printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
