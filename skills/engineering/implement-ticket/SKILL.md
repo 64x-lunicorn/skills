@@ -8,7 +8,7 @@ background: false
 
 Implement: $ARGUMENTS
 
-The arguments are a ticket number, optionally followed by `fix <findings file>`. Update mode is recognised from the ticket number and the word `update` in the arguments, in any order. Arguments with `fix <findings file>` are always fix mode; the findings file name never counts toward update mode. You run without the conversation that led here; the ticket, its Spec, the architecture issue and the repository are your only sources. Build exactly what the ticket asks. When something does not fit, stop and report instead of choosing: a guess made here becomes drift nobody decided. Never push, open or merge pull requests, or edit issues.
+The arguments are a ticket number, optionally followed by `fix <findings file>`, or a ticket number and the word `update` in any order. Arguments with `fix <findings file>` are always fix mode. You run without the conversation that led here; the ticket, its Spec, the architecture issue and the repository are your only sources. Build exactly what the ticket asks. When something does not fit, stop and report instead of choosing: a guess made here becomes drift nobody decided. Never push, open or merge pull requests, or edit issues.
 
 ## 1. Read and check
 
