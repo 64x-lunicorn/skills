@@ -67,3 +67,11 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Finding**: one report from the validator: rule ID, path, line when known, reason.
 
 **Fixture**: mini repo under `tools/validator/fixtures/skNNN/`. `fail-*` violates exactly one rule, `pass` satisfies it at its edge cases.
+
+**Term**: a word with one fixed meaning in a project, recorded as one line in `CONTEXT.md`; code, issues and Specs use the same word.
+
+**Words to avoid**: the other words that came up for a term and are not used, recorded on the term's line as `_Avoid_: x, y.` _Avoid_: rejected synonyms.
+
+**ADR**: an architecture decision record, one file under `docs/adr/`, numbered in order and never renumbered, for a decision that is hard to reverse, surprising without context and the result of a real trade-off.
+
+**ADR index**: the table in `docs/adr/README.md` listing every ADR with its number, title and status.
