@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: 'A Spec closes only with its terms recorded'
 description: 'Spec #23. Verification of Spec #0001 reported the term Reservation missing from CONTEXT.md; the term goes to write-term before the Spec is closed.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -15,12 +15,12 @@ execution:
 
     Completeness: #0004 and #0005 closed as completed; `ci.command` passed.
 
-    Terms: Reservation is missing from CONTEXT.md; Member and Loan are recorded.
-
     Findings:
-    1. hard, CONTEXT.md: the term Reservation from the Spec's Terms section is missing. Source: Spec #0001, Terms: "**Reservation**: a member's claim on a book that is currently lent out; the member gets the book next when it is returned." Fix: record the term in CONTEXT.md.
+    1. hard, Spec #0001 Terms line 37: the term Reservation is missing from CONTEXT.md. Source: "**Reservation**: a member's claim on a book that is currently lent out; the member gets the book next when it is returned." Fix: record the term in CONTEXT.md.
 
     1 hard, 0 judgement, 0 conflict.
+
+    Terms: Reservation is missing from CONTEXT.md; Member and Loan are recorded.
 
     Closing summary: Members can reserve a book that is lent out and get it next when it is returned. Tickets #0004 and #0005. Both scenarios pass.
 

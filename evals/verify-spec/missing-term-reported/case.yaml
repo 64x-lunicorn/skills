@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: 'A Spec''s missing terms are reported at verification'
 description: 'Spec #23. Spec #0001''s tickets are all closed and its term Reservation is missing from CONTEXT.md; verification reports the missing term and changes nothing.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

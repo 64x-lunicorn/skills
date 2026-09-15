@@ -120,7 +120,8 @@ User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` use
 use `design-spec`, `plan-tickets` uses `design-ticket` and `review-architecture`,
 `implement-tickets` uses `implement-ticket`, which builds with `write-tests`, `review-change`
 and `verify-spec`. `write-spec`, `promote-research` and `plan-tickets` record the terms and decisions
-they settled with `write-term` and `write-adr`. `setup-project`, `research-idea`, `promote-research`,
+they settled with `write-term` and `write-adr`, and `implement-tickets` records a Spec's missing terms
+with `write-term`. `setup-project`, `research-idea`, `promote-research`,
 `write-spec`, `plan-tickets`, `implement-tickets` and `interview-me` interview Daniel with `interview-user`.
 
 ## Project setup
@@ -277,8 +278,9 @@ wayfinder  -->  tickets  -->  implement-ticket  -->  review-change  -->  pull re
 
 A stop is shown to Daniel and posted on the wayfinder, never worked around. Merging stays with
 Daniel. When the wayfinder is fully checked off, the next run verifies the Spec as a whole:
-findings become follow-up tickets, and a clean result closes the Spec, its architecture issue
-and its wayfinder on Daniel's go. The design is in
+findings become follow-up tickets, except Spec terms missing from `CONTEXT.md`, which are
+recorded through `write-term` in the same run, and a clean result closes the Spec, its
+architecture issue and its wayfinder on Daniel's go. The design is in
 [ADR 0008](docs/adr/0008-implementing-tickets.md) and
 [ADR 0009](docs/adr/0009-verifying-and-closing-a-spec.md).
 
