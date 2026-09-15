@@ -48,7 +48,7 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 
 **Review finding**: one result of `review-change` or `verify-spec`, classed `hard` (fixed without asking), `judgement` (decided by Daniel) or `conflict` (sources contradict each other; only Daniel decides which gives way). Not to be confused with a validator finding.
 
-**Spec verification**: the check `verify-spec` runs once every ticket of a Spec is merged, over the whole Spec instead of one ticket. It ends in follow-up tickets, a conflict for Daniel, or the Spec closed together with its architecture issue and wayfinder (ADR 0009).
+**Spec verification**: the check `verify-spec` runs once every ticket of a Spec is merged, over the whole Spec instead of one ticket. It ends in follow-up tickets, missing terms recorded through `write-term`, a conflict for Daniel, or the Spec closed together with its architecture issue and wayfinder (ADR 0009).
 
 **Marker**: `.claude/64x-lunicorn.yml`, committed, written by `setup-project`. Every skill reads forge, default branch, research location, issue tracker, `ci.command`, `ci.runtime`, `ci.runner` and `ci.checks` from it. `setup_version` is 3 since `ci.runner` was added (ADR 0012).
 
