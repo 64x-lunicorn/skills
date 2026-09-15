@@ -36,7 +36,7 @@ graders:
     name: merge not aborted
     tool: Bash
     # Matched against the Bash input as JSON; anchored to the command, so a description that names an abort does not count.
-    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b[^|;&"]*\smerge\s+--abort\b'
+    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b(?:[^|;&"\\]|\\"(?:[^"\\]|\\[^"])*\\"|\\[^"])*?\smerge\s+--abort\b'
     min: 0
     max: 0
   - type: regex

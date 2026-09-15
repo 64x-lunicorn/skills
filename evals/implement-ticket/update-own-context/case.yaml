@@ -23,14 +23,15 @@ graders:
     input_match: 'resolve-merge'
   - type: tool_used
     name: ticket side's intent handed to resolve-merge
-    # The Skill input is graded as JSON, {"skill":"64x-lunicorn:resolve-merge","args":"..."}. The ticket's number, its file
-    # name or a phrase from its Goal, the Spec's number or file name, or the name of the ticket's scenario counts;
-    # the branch name ticket/5-missing-name alone does not.
+    # The Skill input is graded as JSON, {"skill":"64x-lunicorn:resolve-merge","args":"..."}. Only text that appears in
+    # the issue files and in no prompt, branch name or scaffold commit message counts: the ticket's or Spec's file
+    # name, a phrase from the ticket's Goal or the name of the ticket's scenario. The ticket or Spec number alone
+    # is in the prompt and does not.
     tool: Skill
-    input_match: 'resolve-merge[\s\S]*(#0*5\b|\b[Tt]icket\s+#?0*5\b|0005-missing-name|never prints an empty name|\bSpec\s+#?0*1\b|0001-friendly-greetings|A missing name is greeted as stranger)'
+    input_match: 'resolve-merge[\s\S]*(0005-missing-name|never prints an empty name|0001-friendly-greetings|A missing name is greeted as stranger)'
   - type: regex
     name: "last commit message names ticket #0005, Spec #0001 or the ticket's scenario"
-    # git writes the last commit's message, body included, to COMMIT_EDITMSG. The scaffold leaves "Closes #0004."
-    # there, and the branch name ticket/5-missing-name alone does not match.
+    # git writes the last commit's message, body included, to COMMIT_EDITMSG. Only text from the issue files
+    # counts; the scaffold leaves "Closes #0004." there, and neither it, the prompt nor the branch name matches.
     target: { source: file, path: .git/COMMIT_EDITMSG }
-    pattern: '#0*5\b|0005-missing-name|\bSpec\s+#?0*1\b|0001-friendly-greetings|A missing name is greeted as stranger'
+    pattern: '0005-missing-name|never prints an empty name|0001-friendly-greetings|A missing name is greeted as stranger'

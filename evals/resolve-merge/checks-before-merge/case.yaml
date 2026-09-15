@@ -15,16 +15,19 @@ graders:
     name: resolved with resolve-merge
     tool: Skill
     input_match: 'resolve-merge'
-  - type: tool_used
+  - type: regex
     name: merge recorded
-    tool: Bash
-    # Matched against the Bash input as JSON; anchored to the command, so a description that names a commit does not count.
-    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b[^|;&"]*\s(?:commit|merge\s+--continue)(?![\w.=-])'
+    # A merge committed after --no-commit or after resolving merge conflicts logs "commit (merge)", a one-step
+    # merge logs "merge <ref>: Merge made". A refused git commit leaves no line.
+    target: { source: file, path: .git/logs/HEAD }
+    pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
   - type: regex
     name: checks run on the merge before it is recorded
-    # scripts/check.sh appends a line here only after every test passed while .git/MERGE_HEAD exists and no
-    # file is still unmerged, which is between resolving the merge conflicts and the merge commit; checks that
-    # fail, run with merge conflicts left, before the merge or after its commit leave no line.
-    target: { source: file, path: .git/64x-merge-checks.log }
-    pattern: '^checks passed on the resolved open merge of [0-9a-f]{40}$'
+    # scripts/check.sh appends "passed <MERGE_HEAD id>" here only after every test passed while .git/MERGE_HEAD
+    # exists and no file is still unmerged, which is between resolving the merge conflicts and the merge commit;
+    # checks that fail, run with merge conflicts left, before the merge or after its commit leave no line.
+    # Together with "merge recorded", the checks ran on the open merge and its merge commit followed. The
+    # explanation lives here and not in check.sh, which the agent reads as the project's ci.command.
+    target: { source: file, path: .git/check-runs.log }
+    pattern: '^passed [0-9a-f]{40}$'
     flags: m
