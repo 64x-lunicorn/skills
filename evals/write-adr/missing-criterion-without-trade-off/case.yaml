@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: 'A decision missing one criterion gets no ADR (hard to reverse, surprising without context and without trade-off)'
 description: 'Spec #23. A decision that is hard to reverse and surprising without context but has no real trade-off is confirmed; no ADR is proposed.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -33,7 +33,8 @@ graders:
     name: no ADR proposed
     criteria: >-
       The message does not propose an ADR for the decision on storing the ISBN as text and does not ask Daniel whether to write one.
-  - type: llm
+  - type: regex
     name: decision stays where it was made
-    criteria: >-
-      The message does not record the decision on storing the ISBN as text under docs/adr/ and does not move it anywhere else. The message does not need to say where the decision stays.
+    target: { source: file, path: docs/adr/README.md }
+    pattern: '0003'
+    match: 'not_contains'

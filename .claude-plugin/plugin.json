@@ -27,6 +27,7 @@
     "./skills/engineering/review-change",
     "./skills/engineering/verify-claims",
     "./skills/engineering/verify-spec",
+    "./skills/engineering/write-adr",
     "./skills/engineering/write-agent-docs",
     "./skills/engineering/write-commit-message",
     "./skills/engineering/write-community-files",
