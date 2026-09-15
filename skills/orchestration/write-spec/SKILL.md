@@ -41,7 +41,7 @@ Add the answers to the collected statements, verbatim.
 
 Draft the body with `design-spec`, from the collected statements and gate answers. Show Daniel the draft together with the technical notes `design-spec` sorted out, and say that those notes belong to the architecture issue when the Spec is split.
 
-Rework the draft until Daniel is satisfied with it. Change nothing in the repo during this run: a Spec is not implementable, and code written now skips the split.
+Rework the draft until Daniel is satisfied with it. Write no code during this run: a Spec is not implementable, and code written now skips the split.
 
 **Done when** Daniel has seen the current draft and the technical notes.
 
