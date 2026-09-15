@@ -1,6 +1,6 @@
 # Agent doc templates
 
-Read when collecting project sections and generating `CLAUDE.md`, `CONTEXT.md` and `docs/adr/README.md`. The shape follows `64x-lunicorn/skills`.
+Read when collecting project sections and generating `CLAUDE.md`, `CONTEXT.md` and `docs/adr/README.md`. The shape follows `64x-lunicorn/skills`. The sections ADR index and `docs/adr/README.md` are copied verbatim to `skills/engineering/write-adr/references/adr-template.md`; change both copies together.
 
 ## Fill rules
 
