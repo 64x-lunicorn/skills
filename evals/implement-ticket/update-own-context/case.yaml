@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: The update runs in the ticket's own context
 description: "Spec #24. implement-ticket in update mode brings ticket/5-missing-name up to date with main, taking the ticket side's intent from ticket #0005, its Spec or its scenarios."
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -13,10 +13,11 @@ execution:
 graders:
   - type: tool_used
     name: implement-ticket called for ticket 5 in update mode
-    # The Skill input is graded as JSON, {"skill":"64x-lunicorn:implement-ticket","args":"5 update"}; 0005 counts as 5,
-    # and words between the number and update, as in "ticket 5, update mode", still count.
+    # The Skill input is graded as JSON, {"skill":"64x-lunicorn:implement-ticket","args":"5 update"}; 0005 counts as 5.
+    # The args need both the number and update, in either order and with words between them, as in "ticket 5, update
+    # mode" or "update mode: bring ticket 5's branch up to date with main".
     tool: Skill
-    input_match: '"skill":"(64x-lunicorn:)?implement-ticket"[\s\S]*"args":"[^"]*\b0*5\b[^"]*\bupdate\b'
+    input_match: '"skill":"(64x-lunicorn:)?implement-ticket"[\s\S]*"args":"[^"]*(\b0*5\b[^"]*\bupdate\b|\bupdate\b[^"]*\b0*5\b)'
   - type: tool_used
     name: resolved with resolve-merge
     tool: Skill
@@ -33,5 +34,6 @@ graders:
     name: "last commit message names ticket #0005, Spec #0001 or the ticket's scenario"
     # git writes the last commit's message, body included, to COMMIT_EDITMSG. Only text from the issue files
     # counts; the scaffold leaves "Closes #0004." there, and neither it, the prompt nor the branch name matches.
+    # Words match across any whitespace, since write-commit-message wraps the body at 72 columns.
     target: { source: file, path: .git/COMMIT_EDITMSG }
-    pattern: '0005-missing-name|never prints an empty name|0001-friendly-greetings|A missing name is greeted as stranger'
+    pattern: '0005-missing-name|never\s+prints\s+an\s+empty\s+name|0001-friendly-greetings|A\s+missing\s+name\s+is\s+greeted\s+as\s+stranger'
