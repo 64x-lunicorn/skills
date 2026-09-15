@@ -83,3 +83,14 @@ Ask: "Write the architecture issue, the dependencies and the implementation note
 Fill [the wayfinder template](references/wayfinder-template.md) from the phases of the review. Create it labelled `wayfinder` as a sub-issue of the Spec; the confirmation from step 5 covers it, since its content is the order Daniel just approved. Then replace `Order: pending` in every ticket and the architecture issue with the wayfinder's number.
 
 **Done when** the wayfinder exists, every ticket links it, and Daniel has the links to the Spec, the architecture issue and the wayfinder.
+
+## 7. Record decisions and terms
+
+Daniel's ok in step 5 confirmed the review, so what it settled is recorded now: the interview records nothing itself, and a decision left only in the architecture issue or a term left only in a ticket drifts from `docs/adr/` and `CONTEXT.md`.
+
+- Invoke `write-adr` with every decision of the recorded architecture issue's `## Decisions`, with its reason and the rejected options.
+- Invoke `write-term` with each word Daniel fixed to one meaning in his answers during steps 2 and 4, with that meaning and the other words that came up for it, such as a word an accepted proposal replaced.
+
+Invoke both before asking Daniel anything, and put their questions into one message: each ends the turn on its question, so a question asked first keeps the other from running. His answers are handled by `write-adr` and `write-term`. With no decision or no settled term, that skill gets nothing.
+
+**Done when** `write-adr` has every decision of the architecture issue and `write-term` every settled term, or there is neither.
