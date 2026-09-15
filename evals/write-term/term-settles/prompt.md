@@ -1,0 +1,1 @@
+In lendbook we keep saying "hold" for different things. Let's fix it: a hold is a member's claim on a book that is currently lent out, and that member gets the book next when it comes back. That is what hold means here from now on.
