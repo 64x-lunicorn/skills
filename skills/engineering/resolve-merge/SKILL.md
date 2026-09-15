@@ -27,7 +27,7 @@ When git reports that the branch is already up to date, return `merged` with no 
 
 For each conflicting file, read what the default branch set out to achieve, from its primary sources:
 
-- `git log <merge-base>..<default> -- <file>`, with `<merge-base>` from `git merge-base HEAD MERGE_HEAD`, and each commit's message and diff for that file.
+- `git log <merge-base>..MERGE_HEAD -- <file>`, with `<merge-base>` from `git merge-base HEAD MERGE_HEAD`, and each commit's message and diff for that file.
 - A squash commit subject ends in `(#<pr>)`. With `forge: github`, `gh pr view <pr> --json title,body` gives its `Closes #<ticket>`. Without a pull request, take every issue a commit message references (`#<n>`, `Closes #<n>`, `Refs #<n>`).
 - Read each of those tickets and the Spec it names. With `issues.tracker: forge`, read issues with `gh issue view <n> --comments`. With `local`, issue `<n>` is the file in `issues.path` whose name starts with the number, zero-padded to four digits.
 
@@ -39,7 +39,7 @@ Read both sides of the file too: `git show :2:<file>` is this side, `git show :3
 
 For each conflicting file, decide whether one result can keep both intents:
 
-- **Both can be kept:** write the result from the lines of the two sides. A line comes from this side, from the default branch, or combines a change of each on the same line. Add nothing else: no new condition, option, fallback, comment or test that neither side wrote. When combining needs a line neither side wrote beyond joining their changes, both intents cannot be kept that way. Stage the file.
+- **Both can be kept:** write the result from the lines of the two sides. A line comes from this side, from the default branch, or combines a change of each on the same line. Add nothing else: no new condition, option, fallback, comment or test that neither side wrote. Stage the file. When combining needs a line neither side wrote beyond joining their changes, both intents cannot be kept; treat the file as **Both cannot be kept**.
 - **Both cannot be kept:** the intents contradict, for example one side makes a case succeed and the other makes the same case fail. Choosing either one, or a compromise, decides the product for Daniel. Leave the merge open with the file unresolved and go to step 6 with `stopped: incompatible intents`.
 
 Merge conflict markers left in a file count as unresolved. Files git merged without a merge conflict stay as git merged them.
@@ -60,8 +60,8 @@ After the checks passed, draft the message with `write-commit-message` from the 
 
 Return exactly one of:
 
-- **`merged`**: the merge commit, and per resolved file what was kept from this side and from the default branch.
+- **`merged`**: the merge commit, and per resolved file what was kept from this side and from the default branch; or no merge commit, already up to date, when step 2 found nothing to merge.
 - **`stopped: incompatible intents`**: per file, the intent of each side with its source quoted verbatim (file or issue, and the passage), and that the merge is left open for Daniel to decide. This is not a review finding and gets no class.
 - **`stopped: checks failed`**: the failing output of `ci.command`, and that the merge is left open.
 
-**Done when** the merge is committed and `merged` is returned, or a stop is returned with the merge still open.
+**Done when** the merge is committed and `merged` is returned, or `merged` is returned with no merge commit because the branch was already up to date, or a stop is returned with the merge still open.
