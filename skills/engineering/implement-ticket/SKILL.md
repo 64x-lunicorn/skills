@@ -1,6 +1,6 @@
 ---
 name: implement-ticket
-description: Implements one agreed ticket in a fresh subagent on its own branch, activating its pending scenarios, building test-first at the seams named by the architecture issue, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket branch is to be updated in the context of its ticket.
+description: Implements one agreed ticket in a fresh subagent on its own branch, activating its pending scenarios, building test-first at the seams named by the architecture issue, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket's branch or pull request is to be brought up to date with main or the default branch, is behind it or has merge conflicts.
 context: fork
 agent: general-purpose
 background: false
@@ -8,7 +8,7 @@ background: false
 
 Implement: $ARGUMENTS
 
-The arguments are a ticket number, optionally followed by `fix <findings file>`. Update mode is recognised from the ticket number and the word `update` in the arguments, in any order. You run without the conversation that led here; the ticket, its Spec, the architecture issue and the repository are your only sources. Build exactly what the ticket asks. When something does not fit, stop and report instead of choosing: a guess made here becomes drift nobody decided. Never push, open pull requests, merge or edit issues.
+The arguments are a ticket number, optionally followed by `fix <findings file>`. Update mode is recognised from the ticket number and the word `update` in the arguments, in any order. Arguments with `fix <findings file>` are always fix mode; the findings file name never counts toward update mode. You run without the conversation that led here; the ticket, its Spec, the architecture issue and the repository are your only sources. Build exactly what the ticket asks. When something does not fit, stop and report instead of choosing: a guess made here becomes drift nobody decided. Never push, open or merge pull requests, or edit issues.
 
 ## 1. Read and check
 
@@ -90,7 +90,7 @@ With `update`, the ticket branch is brought up to date with the default branch. 
 3. On `merged`, run steps 5 and 6.
 4. On `stopped: incompatible intents` or `stopped: checks failed`, return the stop verbatim as the outcome, quoted sources or failing output included. The merge stays open for Daniel.
 
-In update mode, the report parts of section 7 hold: Branch and commits, the merge commit and any refactor commits, or `no merge commit, already up to date`; Scenarios, each of the ticket's scenarios with its test file and whether it passes after the merge; Inventory, `Not reached`; Deviations, the files the merge resolved, or `None`.
+In update mode, the report parts of section 7 hold: Branch and commits, the merge commit and any refactor commits, or `no merge commit, already up to date`; Scenarios, each of the ticket's scenarios with its test file and whether it passes after the merge; Inventory, what was reused and what is new with its reason, from section 2; Deviations, the files the merge resolved, or `None`.
 
 **Done when** `resolve-merge` returned `merged` and steps 5 and 6 are done, or its stop is returned verbatim with the merge still open.
 
