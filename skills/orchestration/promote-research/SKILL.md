@@ -38,7 +38,7 @@ On any fail, stop and name what is missing. Fixes happen through `research-idea`
 
 ## 3. Judgement gates with Daniel
 
-Ask one at a time and wait for each answer:
+Interview Daniel on the four gates with `interview-user`, passing the go question as fixed wording:
 
 1. **Problem in one sentence.** Read the question back and ask whether it still states the problem.
 2. **"Do nothing" considered.** Quote what the object says about it and ask whether that was taken seriously.

@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: The interview saves nothing
 description: "Spec #16. An interview that ended with confirmed decisions has written nothing itself."
-tags: [scenario, pending]
+tags: [scenario]
 execution:
   prompt: |
     /64x-lunicorn:interview-user
