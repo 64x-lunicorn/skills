@@ -101,7 +101,7 @@ Read [references/adr-template.md](references/adr-template.md) for the ADR format
    - `## Alternatives`: one bullet `**<option>:** <why it lost>.` per option that lost.
 
    Every section except Verification is there: there is no short form. Content comes from step 2 only.
-2. **The replaced ADR**, when there is one: rewrite only its `Status:` line to `Status: superseded by [NNNN](NNNN-<slug>.md), YYYY-MM-DD`, with the new ADR's number and file and today's date. Every other line stays as it is: an accepted ADR is history, and only its status may point onward.
+2. **The replaced ADR**, when there is one: on its `Status:` line, replace only the status and its date with `superseded by [NNNN](NNNN-<slug>.md), YYYY-MM-DD`, with the new ADR's number and file and today's date. Keep any text after the date as it is, because it is part of the record, such as a link to an ADR this one superseded itself: `Status: accepted, 2026-03-02. Supersedes [0001](0001-<slug>.md).` becomes `Status: superseded by [0005](0005-<slug>.md), 2026-09-15. Supersedes [0001](0001-<slug>.md).` Every other line stays as it is: an accepted ADR is history, and only its status may point onward.
 3. **The index.** Regenerate `docs/adr/README.md` as the content of the fenced `docs/adr/README.md` block, with `<<adr_index>>` replaced by the table the index rules build from every ADR file, the new and the replaced one included, ending with exactly one newline. Build the table from the files rather than editing the old one, so it equals what `write-agent-docs` generates and its next run reports `unchanged`.
 
 **Done when** the ADR file, the replaced ADR's status line and the regenerated index are written.
