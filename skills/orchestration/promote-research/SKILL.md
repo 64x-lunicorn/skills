@@ -85,3 +85,14 @@ Then post the technical notes as a comment on the Spec, headed `Technical notes 
 Change nothing else in the object. It is the record of what was decided at promotion, and a Spec that later diverges should be visibly different from it.
 
 **Done when** the frontmatter says `promoted` and Outcome links the Spec.
+
+## 7. Record terms and decisions
+
+The Spec is the record Daniel confirmed, so what it settled is recorded now, after the object is frozen: the interview records nothing itself, and a term or decision left only in the Spec drifts from `CONTEXT.md` and `docs/adr/`. Record from the Spec, not from the research object; research words are not yet the project's terms (ADR 0005).
+
+- Invoke `write-term` with every line of the Spec's `## Terms`, each term with its meaning.
+- Invoke `write-adr` with every decision of the Spec's `## Decisions`, with its reason and the rejected options.
+
+Invoke both before asking Daniel anything, and put their questions into one message: each ends the turn on its question, so a question asked first keeps the other from running. His answers are handled by `write-term` and `write-adr`. A Spec without Terms or without Decisions hands nothing to that skill.
+
+**Done when** `write-term` has every Terms line and `write-adr` every decision, or the Spec has neither.

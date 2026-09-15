@@ -119,7 +119,10 @@ User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` use
 `write-community-files` and `write-readme`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
 use `design-spec`, `plan-tickets` uses `design-ticket` and `review-architecture`,
 `implement-tickets` uses `implement-ticket`, which builds with `write-tests`, `review-change`
-and `verify-spec`, and `write-term` for a Spec's missing terms.
+and `verify-spec`. `write-spec`, `promote-research` and `plan-tickets` record the terms and decisions
+they settled with `write-term` and `write-adr`, and `implement-tickets` records a Spec's missing terms
+with `write-term`. `setup-project`, `research-idea`, `promote-research`,
+`write-spec`, `plan-tickets`, `implement-tickets` and `interview-me` interview Daniel with `interview-user`.
 
 ## Project setup
 

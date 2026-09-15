@@ -1,0 +1,65 @@
+schema_version: "1.1"
+name: plan-tickets records the review's decisions and terms
+description: 'Ticket #32, per-caller check from architecture #27: after Daniel''s ok on the architecture review, plan-tickets hands the Decisions of the architecture issue to write-adr and a term the review settled to write-term, so an ignored call shows up. Not a Spec scenario; tagged scenario so npm run scenarios can run it.'
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-tickets 1
+
+    Earlier turns of this run, quoted. Steps 1 to 3 are done: Daniel agreed to the cut, and the architecture issue #0002, the integration test ticket #0003 and the feature ticket #0004 exist as sub-issues of Spec #0001.
+
+    Claude:
+    The architecture review returned this report.
+
+    Decisions:
+
+    - **`parse()` returns the rows and the number of skipped lines together, and `src/cli.js` prints the warning.** stderr belongs to the CLI, so the parser stays free of output and its tests read a return value. Rejected: the parser writes the warning to stderr (every parser test would capture stderr); a module-level counter (state shared between two conversions in one process).
+
+    Proposal 1: ticket #0004 says "blank row" where the Spec says "empty line". Use "empty line" in the ticket, meaning a line that holds nothing or only whitespace, and retitle it "Skip and count empty lines".
+
+    Order: phase 1 #0003, phase 2 #0004, not parallel, because #0004 activates the pending tests of #0003.
+
+    Claude:
+    Open decisions: 2
+    Proposal 1: replace "blank row" in ticket #0004 with "empty line", meaning a line that holds nothing or only whitespace?
+    Recommended answer: Yes. The Spec's word keeps tickets, tests and code on one term.
+
+    Daniel: yes, empty line, never blank row
+
+    Claude:
+    Open decisions: 1
+    Does the order stand: phase 1 #0003, phase 2 #0004?
+    Recommended answer: Yes. #0004 needs the pending tests of #0003.
+
+    Daniel: yes, order stands
+
+    Claude:
+    Your decisions:
+    - Proposal 1: "yes, empty line, never blank row"
+    - Order: "yes, order stands"
+    Do you confirm this list?
+
+    Daniel: yes
+
+    Claude:
+    Ticket #0004 now says "empty line" throughout and is titled "Skip and count empty lines". The ticket set did not change, so the review stands.
+
+    Write the architecture issue, the dependencies and the implementation notes into the tickets?
+
+    Daniel: yes
+
+    Continue.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: plan-tickets hands the review's decisions to write-adr
+    tool: Skill
+    input_match: 'write-adr'
+  - type: tool_used
+    name: plan-tickets hands the settled term to write-term
+    tool: Skill
+    input_match: 'write-term'

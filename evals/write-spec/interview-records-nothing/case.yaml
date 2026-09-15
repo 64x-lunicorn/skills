@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: 'The interview records nothing itself'
 description: 'Spec #23. A term settled during the interview write-spec ran; the interview has written nothing, and write-spec records the term once the Spec exists. The interview is quoted as already ended, so the run observes what follows it; the interview''s own saving is covered by Spec #16''s scenario "The interview saves nothing".'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

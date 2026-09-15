@@ -41,7 +41,7 @@ Add the answers to the collected statements, verbatim.
 
 Draft the body with `design-spec`, from the collected statements and gate answers. Show Daniel the draft together with the technical notes `design-spec` sorted out, and say that those notes belong to the architecture issue when the Spec is split.
 
-Rework the draft until Daniel is satisfied with it. Change nothing in the repo during this run: a Spec is not implementable, and code written now skips the split.
+Rework the draft until Daniel is satisfied with it. Write no code during this run: a Spec is not implementable, and code written now skips the split.
 
 **Done when** Daniel has seen the current draft and the technical notes.
 
@@ -59,3 +59,14 @@ Write the body to a file in the scratchpad and pass it as a file (`gh issue crea
 Then post the technical notes as a comment on the Spec, headed `Technical notes for the architecture issue`, or `None` below the heading when there are none. For a local issue file, add them as a final section with that heading. The notes stay out of the Spec, but the architecture issue needs them when the Spec is split, usually in a later session.
 
 **Done when** the Spec exists, carries the `spec` label, has its technical notes comment, and its URL or path is given to Daniel.
+
+## 5. Record terms and decisions
+
+The Spec is the record Daniel confirmed, so what it settled is recorded now: the interview records nothing itself, and a term or decision left only in the Spec drifts from `CONTEXT.md` and `docs/adr/`.
+
+- Invoke `write-term` with every line of the Spec's `## Terms`, each term with its meaning.
+- Invoke `write-adr` with every decision of the Spec's `## Decisions`, with its reason and the rejected options.
+
+Invoke both before asking Daniel anything, and put their questions into one message: each ends the turn on its question, so a question asked first keeps the other from running. His answers are handled by `write-term` and `write-adr`. A Spec without Terms or without Decisions hands nothing to that skill.
+
+**Done when** `write-term` has every Terms line and `write-adr` every decision, or the Spec has neither.
