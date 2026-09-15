@@ -1,6 +1,6 @@
 ---
 name: implement-ticket
-description: Implements one agreed ticket in a fresh subagent on its own branch, activating its pending scenarios, building test-first at the seams named by the architecture issue, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket is to be built, or when review or CI findings on a ticket branch are to be fixed.
+description: Implements one agreed ticket in a fresh subagent on its own branch, activating its pending scenarios, building test-first at the seams named by the architecture issue, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket branch is to be brought up to date with the default branch or its merge conflicts resolved.
 context: fork
 agent: general-purpose
 background: false
@@ -8,7 +8,7 @@ background: false
 
 Implement: $ARGUMENTS
 
-The arguments are a ticket number, optionally followed by `fix <findings file>`. You run without the conversation that led here; the ticket, its Spec, the architecture issue and the repository are your only sources. Build exactly what the ticket asks. When something does not fit, stop and report instead of choosing: a guess made here becomes drift nobody decided. Never push, open pull requests, merge or edit issues.
+The arguments are a ticket number, optionally followed by `fix <findings file>` or `update`. You run without the conversation that led here; the ticket, its Spec, the architecture issue and the repository are your only sources. Build exactly what the ticket asks. When something does not fit, stop and report instead of choosing: a guess made here becomes drift nobody decided. Never push, open pull requests, merge or edit issues.
 
 ## 1. Read and check
 
@@ -37,7 +37,7 @@ Write the inventory: what you will reuse, and for everything new, why nothing ex
 
 ## 3. Branch and activate the scenarios
 
-Create `ticket/<n>-<slug>` from the current default branch, with `<n>` the ticket number without padding and `<slug>` three to five words of its title in kebab case. In fix mode, check out the existing ticket branch and continue with the fix mode section instead.
+Create `ticket/<n>-<slug>` from the current default branch, with `<n>` the ticket number without padding and `<slug>` three to five words of its title in kebab case. In fix mode, check out the existing ticket branch and continue with the fix mode section instead; in update mode, continue with the update mode section.
 
 Find this ticket's scenario tests by their names, which are the scenario names verbatim. Remove their pending marker, the skip, todo or tag the integration test ticket put on them, and nothing else. Run them. Each must fail because the behaviour or its interface is missing. A scenario without a test, a failure from setup, a missing harness or broken wiring means the integration test ticket is not done: stop.
 
@@ -80,6 +80,15 @@ Stage and commit yourself, with the message drafted by `write-commit-message` an
 ## Fix mode
 
 With `fix <file>`, the file holds findings as `review-change` returns them (class, location, quote, source, fix), or the log of a failing CI job. Apply exactly those on the ticket branch: a behaviour finding test-first with `write-tests`, everything else directly. Change nothing the file does not name. A finding classed `conflict`, or one that contradicts the ticket, the Spec or the architecture, is not applied; report it as a stop. Then run steps 5 and 6.
+
+## Update mode
+
+With `update`, the ticket branch is brought up to date with the default branch. Only this ticket knows what its side of the merge set out to achieve; a resolver working from the branch name alone guesses it.
+
+1. Check out the existing branch whose name starts with `ticket/<n>-`.
+2. Invoke `resolve-merge` and hand it the intent of this side as text, taken from what step 1 read: the ticket's reference (its number, and its file name with local issues), its Goal and Scope in its own words, the Spec's reference, and the names of the ticket's scenarios. The merge commit body names the intent kept on this side, so ask for the ticket's reference and scenario names to appear there as handed over; that is what traces the merge back to the ticket.
+3. On `merged`, run steps 5 and 6, and report like fix mode: the merge commit and any refactor commits under Branch and commits, the resolved files under Deviations.
+4. On `stopped: incompatible intents` or `stopped: checks failed`, return the stop verbatim as the outcome, quoted sources or failing output included. The merge stays open for Daniel.
 
 ## 7. Report
 

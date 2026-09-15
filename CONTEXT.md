@@ -81,3 +81,5 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Intent**: what one side of a merge set out to achieve, taken from its primary sources: its commits, its pull request, its ticket and its Spec.
 
 **Incompatible intents**: the state in which both intents cannot be kept in one result. The resolver stops and Daniel decides.
+
+**Update**: the mode `implement-ticket <n> update` that brings a ticket branch up to date with the default branch and resolves its merge conflicts, in the context of its own ticket.
