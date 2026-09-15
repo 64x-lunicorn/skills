@@ -33,6 +33,7 @@
     "./skills/engineering/write-issue-templates",
     "./skills/engineering/write-readme",
     "./skills/engineering/write-skill",
+    "./skills/engineering/write-term",
     "./skills/engineering/write-tests",
     "./skills/orchestration/harvest-skill",
     "./skills/orchestration/implement-tickets",

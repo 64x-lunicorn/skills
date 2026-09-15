@@ -43,10 +43,11 @@ Most skill collections start from ideas. This one starts from friction: when an 
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds twenty-two skills today:
+> This collection is young and grows slowly on purpose. It holds twenty-five skills today:
 > two for creating the rest, six for setting up projects, three for researching and
 > promoting ideas before anything is built, two for writing specs, three for splitting them
-> into tickets, five for implementing tickets and verifying the result, and one for commits.
+> into tickets, five for implementing tickets and verifying the result, one for interviewing
+> Daniel, one for recording terms, one for designing HTTP APIs, and one for commits.
 > More arrive as they are harvested.
 
 ## How it works
@@ -107,6 +108,7 @@ Skills trigger on their own when a request matches their description, or run as
 | [`write-readme`](skills/engineering/write-readme/SKILL.md) | model-invoked | Writes the README in the house skeleton with banner, pitch and fixed sections, keeping the project's own sections on re-runs. |
 | [`write-skill`](skills/engineering/write-skill/SKILL.md) | model-invoked | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
 | [`write-spec`](skills/orchestration/write-spec/SKILL.md) | user-invoked | Turns a functional change from a conversation into a Spec issue after light quality gates. |
+| [`write-term`](skills/engineering/write-term/SKILL.md) | model-invoked | Records a term Daniel confirmed as one line in `CONTEXT.md`, with words to avoid only when another word actually came up. |
 | [`write-tests`](skills/engineering/write-tests/SKILL.md) | model-invoked | Writes tests first at agreed seams, against independent expected values, mocking only at system boundaries. |
 
 User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` uses
