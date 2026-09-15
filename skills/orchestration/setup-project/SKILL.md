@@ -30,7 +30,7 @@ Read the repo before asking anything, so each question can come with a default a
 
 ## 2. Interview
 
-Ask one question at a time and wait for the answer; show the detected default with each question.
+Interview Daniel on these questions with `interview-user`, passing each detected default as the recommended answer of its question.
 
 1. **Forge:** `github`, `gitlab`, `forgejo` or `none`.
 2. **Default branch.**

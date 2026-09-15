@@ -38,7 +38,7 @@ Cut the Spec with `design-ticket`. Show Daniel:
 - the integration test ticket,
 - the technical questions for the architecture issue.
 
-Rework the cut until Daniel agrees with it. Ask one question at a time when something is unclear.
+Rework the cut until Daniel agrees with it. Interview him with `interview-user` on what is unclear in the cut and on his agreement to it.
 
 **Done when** Daniel has agreed to the cut.
 
@@ -61,7 +61,7 @@ Invoke `review-architecture` with the Spec number, every ticket number and the a
 
 Present the report to Daniel:
 
-1. Each proposal on its own, with its reason. Wait for his decision before the next one, and keep his answer verbatim.
+1. Each proposal with its reason, as one decision of an interview with `interview-user`. Keep his answer verbatim.
 2. Then the order in phases and the dependency graph.
 
 Apply the accepted proposals to the tickets: edit bodies, create a new ticket as a sub-issue for a split, close a merged ticket with a comment naming the ticket it went into. When accepted proposals change which tickets exist, invoke `review-architecture` again on the new set, so the order matches the tickets.

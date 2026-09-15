@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: interview-me names the next command
 description: "Spec #16. When an interview started with interview-me has ended with confirmed decisions, the next command for Daniel to start is named, and no other command is started and nothing is saved."
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

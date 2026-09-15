@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: Daniel starts an interview himself
 description: "Spec #16. Daniel has a plan outside any skill's flow, runs /64x-lunicorn:interview-me and is interviewed about the plan."
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
