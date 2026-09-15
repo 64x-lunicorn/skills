@@ -27,7 +27,7 @@ Collect Daniel's statements about the change verbatim, in the language he used; 
 
 ## 2. Light gates with Daniel
 
-Ask one at a time and wait for each answer:
+Interview Daniel on the three gates with `interview-user`:
 
 1. **Problem in one sentence.** Propose the sentence and ask whether it states the problem.
 2. **"Do nothing" considered.** Ask what happens if nothing changes, and whether that is acceptable.
