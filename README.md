@@ -272,8 +272,9 @@ wayfinder  -->  tickets  -->  implement-ticket  -->  review-change  -->  pull re
 
 A stop is shown to Daniel and posted on the wayfinder, never worked around. Merging stays with
 Daniel. When the wayfinder is fully checked off, the next run verifies the Spec as a whole:
-findings become follow-up tickets, and a clean result closes the Spec, its architecture issue
-and its wayfinder on Daniel's go. The design is in
+findings become follow-up tickets, except Spec terms missing from `CONTEXT.md`, which are
+recorded through `write-term` in the same run, and a clean result closes the Spec, its
+architecture issue and its wayfinder on Daniel's go. The design is in
 [ADR 0008](docs/adr/0008-implementing-tickets.md) and
 [ADR 0009](docs/adr/0009-verifying-and-closing-a-spec.md).
 
