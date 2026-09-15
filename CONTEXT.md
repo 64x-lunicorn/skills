@@ -48,7 +48,7 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 
 **Review finding**: one result of `review-change` or `verify-spec`, classed `hard` (fixed without asking), `judgement` (decided by Daniel) or `conflict` (sources contradict each other; only Daniel decides which gives way). Not to be confused with a validator finding.
 
-**Spec verification**: the check `verify-spec` runs once every ticket of a Spec is merged, over the whole Spec instead of one ticket. It ends in follow-up tickets, a conflict for Daniel, or the Spec closed together with its architecture issue and wayfinder (ADR 0009).
+**Spec verification**: the check `verify-spec` runs once every ticket of a Spec is merged, over the whole Spec instead of one ticket. It ends in follow-up tickets, missing terms recorded through `write-term`, a conflict for Daniel, or the Spec closed together with its architecture issue and wayfinder (ADR 0009).
 
 **Marker**: `.claude/64x-lunicorn.yml`, committed, written by `setup-project`. Every skill reads forge, default branch, research location, issue tracker, `ci.command`, `ci.runtime`, `ci.runner` and `ci.checks` from it. `setup_version` is 3 since `ci.runner` was added (ADR 0012).
 
@@ -67,3 +67,11 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Finding**: one report from the validator: rule ID, path, line when known, reason.
 
 **Fixture**: mini repo under `tools/validator/fixtures/skNNN/`. `fail-*` violates exactly one rule, `pass` satisfies it at its edge cases.
+
+**Term**: a word with one fixed meaning in a project, recorded as one line in `CONTEXT.md`; code, issues and Specs use the same word.
+
+**Words to avoid**: the other words that came up for a term and are not used, recorded on the term's line as `_Avoid_: x, y.` _Avoid_: rejected synonyms.
+
+**ADR**: an architecture decision record, one file under `docs/adr/`, numbered in order and never renumbered, for a decision that is hard to reverse, surprising without context and the result of a real trade-off.
+
+**ADR index**: the table in `docs/adr/README.md` listing every ADR with its number, title and status.
