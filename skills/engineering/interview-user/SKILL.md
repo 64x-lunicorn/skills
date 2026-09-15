@@ -1,11 +1,13 @@
 ---
 name: interview-user
-description: Interviews Daniel on the open decisions of a plan, one question at a time, each showing the number of open decisions and a recommended answer with its reason, and looks facts up instead of asking them. Use when a skill needs a series of decisions from Daniel, when a plan has several choices only he can make, or when about to ask him more than one question.
+description: Interviews Daniel on the open decisions of a plan, one question at a time, each showing the number of open decisions and a recommended answer with its reason, looks facts up instead of asking them, and ends only when Daniel confirms the list of his decisions, handed back to the caller unsaved. Use when a skill needs a series of decisions from Daniel, when a plan has several choices only he can make, or when about to ask him more than one question.
 ---
 
 An interview gets Daniel's decisions without handing him work Claude can do itself. One question at a time keeps each answer considered, the recommended answer lets him decide with a short reply, and the count shows him how much is left.
 
 Run it in the main conversation: only there can Daniel answer.
+
+The interview writes nothing, no file, issue or note. It hands the confirmed decisions back, and the calling skill records them where it keeps its results; a second copy written here would drift from that place.
 
 ## 1. List the open questions
 
@@ -23,7 +25,7 @@ What only Daniel can choose stays a decision, even when a file suggests an answe
 
 ## 3. Ask one question
 
-Ask the next open decision in plain text and end the turn:
+When no open decision remains, continue with step 5 instead. Otherwise ask the next open decision in plain text and end the turn:
 
 ```
 Open decisions: <n>
@@ -40,10 +42,29 @@ Recommended answer: <answer>. <reason>
 - Ask in text, not with `AskUserQuestion`: Daniel answers in free text and often adds a reason or a correction.
 - Write the question and the recommendation without emojis, even when Daniel uses them.
 
-**Done when** the turn ends on exactly one question in this shape.
+**Done when** the turn ends on exactly one question in this shape, or no decision is open and step 5 runs.
 
 ## 4. Take the answer
 
 Keep Daniel's answer in his words and take the decision off the list. When the answer settles another question or opens a new one, update the list, then continue with step 2.
 
 **Done when** the answered decision is off the list and the list reflects what the answer changed.
+
+## 5. Confirm the decisions
+
+When no decision is open, the interview is not over yet. Show Daniel the list of his decisions and end the turn:
+
+```
+Your decisions:
+- <decision>: "<his answer>"
+Do you confirm this list?
+```
+
+- One line per decision, every decision of this interview. `<decision>` names it in a few words.
+- `<his answer>` quotes his answer in his words, never a summary, because a paraphrase can shift what he decided and only his confirmation shows it did not.
+- The first and last lines stay in English whatever language the conversation is in, like the markers in step 3.
+- Do not declare the interview finished in this turn; it waits for his reply.
+
+When he confirms, the interview is over: hand the confirmed list back to the caller and write nothing. When he does not confirm, put the decision he disagrees with back on the list, keep the others decided, and continue with step 2, so that decision is asked again as in step 3.
+
+**Done when** Daniel has confirmed the list and it is handed back, or the disputed decision is open again.
