@@ -37,17 +37,19 @@ Otherwise check the decision against what the conversation says, not against how
 - **Real trade-off:** at least two options could work, and the chosen one gives up something another offered. When only one option works, nothing was traded.
 
 - **All three hold:** go on with step 4.
-- **One or more miss:** propose nothing, ask nothing and record or copy the decision nowhere: it already lives where it was made, and an ADR for it would bury the ones that matter. Answer in exactly this shape, naming only the criterion it misses, with no word on the criteria that hold, because weighing those reads as arguing for an ADR:
+- **One or more miss:** propose nothing, ask nothing and record or copy the decision nowhere: it already lives where it was made, and an ADR for it would bury the ones that matter. Answer in exactly this shape, naming only the first criterion it misses in the order listed above, with no word on the other criteria, because weighing those reads as arguing for an ADR:
 
   ```
-  The decision on <what it decides> gets no ADR: it misses <criterion>, because <one-clause reason>.
+  The decision on <what was decided, described by the choice itself> gets no ADR: it misses <criterion>, because <one-clause reason>.
 
   Nothing is written. The decision stays where it was made, in <place>, and is not recorded under docs/adr/ or anywhere else.
   ```
 
+  Describe the choice in words, such as "rounding invoice totals per line", never by its label such as "option A": a label reads as one option among several still open.
+
   The place is where it was settled, such as the architecture review. Name no other file or directory for it, because naming one reads as moving the decision there.
 
-**Done when** each decision holds all three criteria or has its one-line answer.
+**Done when** each decision holds all three criteria or has its answer in that shape.
 
 ## 4. Propose
 
@@ -90,7 +92,7 @@ Only a yes, such as "yes" or "ok", to the last question `Write ADR NNNN <title>?
 
 Read [references/adr-template.md](references/adr-template.md) for the ADR format and the index rules.
 
-1. **The ADR file.** Take the file name the question showed, or build it as in step 4 when it showed none. Write it in the format, every paragraph and list item on one line:
+1. **The ADR file.** Take the file name the proposal showed, or build it as in step 4 when none was shown. Write it in the format, every paragraph and list item on one line:
    - `# NNNN — <Title>`, then `Status: accepted, YYYY-MM-DD` with today's date, the day of Daniel's ok: his ok is the acceptance, so no ADR waits as proposed.
    - `## Context`: why a decision was needed and what the options were; when it replaces an ADR, link that ADR.
    - `## Decision`: what was decided.
