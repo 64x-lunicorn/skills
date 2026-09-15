@@ -39,7 +39,7 @@ Search the whole repository, not only the tickets' changes: a rule can be broken
 - **Domain rules:** find every code path that reaches a rule's behaviour, including callers outside the changes. The rule has to hold on each of them.
 - **Behaviour change:** every row's "After" is what the code now does.
 - **Non-goals:** nothing the Spec rules out was built.
-- **Terms:** the Spec's terms are used consistently across all changed code.
+- **Terms:** the Spec's terms are used consistently across all changed code. Each `- **<term>**: <meaning>` line of the Spec's `## Terms` also needs a line starting with `**<term>**:` in the `CONTEXT.md` at the project root, compared case-insensitively; without a root `CONTEXT.md`, every term is missing. Each missing term is one finding, located at its line in the Spec's Terms with the meaning, so the term can be recorded as the Spec settled it before the Spec closes.
 
 **Done when** every domain rule, behaviour change row and non-goal is checked.
 
@@ -54,11 +54,11 @@ Search the whole repository, not only the tickets' changes: a rule can be broken
 
 ## 5. Classify
 
-- **hard:** a failing check; a scenario missing, pending or failing; a domain rule broken on any path; a non-goal built; a departure from an architecture decision; duplication; a leftover; an advisory integration test check.
+- **hard:** a failing check; a scenario missing, pending or failing; a domain rule broken on any path; a non-goal built; a departure from an architecture decision; duplication; a leftover; an advisory integration test check; a Spec term missing from `CONTEXT.md`.
 - **judgement:** smells and naming that no source makes hard.
 - **conflict:** sources contradict each other, so no change satisfies all of them. Quote every source involved.
 
-Work found here becomes follow-up tickets, so give each finding a location precise enough to become implementation notes. Findings that one fix resolves form one finding and may name several sources; findings with different fixes stay separate, even in the same function.
+Work found here becomes follow-up tickets, except missing terms, which are recorded in `CONTEXT.md` before the Spec closes; so give each finding a location precise enough to become implementation notes. Findings that one fix resolves form one finding and may name several sources; findings with different fixes stay separate, even in the same function.
 
 **Done when** every finding has exactly one class.
 
@@ -67,8 +67,14 @@ Work found here becomes follow-up tickets, so give each finding a location preci
 Return exactly these parts:
 
 1. **Completeness:** every ticket with its state and its pull request or commits; tickets closed as not planned; the result of `ci.command`.
-2. **Findings:** one entry each with class, `path:line` or line range, the quoted code, and its source: a quoted scenario, domain rule, non-goal or decision, or for findings without one the check from this skill (`leftover`, `advisory integration check`, `failing check`) or the smell name. Add a proposed fix, or for a conflict the options. Then the number of hard, judgement and conflict findings, or `No findings.`, optionally followed by one line per check that found nothing.
-3. **Closing summary:** what the Spec now delivers in two or three sentences, the tickets with their pull requests or commits, and how many scenarios pass. Written for the comment that closes the Spec, and written even when findings are open: then it names them, and the Spec stays open until they are resolved.
+2. **Findings:** one entry each with class, `path:line` or line range, the quoted code, and its source: a quoted scenario, domain rule, non-goal or decision, or for findings without one the check from this skill (`leftover`, `advisory integration check`, `failing check`) or the smell name. Add a proposed fix, or for a conflict the options. Write a missing term on one line naming the class, the term and `CONTEXT.md`, with the Spec's Terms line as its source, and name `CONTEXT.md` in no other finding: a caller records every hard finding that names a term and `CONTEXT.md` as a missing term, so a scenario finding that cites it as evidence would be recorded by mistake:
+
+   ```
+   1. hard, CONTEXT.md: the term Invoice from the Spec's Terms section is missing. Source: Spec #12, Terms: "**Invoice**: a numbered request for payment sent to one customer." Fix: record the term in CONTEXT.md.
+   ```
+
+   Then the number of hard, judgement and conflict findings, or `No findings.`, optionally followed by one line per check that found nothing. Always end this part with one plain line starting with `Terms:` that names `CONTEXT.md`, also when every term is recorded, such as `Terms: Invoice is missing from CONTEXT.md; Customer is recorded.` or `Terms: every term of the Spec is in CONTEXT.md.` No list marker or bold before `Terms:`: the line shows the check ran, and callers look for it at the start of a line.
+3. **Closing summary:** what the Spec now delivers in two or three sentences, the tickets with their pull requests or commits, and how many scenarios pass. Written for the comment that closes the Spec, and written even when findings are open: then it names them by number and class, and the Spec stays open until they are resolved. Leave file names and the terms result out of it; the findings carry the locations and the `Terms:` line carries the terms, and a summary that repeats them reads like one more finding.
 
 End by confirming that `git status` shows no change.
 

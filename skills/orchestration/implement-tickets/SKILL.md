@@ -30,11 +30,12 @@ When every ticket is checked off, the Spec is built but not yet proven as a whol
 
 Present the result to Daniel: completeness first, then conflicts, hard findings, and judgement findings one at a time, keeping his decisions verbatim.
 
-- **Work to do** (hard findings, and judgement findings Daniel accepts): ask "Cut follow-up tickets for these findings as sub-issues of Spec #<spec>?" On a yes, cut them with `design-ticket`, fill their implementation notes from the findings' locations and the architecture decisions they name, create them as sub-issues labelled `task`, and add them to the wayfinder under a new phase `Verification follow-ups`. They are chosen in step 3 like any other ticket; the Spec stays open and is verified again once they are merged.
+- **Missing terms** (hard findings naming a Spec term missing from `CONTEXT.md`): invoke `write-term` once with every missing term and the meaning from its line in the Spec's `## Terms`, before any other question. They never become follow-up tickets: a term line needs no implementer and no review. `write-term` shows Daniel the lines and ends the turn on its question, so the close question waits until every term is in `CONTEXT.md`; a term he strikes stays missing, and the Spec stays open, because no Spec closes while one of its terms is missing from `CONTEXT.md`.
+- **Work to do** (the other hard findings, and judgement findings Daniel accepts): ask "Cut follow-up tickets for these findings as sub-issues of Spec #<spec>?" On a yes, cut them with `design-ticket`, fill their implementation notes from the findings' locations and the architecture decisions they name, create them as sub-issues labelled `task`, and add them to the wayfinder under a new phase `Verification follow-ups`. They are chosen in step 3 like any other ticket; the Spec stays open and is verified again once they are merged.
 - **Conflicts:** the Spec stays open. Which source gives way is Daniel's call, outside this run.
-- **Nothing open:** ask "Close Spec #<spec>, architecture issue #<architecture> and wayfinder #<wayfinder>?" On a yes, post the closing summary as a comment on the Spec and close all three. For local issue files, set `status: closed` and append the summary to the Spec.
+- **Nothing open** (every term of the Spec in `CONTEXT.md`, no other finding): ask "Close Spec #<spec>, architecture issue #<architecture> and wayfinder #<wayfinder>?" On a yes, post the closing summary as a comment on the Spec and close all three. For local issue files, set `status: closed` and append the summary to the Spec.
 
-**Done when** the wayfinder has an unchecked ticket, or follow-up tickets exist, or a conflict waits for Daniel, or the Spec, architecture issue and wayfinder are closed.
+**Done when** the wayfinder has an unchecked ticket, or `write-term` waits for Daniel's answer on missing terms, or follow-up tickets exist, or a conflict waits for Daniel, or the Spec, architecture issue and wayfinder are closed.
 
 ## 3. Choose the tickets
 
@@ -84,7 +85,7 @@ Never merge and never enable auto-merge. Then go back to step 4 with the next ti
 
 End with one report:
 
-- **Spec:** the verification result, follow-up tickets created, or the issues closed, when step 2 ran.
+- **Spec:** the verification result, the terms recorded with `CONTEXT.md` named as changed and not committed, follow-up tickets created, or the issues closed, when step 2 ran.
 - **Per ticket:** pull request link, review rounds per axis, Daniel's decisions verbatim.
 - **Stopped:** tickets with their stop reason.
 - **Waiting:** tickets dropped for an open blocker, with the pull request to merge first.
