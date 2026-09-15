@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: Every calling skill interviews the same way (write-spec)
 description: "Spec #16. write-spec needs a series of decisions from Daniel in its light gates; each question comes with a recommended answer and the number of open decisions."
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
