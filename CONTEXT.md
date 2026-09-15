@@ -75,3 +75,9 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **ADR**: an architecture decision record, one file under `docs/adr/`, numbered in order and never renumbered, for a decision that is hard to reverse, surprising without context and the result of a real trade-off.
 
 **ADR index**: the table in `docs/adr/README.md` listing every ADR with its number, title and status.
+
+**Merge conflict**: a place where both sides changed the same lines and the merge cannot take both automatically. Not a review finding.
+
+**Intent**: what one side of a merge set out to achieve, taken from its primary sources: its commits, its pull request, its ticket and its Spec.
+
+**Incompatible intents**: the state in which both intents cannot be kept in one result. The resolver stops and Daniel decides.

@@ -36,3 +36,4 @@ A `## Verification` section before Consequences records how the decision was che
 | [0010](0010-ci-gate-and-issue-templates.md) | CI gate and issue templates | accepted |
 | [0011](0011-readme-community-files-and-agent-docs.md) | README, community files and agent docs | accepted |
 | [0012](0012-gitlab-and-forgejo.md) | GitLab and Forgejo | accepted |
+| [0013](0013-merge-default-branch-into-ticket-branches.md) | Merge the default branch into ticket branches | accepted |
