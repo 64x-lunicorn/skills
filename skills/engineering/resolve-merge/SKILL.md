@@ -56,7 +56,7 @@ When they fail, leave the merge open, record nothing, and go to step 6 with `sto
 
 ## 6. Record the merge and report
 
-After the checks passed, draft the message with `write-commit-message` from the staged merge: `chore: merge <default_branch> into <branch>`, and a body naming each resolved file with the intent kept from each side. Commit with that message, never with git's default text, which hides what was resolved. Do not push.
+After the checks passed, draft the message with `write-commit-message` from the staged merge: `chore: merge <default_branch> into <branch>`, and a body naming each resolved file with the intent kept from each side. The merge is one change: `write-commit-message` checks only the format of this subject and body, and its rule to split unrelated changes does not apply. Commit with that message, never with git's default text, which hides what was resolved. Do not push.
 
 Return exactly one of:
 
