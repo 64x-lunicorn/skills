@@ -56,4 +56,3 @@ actual=$(GREETING=Hi greet Ada)
 [ "$actual" = "Hi, Ada" ] || { echo "expected 'Hi, Ada', got '$actual'"; exit 1; }
 SH
 commit 2 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
-git checkout -q main

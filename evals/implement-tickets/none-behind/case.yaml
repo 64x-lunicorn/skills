@@ -14,7 +14,8 @@ graders:
   - type: tool_used
     name: behind branches checked
     tool: Bash
-    input_match: 'git\s+merge-base\s+--is-ancestor'
+    # Matched against the Bash input as JSON; anchored to the command, so a description that names git merge-base does not count.
+    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b[^|;&"]*\smerge-base\s+--is-ancestor\b'
   - type: tool_used
     name: no update
     tool: Skill

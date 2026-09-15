@@ -57,4 +57,3 @@ commit 2 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"
 git push -q origin main ticket/5-missing-name
-git checkout -q main

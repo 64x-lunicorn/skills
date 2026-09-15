@@ -61,7 +61,6 @@ commit 2 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"
 git push -q origin main ticket/5-missing-name
-git checkout -q main
 
 # The graders pin this commit id; a fixture edit that changes it must fail here, not look like missing behaviour.
 [ "$(git rev-parse ticket/5-missing-name)" = 9425db00da1fbe1b26fcea78ee334fc3135dfc23 ] || { echo "fixture drifted: ticket/5-missing-name"; exit 1; }

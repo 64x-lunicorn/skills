@@ -73,4 +73,3 @@ commit 3 -m "fix: refuse a missing name" -m "Closes #0007."
 git init -q --bare origin.git
 git remote add origin "$PWD/origin.git"
 git push -q origin main ticket/5-missing-name
-git checkout -q main

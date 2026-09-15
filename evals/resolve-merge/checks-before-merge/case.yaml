@@ -18,7 +18,8 @@ graders:
   - type: tool_used
     name: merge recorded
     tool: Bash
-    input_match: 'git\s+(commit|merge\s+--continue)'
+    # Matched against the Bash input as JSON; anchored to the command, so a description that names a commit does not count.
+    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b[^|;&"]*\s(?:commit|merge\s+--continue)(?![\w.=-])'
   - type: regex
     name: checks run on the merge before it is recorded
     # scripts/check.sh appends a line here only after every test passed while .git/MERGE_HEAD exists and no

@@ -30,7 +30,8 @@ graders:
   - type: tool_order
     name: reviews ran before the push
     before: { tool: Skill, input_match: 'review-change' }
-    after: { tool: Bash, input_match: 'git\b.*\bpush\b' }
+    # Matched against the Bash input as JSON; anchored to the command, so a description that names git push does not count.
+    after: { tool: Bash, input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b[^|;&"]*\bpush\b' }
   - type: regex
     name: next frontier ticket proposed after the reviews
     # The step 3 question of implement-tickets; no run can answer it, so the run ends on it, after the reviews.
@@ -38,6 +39,7 @@ graders:
   - type: tool_used
     name: "guard: no branch for the next frontier ticket"
     tool: Bash
-    input_match: 'git\b[^|;&"]*\b(checkout|switch|branch)\b[^|;&"]*\sticket/0*6\b'
+    # Matched against the Bash input as JSON; anchored to the command, so a description that names the branch does not count.
+    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b[^|;&"]*\b(checkout|switch|branch)\b[^|;&"]*\sticket/0*6\b'
     min: 0
     max: 0

@@ -6,7 +6,7 @@ context:
   scaffold_script: scaffold.sh
 execution:
   prompt: |
-    /64x-lunicorn:implement-ticket 5 update
+    Bring ticket 5's branch up to date with main using implement-ticket in update mode.
   max_turns: 80
   timeout_seconds: 1800
   allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
