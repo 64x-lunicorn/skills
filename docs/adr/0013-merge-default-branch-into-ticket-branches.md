@@ -8,14 +8,7 @@ Status: accepted, 2026-09-15. Extends [0008](0008-implementing-tickets.md). Real
 
 ## Decision
 
-**A ticket branch is brought up to date by merging the default branch into it, never by rewriting its history.** `resolve-merge` holds the discipline:
-
-- `git fetch origin`, then `git merge --no-commit origin/<default_branch>`, or the local default branch without a remote. `--no-commit` keeps the merge open in the clean case as well as with merge conflicts.
-- For each merge conflict, the intent of the ticket side comes from the caller; the intent of the default branch comes from `git log <merge-base>..<default> -- <file>`, the `(#<pr>)` in a squash subject, its pull request and ticket, or the local issue a commit references.
-- The resolved files hold only changes one of the two sides made. When both intents cannot be kept, the merge stays open and the run stops with `incompatible intents`, quoting the sources of both sides; Daniel decides.
-- `ci.command` runs on the merged tree before the merge is recorded. When it fails, the merge stays open and the run stops with `checks failed` (Daniel, 2026-09-15).
-- The merge commit message is drafted by `write-commit-message`, `chore: merge <default_branch> into <branch>`, its body naming the resolved files and the intent kept on each side.
-- `resolve-merge` never pushes, never aborts a merge and never edits issues.
+**A ticket branch is brought up to date by merging the default branch into it, never by rewriting its history.** `resolve-merge` holds the discipline, how the merge is run, resolved, checked and recorded.
 
 ## Consequences
 

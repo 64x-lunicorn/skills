@@ -1,6 +1,6 @@
 ---
 name: resolve-merge
-description: Brings the default branch into the current branch by merging, resolves each merge conflict keeping the intent of both sides and inventing no behaviour, stops on incompatible intents with both sides' sources quoted, and records the merge only after the project's checks passed, never pushing. Use when a branch is to be brought up to date with the default branch or main, when merge conflicts are to be resolved, or when a pull request is behind or cannot merge because of conflicts.
+description: Brings the default branch into the current branch by merging, resolves each merge conflict keeping the intent of both sides and inventing no behaviour, stops on incompatible intents with both sides' sources quoted, and records the merge only after the project's checks passed, never pushing. Use when a branch is to be brought up to date with the default branch or main, when merge conflicts are to be resolved, or when a pull request is behind or cannot merge because of merge conflicts.
 ---
 
 Input: the intent of this side, what the current branch set out to achieve, as text from the caller, such as its ticket, Spec and scenarios. Output: `merged`, `stopped: incompatible intents` or `stopped: checks failed`, as in step 6.
@@ -17,11 +17,11 @@ Read `.claude/64x-lunicorn.yml` for `default_branch`, `ci.command`, `forge` and 
 
 ## 2. Start the merge
 
-With a remote, `git fetch origin` and `git merge --no-commit origin/<default_branch>`; without one, `git merge --no-commit <default_branch>`. `--no-commit` holds the merge open, with or without merge conflicts, so the checks in step 5 run before anything is recorded.
+With a remote, `git fetch origin` and `git merge --no-ff --no-commit origin/<default_branch>`; without one, `git merge --no-ff --no-commit <default_branch>`. Together they hold the merge open, with or without merge conflicts and also when the branch has no commits of its own, so the checks in step 5 run before anything is recorded; `--no-commit` alone cannot stop a fast-forward.
 
 When git reports that the branch is already up to date, return `merged` with no resolved files and stop here.
 
-**Done when** `.git/MERGE_HEAD` exists and `git diff --name-only --diff-filter=U` lists the conflicting files, possibly none.
+**Done when** `.git/MERGE_HEAD` exists and `git diff --name-only --diff-filter=U` lists the conflicting files, possibly none, or git reported the branch already up to date.
 
 ## 3. Read the intent of the default branch
 
@@ -39,12 +39,12 @@ Read both sides of the file too: `git show :2:<file>` is this side, `git show :3
 
 For each conflicting file, decide whether one result can keep both intents:
 
-- **Both can be kept:** write the result from the lines of the two sides. A line comes from this side, from the default branch, or combines a change of each on the same line, such as one side's new default and the other side's new variable in one expression. Add nothing else: no new condition, option, fallback, comment or test that neither side wrote. When combining needs a line neither side wrote beyond joining their changes, both intents cannot be kept that way. Stage the file.
+- **Both can be kept:** write the result from the lines of the two sides. A line comes from this side, from the default branch, or combines a change of each on the same line. Add nothing else: no new condition, option, fallback, comment or test that neither side wrote. When combining needs a line neither side wrote beyond joining their changes, both intents cannot be kept that way. Stage the file.
 - **Both cannot be kept:** the intents contradict, for example one side makes a case succeed and the other makes the same case fail. Choosing either one, or a compromise, decides the product for Daniel. Leave the merge open with the file unresolved and go to step 6 with `stopped: incompatible intents`.
 
-Conflict markers left in a file count as unresolved. Files git merged without a conflict stay as git merged them.
+Merge conflict markers left in a file count as unresolved. Files git merged without a merge conflict stay as git merged them.
 
-**Done when** every conflicting file is resolved and staged with no conflict marker left, or the run stops.
+**Done when** every conflicting file is resolved and staged with no merge conflict marker left, or the run stops.
 
 ## 5. Run the project's checks
 
