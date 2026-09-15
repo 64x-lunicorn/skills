@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: An incompatible-intents stop is not a review conflict
+description: "Spec #24. An implement-tickets run updates ticket/5-missing-name, whose merge conflicts with main hold incompatible intents; the stop is reported as incompatible intents and no review finding of class conflict is created."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-tickets 0003
+  max_turns: 100
+  timeout_seconds: 2400
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: updated with implement-ticket update
+    tool: Skill
+    input_match: 'implement-ticket.*update'
+  - type: regex
+    name: stop reported as incompatible intents
+    pattern: 'incompatible intents'
+    flags: i
+  - type: tool_used
+    name: no review ran
+    tool: Skill
+    input_match: 'review-change'
+    min: 0
+    max: 0

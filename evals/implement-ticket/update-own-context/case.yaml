@@ -1,0 +1,37 @@
+schema_version: "1.1"
+name: The update runs in the ticket's own context
+description: "Spec #24. implement-ticket in update mode brings ticket/5-missing-name up to date with main, taking the ticket side's intent from ticket #0005, its Spec or its scenarios."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Bring ticket 5's branch up to date with main using implement-ticket in update mode.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: implement-ticket called for ticket 5 in update mode
+    # The Skill input is graded as JSON, {"skill":"64x-lunicorn:implement-ticket","args":"5 update"}; 0005 counts as 5,
+    # and words between the number and update, as in "ticket 5, update mode", still count.
+    tool: Skill
+    input_match: '"skill":"(64x-lunicorn:)?implement-ticket"[\s\S]*"args":"[^"]*\b0*5\b[^"]*\bupdate\b'
+  - type: tool_used
+    name: resolved with resolve-merge
+    tool: Skill
+    input_match: 'resolve-merge'
+  - type: tool_used
+    name: ticket side's intent handed to resolve-merge
+    # The Skill input is graded as JSON, {"skill":"64x-lunicorn:resolve-merge","args":"..."}. Only text that appears in
+    # the issue files and in no prompt, branch name or scaffold commit message counts: the ticket's or Spec's file
+    # name, a phrase from the ticket's Goal or the name of the ticket's scenario. The ticket or Spec number alone
+    # is in the prompt and does not.
+    tool: Skill
+    input_match: 'resolve-merge[\s\S]*(0005-missing-name|never prints an empty name|0001-friendly-greetings|A missing name is greeted as stranger)'
+  - type: regex
+    name: "last commit message names ticket #0005, Spec #0001 or the ticket's scenario"
+    # git writes the last commit's message, body included, to COMMIT_EDITMSG. Only text from the issue files
+    # counts; the scaffold leaves "Closes #0004." there, and neither it, the prompt nor the branch name matches.
+    target: { source: file, path: .git/COMMIT_EDITMSG }
+    pattern: '0005-missing-name|never prints an empty name|0001-friendly-greetings|A missing name is greeted as stranger'

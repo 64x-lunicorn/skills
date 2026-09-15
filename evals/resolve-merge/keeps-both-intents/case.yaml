@@ -1,0 +1,31 @@
+schema_version: "1.1"
+name: Merge conflicts are resolved keeping both intents
+description: "Spec #24. Merging main into a ticket branch has merge conflicts in src/greet.sh; the resolved file keeps the ticket's missing name greeted as stranger and main's greeting word from GREETING."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Bring this branch, ticket/5-missing-name, up to date with main and resolve the merge conflicts. The intent of the ticket side comes from ticket #0005 in issues/, its Spec #0001 and its scenarios.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: resolved with resolve-merge
+    tool: Skill
+    input_match: 'resolve-merge'
+  - type: regex
+    name: no merge conflict markers left
+    target: { source: file, path: src/greet.sh }
+    pattern: '^(<<<<<<<|=======|>>>>>>>)'
+    flags: m
+    match: not_contains
+  - type: regex
+    name: keeps the ticket's intent, a missing name greeted as stranger
+    target: { source: file, path: src/greet.sh }
+    pattern: '\$\{1:-stranger\}'
+  - type: regex
+    name: keeps main's intent, the greeting word from GREETING
+    target: { source: file, path: src/greet.sh }
+    pattern: '\$\{GREETING:-Hello\}'

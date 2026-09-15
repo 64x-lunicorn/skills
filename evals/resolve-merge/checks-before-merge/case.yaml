@@ -1,0 +1,33 @@
+schema_version: "1.1"
+name: The project's checks run before the merge is recorded
+description: "Spec #24. While main is merged into a ticket branch and its merge conflicts are resolved, the project's ci.command runs before the merge commit is made."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Bring this branch, ticket/5-missing-name, up to date with main and resolve the merge conflicts. The intent of the ticket side comes from ticket #0005 in issues/, its Spec #0001 and its scenarios.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: resolved with resolve-merge
+    tool: Skill
+    input_match: 'resolve-merge'
+  - type: regex
+    name: merge recorded
+    # A merge committed after --no-commit or after resolving merge conflicts logs "commit (merge)", a one-step
+    # merge logs "merge <ref>: Merge made". A refused git commit leaves no line.
+    target: { source: file, path: .git/logs/HEAD }
+    pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
+  - type: regex
+    name: checks run on the merge before it is recorded
+    # scripts/check.sh appends "passed <MERGE_HEAD id>" here only after every test passed while .git/MERGE_HEAD
+    # exists and no file is still unmerged, which is between resolving the merge conflicts and the merge commit;
+    # checks that fail, run with merge conflicts left, before the merge or after its commit leave no line.
+    # Together with "merge recorded", the checks ran on the open merge and its merge commit followed. The
+    # explanation lives here and not in check.sh, which the agent reads as the project's ci.command.
+    target: { source: file, path: .git/check-runs.log }
+    pattern: '^passed [0-9a-f]{40}$'
+    flags: m
