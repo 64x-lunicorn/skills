@@ -1,0 +1,54 @@
+schema_version: "1.1"
+name: 'An ADR is written after Daniel''s ok'
+description: 'Spec #23. Daniel gives his ok to a proposed ADR; the ADR is written with every section and the ADR index lists it. The ADR file name comes from the proposal Daniel confirmed, which the prompt quotes, so the sections are read from that exact file.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We are in the architecture review of the Spec for loan history in lendbook.
+
+    Earlier turns of this conversation, quoted:
+
+    Claude:
+    Decision to settle: how is the loan history stored?
+    Option A: keep updating the loans table in place and add a history table filled by database triggers.
+    Option B: store every hand-over, return and reservation as an event in an append-only table, and derive the current loans from the events.
+    Option B keeps the complete history the organiser asked for, but every query for current loans reads through the events, and going back to plain rows later means migrating every recorded event. Option A is simpler, but triggers miss changes made outside the application.
+
+    Daniel: B. The history has to be complete, even if it costs us the simple table.
+
+    Claude:
+    This decision is hard to reverse, surprising without context and the result of a real trade-off. Proposed ADR:
+
+    docs/adr/0003-loan-history-as-append-only-events.md
+    Title: Loan history as append-only events
+    Decision: every hand-over, return and reservation is stored as an event in an append-only table; current loans are derived from the events.
+    Rejected: updating the loans table in place with a trigger-filled history table.
+
+    Write ADR 0003 Loan history as append-only events?
+
+    Daniel: ok
+
+    Continue.
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: ADR written through write-adr
+    tool: Skill
+    input_match: 'write-adr'
+  - type: file_exists
+    name: ADR file written
+    path: 'docs/adr/0003-*.md'
+  - type: regex
+    name: ADR has Status, Context, Decision, Consequences and Alternatives
+    target: { source: file, path: docs/adr/0003-loan-history-as-append-only-events.md }
+    pattern: '^Status: [^\n]+$[\s\S]*^## Context$[\s\S]*^## Decision$[\s\S]*^## Consequences$[\s\S]*^## Alternatives$'
+    flags: m
+  - type: regex
+    name: ADR index lists it
+    target: { source: file, path: docs/adr/README.md }
+    pattern: '^\| \[0003\]\(0003-[a-z0-9-]+\.md\) \| Loan history as append-only events \| accepted \|$'
+    flags: m
