@@ -83,3 +83,5 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Incompatible intents**: the state in which both intents cannot be kept in one result. The resolver stops and Daniel decides.
 
 **Update**: the mode `implement-ticket <n> update` that brings a ticket branch up to date with the default branch and resolves its merge conflicts, in the context of its own ticket.
+
+**Behind**: the default branch has changes the ticket branch does not have. On a forge this is the pull request's state; without a forge, the default branch is not part of the ticket branch's history.

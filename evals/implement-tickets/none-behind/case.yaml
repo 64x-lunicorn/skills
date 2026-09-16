@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: No pull request is behind
 description: "Spec #24. An implement-tickets run starts while ticket/5-missing-name already contains main; the run checks for behind branches, updates none and goes on to the frontier ticket."
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -25,9 +25,11 @@ graders:
   - type: regex
     name: ticket branch unchanged
     target: { source: file, path: .git/refs/heads/ticket/5-missing-name }
-    pattern: '^bc50aba86e0cc19a9240ebf287fae0a2daaf148d$'
+    pattern: '^63ee5efc7e33450f0b18b2381a0c30cb52c267e3$'
     flags: m
   - type: regex
     name: next frontier tickets proposed
     # The step 3 question of implement-tickets: "Implement <#n title, …> in this order, each on its own branch with a pull request?"
-    pattern: 'Implement [^?]*#0*5\b[^?]*#0*6\b[^?]*\?'
+    # Any case, the numbers with or without # and zeros, and the tickets listed before the question count; #5 comes before #6.
+    pattern: '\bimplement\b[^?]*(?<![\w/])#?0*5\b[^?]*(?<![\w/])#?0*6\b[^?]*\?|(?<![\w/])#?0*5\b[^?]*\bimplement\b[^?]*(?<![\w/])#?0*6\b[^?]*\?|(?<![\w/])#?0*5\b[^?]*(?<![\w/])#?0*6\b[^?]*\bimplement\b[^?]*\?'
+    flags: i

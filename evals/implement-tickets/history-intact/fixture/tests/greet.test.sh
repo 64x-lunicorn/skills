@@ -1,6 +1,4 @@
 #!/bin/sh
 # Scenario: A name is greeted
-set -e
-. ./src/greet.sh
-actual=$(greet Ada)
-[ "$actual" = "Hello, Ada" ] || { echo "expected 'Hello, Ada', got '$actual'"; exit 1; }
+. ./tests/expect-greeting.sh
+expect_greeting 'Hello, Ada' Ada

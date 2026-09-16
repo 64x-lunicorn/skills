@@ -32,10 +32,9 @@ SH
 cat > tests/greeting-word.test.sh <<'SH'
 #!/bin/sh
 # Scenario: The greeting word comes from GREETING
-set -e
-. ./src/greet.sh
-actual=$(GREETING=Hi greet Ada)
-[ "$actual" = "Hi, Ada" ] || { echo "expected 'Hi, Ada', got '$actual'"; exit 1; }
+. ./tests/expect-greeting.sh
+GREETING=Hi
+expect_greeting 'Hi, Ada' Ada
 SH
 commit 1 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 
@@ -45,13 +44,12 @@ greet() {
   printf '%s, %s\n' "${GREETING:-Hello}" "${1:-stranger}"
 }
 SH
-cat > tests/default-name.test.sh <<'SH'
+cat > tests/missing-name.test.sh <<'SH'
 #!/bin/sh
 # Scenario: A missing name is greeted as stranger
-set -e
-. ./src/greet.sh
-actual=$(unset GREETING; greet)
-[ "$actual" = "Hello, stranger" ] || { echo "expected 'Hello, stranger', got '$actual'"; exit 1; }
+. ./tests/expect-greeting.sh
+unset GREETING
+expect_greeting 'Hello, stranger'
 SH
 commit 2 -m "feat: greet a missing name as stranger" -m "Refs #0005."
 
@@ -61,4 +59,4 @@ git push -q origin main ticket/5-missing-name
 git checkout -q main
 
 # The graders pin this commit id; a fixture edit that changes it must fail here, not look like missing behaviour.
-[ "$(git rev-parse ticket/5-missing-name)" = bc50aba86e0cc19a9240ebf287fae0a2daaf148d ] || { echo "fixture drifted: ticket/5-missing-name"; exit 1; }
+[ "$(git rev-parse ticket/5-missing-name)" = 63ee5efc7e33450f0b18b2381a0c30cb52c267e3 ] || { echo "fixture drifted: ticket/5-missing-name"; exit 1; }
