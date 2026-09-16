@@ -103,7 +103,7 @@ function findIssue(issues, number) {
 }
 
 /** `gh issue close --reason` values, as the state reason fixtures and `--json stateReason` use. */
-const REASON_CODES = { "not planned": "NOT_PLANNED", completed: "COMPLETED", duplicate: "DUPLICATE", reopened: "REOPENED" };
+const REASON_CODES = { "not planned": "NOT_PLANNED", completed: "COMPLETED", duplicate: "DUPLICATE" };
 
 // ---- issue subcommands ------------------------------------------------------
 
