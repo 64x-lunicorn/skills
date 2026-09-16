@@ -1,0 +1,39 @@
+[
+  {
+    "number": 212,
+    "title": "Greeting is missing the comma after the word",
+    "body": "Running `greet Ada` prints \"Hello Ada\"; I expected \"Hello, Ada\".",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 221,
+    "title": "Greeting prints the word and name without a comma",
+    "body": "> Bugfix for Bug #212.\n\n## Diagnosis\n\nCommand: `sh -c '. ./src/greet.sh; greet Ada'` prints `Hello Ada`.\nRoot cause: `src/greet.sh`'s printf format string is `'%s %s\\n'`, missing the comma after the word.\n\n## Acceptance criteria\n\n```gherkin\nFeature: The greeting word is followed by a comma\n\n  Scenario: A name is greeted with a comma after the word\n    Given the default greeting word\n    When greet is called with a name\n    Then the greeting has a comma after the word\n```\n\n## Implementation notes\n\n- Seam: `src/greet.sh`, the printf format string.\n",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bugfix"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z",
+    "blockedBy": null
+  }
+]

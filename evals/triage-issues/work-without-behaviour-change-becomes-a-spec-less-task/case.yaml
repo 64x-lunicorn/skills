@@ -1,0 +1,26 @@
+schema_version: '1.1'
+name: 'Work without behaviour change becomes a Spec-less task'
+description: 'Spec #26. Daniel confirms issue #214 as work without observable behaviour change; triage routes it as a Spec-less task with scenarios pinning today''s behaviour.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 214
+
+    When triage asks what kind of change this is, answer: no behaviour change, it's a pure refactor of render_price.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'tool_used'
+    name: 'a task issue is created with no Spec reference'
+    tool: 'Bash'
+    input_match: 'issue create.*--label task'
+  - type: 'llm'
+    name: 'the task pins today''s behaviour'
+    criteria: 'The new task issue for #214 carries no reference to a Spec, and its acceptance criteria pin today''s render_price output (a price such as 1099 rendering as $10.99) rather than describing new behaviour.'

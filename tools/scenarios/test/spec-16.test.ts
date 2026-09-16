@@ -1,6 +1,4 @@
-import { expect, it } from "vitest";
-import { loadCases } from "../src/cases.ts";
-import { repoRoot } from "./root.ts";
+import { expectOneCasePerScenario } from "./spec-coverage.ts";
 
 /**
  * The model-observed scenarios of Spec #16, verbatim; each runs as an eval case. An example of a
@@ -30,8 +28,4 @@ const SCENARIOS = [
 
 // "The wording is interview" is deterministic and is covered by wording.test.ts, not by an eval case.
 
-const caseNames = loadCases(repoRoot).map((c) => c.name);
-
-it.each(SCENARIOS)("Spec #16 scenario has exactly one case: %s", (name) => {
-  expect(caseNames.filter((caseName) => caseName === name)).toHaveLength(1);
-});
+expectOneCasePerScenario(16, SCENARIOS);

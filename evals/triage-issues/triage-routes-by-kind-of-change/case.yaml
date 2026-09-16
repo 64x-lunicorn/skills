@@ -1,0 +1,22 @@
+schema_version: '1.1'
+name: 'Triage routes by kind of change'
+description: 'Spec #26. Triage decides issue #201''s route by the kind of change Daniel confirms, not by how large the fix looks.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 201
+
+    When triage asks what kind of change this is, answer: broken behaviour, reproducible by clicking Export with nothing selected.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'llm'
+    name: 'the route follows the kind of change'
+    criteria: 'The route triage settles on for issue #201 is one of bugfix, Spec-less task, Spec, research object, or closed with reason, and the message justifies it by the kind of change Daniel confirmed, not by how big or small the fix would be.'

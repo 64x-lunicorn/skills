@@ -1,0 +1,24 @@
+schema_version: '1.1'
+name: 'A Bug closes once its bugfix is merged'
+description: 'Spec #26. Issue #212 is blocked by bugfix #221, whose pull request #88 is merged; the next triage run closes #212 with "Fixed by #221".'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'regex'
+    name: 'the Bug is closed as completed'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue close 212 --reason completed'
+  - type: 'llm'
+    name: 'the closing comment names the bugfix'
+    criteria: 'The comment this run posts on issue #212 contains the text "Fixed by #221", naming the bugfix that closed it.'

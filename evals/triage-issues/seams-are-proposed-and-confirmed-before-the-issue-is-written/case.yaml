@@ -1,0 +1,26 @@
+schema_version: '1.1'
+name: 'Seams are proposed and confirmed before the issue is written'
+description: 'Spec #26. Issue #212 is already diagnosed (root cause: the missing comma in the printf format in src/greet.sh); triage proposes seams from a fresh view of the code and Daniel confirms them before the bugfix issue exists.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 212
+
+    Diagnosis already ran: `greet Ada` prints "Hello Ada" instead of "Hello, Ada"; root cause is the printf format string in src/greet.sh, which is missing the comma. Continue from here: propose the seam and, once I confirm it, write the bugfix issue.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'seams proposed through review-architecture'
+    tool: 'Skill'
+    input_match: 'review-architecture'
+  - type: 'tool_used'
+    name: 'seams confirmed through interview-user'
+    tool: 'Skill'
+    input_match: 'interview-user'
+  - type: 'llm'
+    name: 'a seam is proposed and Daniel is asked to confirm it before anything is written'
+    criteria: 'A seam in src/greet.sh is proposed from a fresh look at the code, and Daniel is asked to confirm it (a yes/no or ''Passen die Seams so?'' style question) before any bugfix issue is created.'

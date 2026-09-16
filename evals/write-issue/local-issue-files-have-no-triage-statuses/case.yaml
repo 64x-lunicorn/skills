@@ -1,0 +1,26 @@
+schema_version: '1.1'
+name: 'Local issue files have no triage statuses'
+description: 'Spec #26. This project has no forge; Daniel files a bugfix directly as a local issue file, with no needs-triage, needs-info, ready-for-agent or ready-for-human status anywhere in it.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:write-issue bugfix
+
+    This project has no forge. File this bug directly: running the CLI with --export creates no output file and prints nothing, in src/cli.js.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'filed through write-issue'
+    tool: 'Skill'
+    input_match: 'write-issue'
+  - type: 'file_exists'
+    name: 'a local bugfix issue file is written'
+    path: 'issues/0001-*-bugfix.md'
+    exists: true
+  - type: 'llm'
+    name: 'no triage status anywhere in the new file'
+    criteria: 'The new bugfix issue file''s content, as shown or written, contains none of the words needs-triage, needs-info, ready-for-agent or ready-for-human anywhere in it.'

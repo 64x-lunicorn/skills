@@ -1,0 +1,28 @@
+schema_version: '1.1'
+name: 'New domain behaviour is sent to a Spec'
+description: 'Spec #26. Daniel confirms issue #216 as clear new domain behaviour; triage names the Spec-drafting command as the next step and creates nothing itself.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 216
+
+    When triage asks what kind of change this is, answer: clear new domain behaviour, PDF export is a real feature we want to build.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'tool_used'
+    name: 'neither a Spec nor a research object is started'
+    tool: 'Skill'
+    input_match: 'write-spec|research-idea'
+    min: 0
+    max: 0
+  - type: 'llm'
+    name: 'the Spec command is named as the next step'
+    criteria: 'The message names `/64x-lunicorn:write-spec` in backticks as the next step for issue #216, without itself creating a Spec or a research object.'

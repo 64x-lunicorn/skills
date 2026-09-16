@@ -1,0 +1,46 @@
+[
+  {
+    "number": 212,
+    "title": "Greeting is missing the comma after the word",
+    "body": "Running `greet Ada` prints \"Hello Ada\"; I expected \"Hello, Ada\".",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 221,
+    "title": "Greeting prints the word and name without a comma",
+    "body": "> Bugfix for Bug #212.\n",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bugfix"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z",
+    "closedAt": "2026-09-10T09:00:00Z",
+    "closedByPullRequestsReferences": [
+      {
+        "number": 88,
+        "state": "MERGED",
+        "mergedAt": "2026-09-10T09:00:00Z"
+      }
+    ]
+  }
+]

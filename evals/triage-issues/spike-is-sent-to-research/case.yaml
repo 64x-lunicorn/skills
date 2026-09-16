@@ -1,0 +1,22 @@
+schema_version: '1.1'
+name: 'A spike is sent to research'
+description: 'Spec #26. Issue #218 is an open feasibility question; triage names the research-starting command as the next step.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 218
+
+    When triage asks what kind of change this is, answer: an open feasibility question, we don't know yet whether the validator can run incrementally at all.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'llm'
+    name: 'the research command is named as the next step'
+    criteria: 'The message names `/64x-lunicorn:research-idea` in backticks as the next step for issue #218.'

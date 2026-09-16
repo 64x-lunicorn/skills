@@ -1,0 +1,22 @@
+schema_version: '1.1'
+name: 'An unclear idea is sent to research'
+description: 'Spec #26. Daniel confirms issue #217 as new domain behaviour that is still unclear; triage names the research-starting command as the next step.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 217
+
+    When triage asks what kind of change this is, answer: new domain behaviour, but I'm not sure yet what "nicer" should even mean here.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'llm'
+    name: 'the research command is named as the next step'
+    criteria: 'The message names `/64x-lunicorn:research-idea` in backticks as the next step for issue #217, without itself starting a research object.'

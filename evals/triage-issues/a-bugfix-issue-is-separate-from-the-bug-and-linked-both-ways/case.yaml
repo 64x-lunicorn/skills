@@ -1,0 +1,33 @@
+schema_version: '1.1'
+name: 'A bugfix issue is separate from the Bug and linked both ways'
+description: 'Spec #26. Issue #212 is diagnosed with confirmed seams; triage writes a separate bugfix issue that links back to #212, and #212 itself is left unchanged.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 212
+
+    Diagnosis already ran and the seam in src/greet.sh's printf format is confirmed. Write the bugfix issue now.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'a new bugfix issue is created'
+    tool: 'Bash'
+    input_match: 'issue create.*--label bugfix'
+  - type: 'tool_used'
+    name: 'the Bug and bugfix are linked'
+    tool: 'Bash'
+    input_match: 'api.*issues/212/dependencies/blocked_by'
+  - type: 'tool_used'
+    name: 'issue 212''s own body is never edited'
+    tool: 'Bash'
+    input_match: 'issue edit 212.*--body'
+    min: 0
+    max: 0
+  - type: 'regex'
+    name: 'a comment on 212 points at the bugfix'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue comment 212'
