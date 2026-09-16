@@ -27,5 +27,5 @@ graders:
     max: 0
   - type: 'regex'
     name: 'the working tree is clean afterwards'
-    target: { source: 'file', path: '.git/index' }
-    pattern: '.'
+    target: 'files'
+    pattern: '^$'
