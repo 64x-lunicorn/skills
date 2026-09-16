@@ -39,7 +39,7 @@ graders:
     min: 0
     max: 0
   - type: tool_used
-    name: "guard: nothing written or edited"
+    name: "guard: nothing written"
     tool: Write
     min: 0
     max: 0
