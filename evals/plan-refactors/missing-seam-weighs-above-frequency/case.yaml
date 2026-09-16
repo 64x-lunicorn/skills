@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: A missing seam weighs above frequent change
-description: "Spec #33. src/billing carries the missing-seam note of bugfix #0004; src/reports changed just as often but has no such note. A scan without a named area examines src/billing first."
+description: "Spec #33. src/billing carries the missing-seam note of bugfix #0004; src/reports changed even more often but has no such note. A scan without a named area examines src/billing first."
 tags: [scenario, pending]
 context:
   scaffold_script: scaffold.sh
