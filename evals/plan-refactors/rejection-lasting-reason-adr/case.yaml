@@ -1,0 +1,49 @@
+schema_version: "1.1"
+name: A rejection with a lasting reason becomes an ADR
+description: "Spec #33. Daniel rejects the shared-reports-formatting candidate for a reason a later scan would need to avoid re-proposing it; the rejection is recorded as an ADR."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors reports
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Refactor scan report: /tmp/refactor-scan-20260910-110000.html
+
+    1. Extract shared formatting out of summary.sh, receipt.sh and csv_export.sh — strength: worth exploring.
+    Files: src/reports/summary.sh, src/reports/receipt.sh, src/reports/csv_export.sh.
+    Contradicts ADR: 0002, the friction being the negative-cents rounding fix already made once in receipt.sh (2026-07-08) and not yet repeated in the other two scripts.
+
+    Top recommendation: Extract shared formatting out of the report scripts.
+
+    Which candidate should I look at?
+
+    Daniel: the report formatting one
+
+    Claude:
+    Open decisions: 1
+    What must keep behaving exactly as it does today?
+    Recommended answer: each script's current output format, unchanged.
+
+    Daniel: yes, exactly that. Actually, I want to reject this one: the three scripts still diverge more than they agree, and one repeated fix is not enough reason to add an indirection all three now depend on. That reasoning should stop a later scan from proposing this again without a stronger reason.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: rejection handed to write-adr
+    tool: Skill
+    input_match: 'write-adr'
+  - type: llm
+    name: ADR records the rejection with its lasting reason
+    criteria: >-
+      The message proposes (or records) an ADR for rejecting the
+      shared-reports-formatting candidate, with the reason that the three
+      scripts still diverge more than they agree and one repeated fix does
+      not justify the indirection — a reason a later scan would need in
+      order not to propose the same candidate again.

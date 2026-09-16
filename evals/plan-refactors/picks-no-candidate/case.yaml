@@ -1,0 +1,54 @@
+schema_version: "1.1"
+name: Daniel picks no candidate
+description: "Spec #33. A billing scan presented one candidate; Daniel picks none of them, and nothing is recorded."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Refactor scan report: /tmp/refactor-scan-20260910-101500.html
+
+    1. Deepen discount handling in src/billing/apply_discount.sh (Pricing) — strength: strong.
+    Files: src/billing/apply_discount.sh.
+    Problem: the discount-code branching, the minimum order value and the no-stacking rule sit behind a three-line function that looks trivial, so callers assume it is safe to duplicate.
+    Solution: give it a proper interface (discount code, order total, already-applied codes) and document its rules where they live.
+    Benefit: one place to change a discount rule and one place to test it.
+
+    Top recommendation: Deepen discount handling in src/billing/apply_discount.sh, because bugfix #0004 already found a caller that could not observe its state correctly.
+
+    Which candidate should I look at?
+
+    Daniel: none of them, thanks
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: "guard: nothing handed to write-adr, write-term or design-ticket"
+    tool: Skill
+    input_match: 'write-adr|write-term|design-ticket'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: "guard: nothing written"
+    tool: Write
+    min: 0
+    max: 0
+  - type: tool_used
+    name: "guard: nothing edited"
+    tool: Edit
+    min: 0
+    max: 0
+  - type: llm
+    name: nothing recorded, interview not started
+    criteria: >-
+      The message accepts that Daniel picked no candidate and the run ends
+      there. It does not start an interview on any candidate and does not
+      claim to have recorded, created or drafted anything.

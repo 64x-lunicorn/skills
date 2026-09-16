@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: A named area sets the scope
+description: "Spec #33. Daniel names the billing area; every candidate the scan reports lies under src/billing, not src/reports or elsewhere."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: regex
+    name: candidates named under src/billing
+    target: trace
+    pattern: 'src/billing'
+  - type: llm
+    name: every candidate lies in the named area
+    criteria: >-
+      Every refactor candidate the message presents names a file or module
+      under src/billing (or the Pricing area CONTEXT.md defines for it). No
+      candidate names a file under src/reports, src/commands or elsewhere.

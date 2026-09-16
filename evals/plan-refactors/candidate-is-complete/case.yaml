@@ -1,0 +1,48 @@
+schema_version: "1.1"
+name: Every candidate is complete
+description: "Spec #33. A scan of the billing area presents a candidate carrying its files, the problem, the solution, the benefit, a strength and a before/after picture."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: regex
+    name: files listed
+    target: trace
+    pattern: '^Files:'
+    flags: m
+  - type: regex
+    name: problem stated
+    target: trace
+    pattern: '^Problem:'
+    flags: m
+  - type: regex
+    name: solution stated
+    target: trace
+    pattern: '^Solution:'
+    flags: m
+  - type: regex
+    name: benefit stated
+    target: trace
+    pattern: '^Benefit:'
+    flags: m
+  - type: regex
+    name: strength stated
+    target: trace
+    pattern: '^Strength:'
+    flags: m
+  - type: llm
+    name: before/after picture included
+    criteria: >-
+      The candidate carries a before/after picture: either a Mermaid diagram
+      or a hand-built before/after comparison of the code, not just prose
+      describing the change.

@@ -1,0 +1,20 @@
+schema_version: "1.1"
+name: A pass-through does not become a candidate
+description: "Spec #33. src/billing/format_currency.sh only wraps printf; deleting it would make no complexity reappear, callers could call printf directly, so the deletion test keeps it off the candidate list."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: llm
+    name: format_currency.sh is not a deepening candidate
+    criteria: >-
+      No listed candidate proposes deepening src/billing/format_currency.sh.
+      The module may be mentioned in passing, but it is not presented as a
+      candidate for deepening, because deleting it would make no complexity
+      reappear in its callers.

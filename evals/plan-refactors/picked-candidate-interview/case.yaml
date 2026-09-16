@@ -1,0 +1,49 @@
+schema_version: "1.1"
+name: A picked candidate is worked through in an interview
+description: "Spec #33. Daniel picks the discount-handling candidate; an interview works through its constraints, its seam and what sits behind it before anything is recorded."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Refactor scan report: /tmp/refactor-scan-20260910-101500.html
+
+    1. Deepen discount handling in src/billing/apply_discount.sh (Pricing) — strength: strong.
+    Files: src/billing/apply_discount.sh.
+    Problem: the discount-code branching, the minimum order value and the no-stacking rule sit behind a three-line function that looks trivial, so callers assume it is safe to duplicate.
+    Solution: give it a proper interface (discount code, order total, already-applied codes) and document its rules where they live.
+    Benefit: one place to change a discount rule and one place to test it.
+
+    Top recommendation: Deepen discount handling in src/billing/apply_discount.sh, because bugfix #0004 already found a caller that could not observe its state correctly.
+
+    Which candidate should I look at?
+
+    Daniel: the discount handling one
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: interview-user runs the candidate through
+    tool: Skill
+    input_match: 'interview-user'
+  - type: tool_used
+    name: "guard: nothing recorded yet"
+    tool: Skill
+    input_match: 'write-adr|write-term|design-ticket'
+    min: 0
+    max: 0
+  - type: llm
+    name: interview covers constraints, seam and what sits behind it
+    criteria: >-
+      Before anything is recorded, the interview asks Daniel about the
+      candidate's constraints (what must keep behaving as it does today),
+      where its seam should sit, and what sits behind that seam. It does not
+      jump straight to drafting a task, an ADR or a term.
