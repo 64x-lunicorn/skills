@@ -1,0 +1,23 @@
+schema_version: '1.1'
+name: 'Internal issues carry no writer line'
+description: 'Spec #26. Issue #220 is a bugfix issue triage itself wrote; its body carries no line naming Claude as its writer.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues
+
+    Show me issue #220's body exactly as gh returns it, unchanged.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'the issue is read through gh'
+    tool: 'Bash'
+    input_match: 'gh issue view 220'
+  - type: 'regex'
+    name: 'no writer line in the shown body'
+    pattern: 'Written by Claude during triage'
+    match: 'not_contains'

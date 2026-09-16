@@ -1,0 +1,22 @@
+schema_version: '1.1'
+name: 'Spec-less task scenarios are green before the change'
+description: 'Spec #26. Task issue #223 pins render_price''s current output; its scenario, checked against today''s code before any change, passes.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues
+
+    Task issue #223 is written but not yet implemented. Check its scenario against today's code: does it pass?
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'the pinning test is run'
+    tool: 'Bash'
+    input_match: 'tests/|check.sh'
+  - type: 'llm'
+    name: 'the scenario passes today'
+    criteria: 'The message reports that task #223''s pinning scenario passes against today''s unchanged code.'

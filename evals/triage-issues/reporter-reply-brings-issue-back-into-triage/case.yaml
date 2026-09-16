@@ -1,0 +1,20 @@
+schema_version: '1.1'
+name: 'A reporter reply brings an issue back into triage'
+description: 'Spec #26. Issue #203 is needs-info; the reporter replied on 2026-09-12, after triage''s own comment on 2026-09-05, so a triage run without named issues picks it up again.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'llm'
+    name: 'issue 203 is picked back up'
+    criteria: 'Issue #203 is among the issues this triage run handles or reports on, because the reporter''s 2026-09-12 reply is newer than triage''s own 2026-09-05 comment on it.'

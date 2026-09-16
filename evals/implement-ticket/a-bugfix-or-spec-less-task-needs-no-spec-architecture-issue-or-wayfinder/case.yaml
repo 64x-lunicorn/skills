@@ -1,0 +1,20 @@
+schema_version: '1.1'
+name: 'A bugfix or Spec-less task needs no Spec, architecture issue or wayfinder'
+description: 'Spec #26. Bugfix #0003 carries no Spec, architecture issue or wayfinder reference at all; implementation proceeds from the bugfix issue alone instead of stopping to look for one.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-ticket 3
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: 'tool_used'
+    name: 'the bugfix issue file is read'
+    tool: 'Read'
+    input_match: '0003-greeting-prints-without-a-comma-bugfix.md'
+  - type: 'llm'
+    name: 'no Spec, architecture issue or wayfinder is required'
+    criteria: 'Implementation proceeds for bugfix #0003 using only the bugfix issue''s own Diagnosis, Acceptance criteria and Implementation notes; it is not stopped or blocked by the absence of a Spec, an architecture issue, a wayfinder or an integration test ticket.'

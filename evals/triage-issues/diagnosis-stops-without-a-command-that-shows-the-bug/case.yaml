@@ -1,0 +1,32 @@
+schema_version: '1.1'
+name: 'Diagnosis stops without a command that shows the bug'
+description: 'Spec #26. Daniel confirms issue #222 as broken behaviour, but nobody can pin down a reliable repro and the codebase has no export feature at all; diagnosis stops and names what is missing.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 222
+
+    When triage asks what kind of change this is, answer: broken behaviour, though I don't have solid repro steps myself.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'tool_used'
+    name: 'a diagnosis is attempted'
+    tool: 'Skill'
+    input_match: 'diagnose-bug'
+  - type: 'tool_used'
+    name: 'no bugfix issue is created'
+    tool: 'Bash'
+    input_match: 'issue create.*--label bugfix'
+    min: 0
+    max: 0
+  - type: 'llm'
+    name: 'diagnosis names what is missing and triage asks Daniel'
+    criteria: 'The diagnosis for issue #222 does not produce a deterministic command that shows the bug, names what is missing (no export feature or reliable repro exists in the codebase), and triage asks Daniel before writing any bugfix issue.'
