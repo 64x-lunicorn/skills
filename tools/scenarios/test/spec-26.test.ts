@@ -1,6 +1,4 @@
-import { expect, it } from "vitest";
-import { loadCases } from "../src/cases.ts";
-import { repoRoot } from "./root.ts";
+import { expectOneCasePerScenario } from "./spec-coverage.ts";
 
 /**
  * The scenarios of Spec #26, verbatim (ticket #47's acceptance criteria, identical to the Spec's);
@@ -43,8 +41,4 @@ const SCENARIOS = [
   "Local issue files have no triage statuses",
 ];
 
-const caseNames = loadCases(repoRoot).map((c) => c.name);
-
-it.each(SCENARIOS)("Spec #26 scenario has exactly one case: %s", (name) => {
-  expect(caseNames.filter((caseName) => caseName === name)).toHaveLength(1);
-});
+expectOneCasePerScenario(26, SCENARIOS);
