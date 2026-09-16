@@ -17,3 +17,8 @@ git init -q
 git symbolic-ref HEAD refs/heads/main
 printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
+
+# gh-calls.log is created lazily by the gh shim on its first call. Touch it after the fixture's
+# initial commit (untracked, like a real run) so a grader that reads it (regex, source file)
+# sees a clean "no match" instead of a thrown error when the agent under test never calls gh.
+touch gh-calls.log
