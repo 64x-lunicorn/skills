@@ -31,7 +31,7 @@ Then bring behind ticket branches up to date, before any new ticket starts. Dani
    2. On `done`, run both reviews and their fix rounds as in step 5, with `<base>` the merge-base computed after the update. The reviews saw the branch before the merge.
    3. Run `ci.command`, then, when a remote exists, push the branch with a plain `git push`, never with `--force` or `--force-with-lease`: the update only adds a merge commit, so every commit the reviews saw stays on the branch. With a forge, watch the checks as in step 6.3.
 
-A stop in item 2 or 3 is handled the same way: hard findings still open after two fix rounds or a conflict going to Daniel, a red `ci.command`, or checks still red after step 6.3 are shown verbatim, posted on the wayfinder and end the run at the report, and the hits after this one are named as not updated.
+   A stop in item 2 or 3 is handled the same way: hard findings still open after two fix rounds or a conflict going to Daniel, a red `ci.command`, or checks still red after step 6.3 are shown verbatim, posted on the wayfinder and end the run at the report, and the hits after this one are named as not updated.
 
 Check only here, at the start of the run. A pull request Daniel merges while the run goes on puts other branches behind only after this check; they are updated at the start of the next run, not in this one.
 
