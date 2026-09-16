@@ -28,7 +28,7 @@ greet() {
   printf 'Hello, %s\n' "${1:-stranger}"
 }
 EOF
-cat > tests/default-name.test.sh <<'EOF'
+cat > tests/missing-name.test.sh <<'EOF'
 #!/bin/sh
 # Scenario: A missing name is greeted as stranger
 set -e

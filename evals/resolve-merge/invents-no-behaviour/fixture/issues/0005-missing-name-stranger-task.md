@@ -26,4 +26,4 @@ Feature: Friendly greetings
 
 ## Implementation notes
 
-- Components: `src/greet.sh`, `tests/default-name.test.sh`.
+- Components: `src/greet.sh`, `tests/missing-name.test.sh`.
