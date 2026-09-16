@@ -85,36 +85,50 @@ Skills trigger on their own when a request matches their description, or run as
 
 ## Skills
 
-| Skill | Invocation | What it does |
+Two kinds. User-invoked skills are the ones you run yourself; model-invoked skills hold
+the reusable discipline and only run because a user-invoked skill, or the model, called them.
+
+### User-invoked
+
+Run these directly, as `/64x-lunicorn:<skill>`.
+
+| Skill | Command | What it does |
 | :--- | :--- | :--- |
-| [`configure-ci-gate`](skills/engineering/configure-ci-gate/SKILL.md) | model-invoked | Generates the workflow with the single required `CI gate`, the ruleset and merge settings, or git hooks without a forge, and reports drift. |
-| [`design-http-api`](skills/engineering/design-http-api/SKILL.md) | model-invoked | Designs or changes an HTTP API against fixed REST guidelines and keeps its OpenAPI document, Swagger UI and Bruno collection in the same change. |
-| [`design-spec`](skills/engineering/design-spec/SKILL.md) | model-invoked | Drafts a Spec that describes domain behaviour only, with a Mermaid domain flow and Gherkin acceptance criteria. |
-| [`design-ticket`](skills/engineering/design-ticket/SKILL.md) | model-invoked | Cuts a Spec into vertical-slice tickets, one pull request each, with the Spec's scenarios as acceptance criteria. |
-| [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | user-invoked | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
-| [`implement-ticket`](skills/engineering/implement-ticket/SKILL.md) | model-invoked | Builds one ticket in a fresh agent: reuse inventory, test-first at agreed seams, refactor under green, stop on any deviation. |
-| [`implement-tickets`](skills/orchestration/implement-tickets/SKILL.md) | user-invoked | Implements agreed tickets one at a time in wayfinder order, reviewed on two axes, one pull request each. |
-| [`interview-me`](skills/orchestration/interview-me/SKILL.md) | user-invoked | Interviews Daniel about a plan of his own and names the next command to start, without starting it or saving anything. |
-| [`interview-user`](skills/engineering/interview-user/SKILL.md) | model-invoked | Interviews Daniel one question at a time, with the open decision count and a recommended answer, and looks facts up instead of asking. |
-| [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | user-invoked | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
-| [`promote-research`](skills/orchestration/promote-research/SKILL.md) | user-invoked | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
-| [`research-idea`](skills/orchestration/research-idea/SKILL.md) | user-invoked | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
-| [`resolve-merge`](skills/engineering/resolve-merge/SKILL.md) | model-invoked | Merges the default branch into a branch, resolves merge conflicts keeping both intents and inventing no behaviour, stops on incompatible intents, and records the merge only after the checks passed, never pushing. |
-| [`review-architecture`](skills/engineering/review-architecture/SKILL.md) | model-invoked | Reviews the technical approach and order for a Spec's tickets in a forked agent and returns diagrams and proposals. |
-| [`review-change`](skills/engineering/review-change/SKILL.md) | model-invoked | Reviews a branch on the spec or the standards axis, including smells and duplication across the codebase, without changing anything. |
-| [`setup-project`](skills/orchestration/setup-project/SKILL.md) | user-invoked | Sets up a project through a guided interview with detected defaults, writes the marker every other skill checks, and generates the CI gate, issue templates, agent docs, community files and README from it. |
-| [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | model-invoked | Traces factual claims to their primary source and records them with date, version and confidence. |
-| [`verify-spec`](skills/engineering/verify-spec/SKILL.md) | model-invoked | Verifies a Spec once all its tickets are merged: scenarios, domain rules, duplication and drift across tickets, leftovers. |
-| [`write-adr`](skills/engineering/write-adr/SKILL.md) | model-invoked | Proposes an ADR only for a decision that is hard to reverse, surprising without context and a real trade-off, and writes it with a regenerated index after Daniel's ok. |
-| [`write-agent-docs`](skills/engineering/write-agent-docs/SKILL.md) | model-invoked | Writes `CLAUDE.md`, `CONTEXT.md` and `docs/adr/` with a generated index, keeping recorded conventions, terms and decisions. |
-| [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | model-invoked | Drafts a Conventional Commits message in English imperative mood for staged changes. |
-| [`write-community-files`](skills/engineering/write-community-files/SKILL.md) | model-invoked | Writes the pull request template, CODEOWNERS, SECURITY, CONTRIBUTING and the license, keeping the project's own sections on re-runs. |
-| [`write-issue-templates`](skills/engineering/write-issue-templates/SKILL.md) | model-invoked | Writes the user issue templates Bug and Request and keeps the labels to the closed house set, or documents local issue files. |
-| [`write-readme`](skills/engineering/write-readme/SKILL.md) | model-invoked | Writes the README in the house skeleton with banner, pitch and fixed sections, keeping the project's own sections on re-runs. |
-| [`write-skill`](skills/engineering/write-skill/SKILL.md) | model-invoked | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
-| [`write-spec`](skills/orchestration/write-spec/SKILL.md) | user-invoked | Turns a functional change from a conversation into a Spec issue after light quality gates. |
-| [`write-term`](skills/engineering/write-term/SKILL.md) | model-invoked | Records a term Daniel confirmed as one line in `CONTEXT.md`, with words to avoid only when another word actually came up. |
-| [`write-tests`](skills/engineering/write-tests/SKILL.md) | model-invoked | Writes tests first at agreed seams, against independent expected values, mocking only at system boundaries. |
+| [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | `/64x-lunicorn:harvest-skill` | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
+| [`implement-tickets`](skills/orchestration/implement-tickets/SKILL.md) | `/64x-lunicorn:implement-tickets <tickets or wayfinder>` | Implements agreed tickets one at a time in wayfinder order, reviewed on two axes, one pull request each. |
+| [`interview-me`](skills/orchestration/interview-me/SKILL.md) | `/64x-lunicorn:interview-me` | Interviews Daniel about a plan of his own and names the next command to start, without starting it or saving anything. |
+| [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | `/64x-lunicorn:plan-tickets <spec>` | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
+| [`promote-research`](skills/orchestration/promote-research/SKILL.md) | `/64x-lunicorn:promote-research` | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
+| [`research-idea`](skills/orchestration/research-idea/SKILL.md) | `/64x-lunicorn:research-idea <idea or number>` | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
+| [`setup-project`](skills/orchestration/setup-project/SKILL.md) | `/64x-lunicorn:setup-project` | Sets up a project through a guided interview with detected defaults, writes the marker every other skill checks, and generates the CI gate, issue templates, agent docs, community files and README from it. |
+| [`write-spec`](skills/orchestration/write-spec/SKILL.md) | `/64x-lunicorn:write-spec` | Turns a functional change from a conversation into a Spec issue after light quality gates. |
+
+### Model-invoked
+
+Never run directly. These fire on their own description, or get called by a user-invoked skill above.
+
+| Skill | What it does |
+| :--- | :--- |
+| [`configure-ci-gate`](skills/engineering/configure-ci-gate/SKILL.md) | Generates the workflow with the single required `CI gate`, the ruleset and merge settings, or git hooks without a forge, and reports drift. |
+| [`design-http-api`](skills/engineering/design-http-api/SKILL.md) | Designs or changes an HTTP API against fixed REST guidelines and keeps its OpenAPI document, Swagger UI and Bruno collection in the same change. |
+| [`design-spec`](skills/engineering/design-spec/SKILL.md) | Drafts a Spec that describes domain behaviour only, with a Mermaid domain flow and Gherkin acceptance criteria. |
+| [`design-ticket`](skills/engineering/design-ticket/SKILL.md) | Cuts a Spec into vertical-slice tickets, one pull request each, with the Spec's scenarios as acceptance criteria. |
+| [`implement-ticket`](skills/engineering/implement-ticket/SKILL.md) | Builds one ticket in a fresh agent: reuse inventory, test-first at agreed seams, refactor under green, stop on any deviation. |
+| [`interview-user`](skills/engineering/interview-user/SKILL.md) | Interviews Daniel one question at a time, with the open decision count and a recommended answer, and looks facts up instead of asking. |
+| [`resolve-merge`](skills/engineering/resolve-merge/SKILL.md) | Merges the default branch into a branch, resolves merge conflicts keeping both intents and inventing no behaviour, stops on incompatible intents, and records the merge only after the checks passed, never pushing. |
+| [`review-architecture`](skills/engineering/review-architecture/SKILL.md) | Reviews the technical approach and order for a Spec's tickets in a forked agent and returns diagrams and proposals. |
+| [`review-change`](skills/engineering/review-change/SKILL.md) | Reviews a branch on the spec or the standards axis, including smells and duplication across the codebase, without changing anything. |
+| [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | Traces factual claims to their primary source and records them with date, version and confidence. |
+| [`verify-spec`](skills/engineering/verify-spec/SKILL.md) | Verifies a Spec once all its tickets are merged: scenarios, domain rules, duplication and drift across tickets, leftovers. |
+| [`write-adr`](skills/engineering/write-adr/SKILL.md) | Proposes an ADR only for a decision that is hard to reverse, surprising without context and a real trade-off, and writes it with a regenerated index after Daniel's ok. |
+| [`write-agent-docs`](skills/engineering/write-agent-docs/SKILL.md) | Writes `CLAUDE.md`, `CONTEXT.md` and `docs/adr/` with a generated index, keeping recorded conventions, terms and decisions. |
+| [`write-commit-message`](skills/engineering/write-commit-message/SKILL.md) | Drafts a Conventional Commits message in English imperative mood for staged changes. |
+| [`write-community-files`](skills/engineering/write-community-files/SKILL.md) | Writes the pull request template, CODEOWNERS, SECURITY, CONTRIBUTING and the license, keeping the project's own sections on re-runs. |
+| [`write-issue-templates`](skills/engineering/write-issue-templates/SKILL.md) | Writes the user issue templates Bug and Request and keeps the labels to the closed house set, or documents local issue files. |
+| [`write-readme`](skills/engineering/write-readme/SKILL.md) | Writes the README in the house skeleton with banner, pitch and fixed sections, keeping the project's own sections on re-runs. |
+| [`write-skill`](skills/engineering/write-skill/SKILL.md) | Writes or edits a `SKILL.md` so it triggers reliably and gets followed the same way every run. |
+| [`write-term`](skills/engineering/write-term/SKILL.md) | Records a term Daniel confirmed as one line in `CONTEXT.md`, with words to avoid only when another word actually came up. |
+| [`write-tests`](skills/engineering/write-tests/SKILL.md) | Writes tests first at agreed seams, against independent expected values, mocking only at system boundaries. |
 
 User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` uses
 `write-skill`, `setup-project` uses `configure-ci-gate`, `write-issue-templates`, `write-agent-docs`,
