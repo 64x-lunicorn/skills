@@ -23,7 +23,7 @@ graders:
     name: ticket branch on origin unchanged
     # The tip scaffold.sh pushes; fixed identities and dates keep it the same on every run.
     target: { source: file, path: origin.git/refs/heads/ticket/5-missing-name }
-    pattern: '^a8bde2b652e2da1c030f8ad0df85ed0200a9e9a8$'
+    pattern: '^c6887d2aac95cb66d7764d518f8c33a19c4a19cd$'
     flags: m
   - type: tool_used
     name: nothing pushed
