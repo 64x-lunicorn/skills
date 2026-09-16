@@ -19,7 +19,6 @@ graders:
     name: 'closed as a duplicate of 210'
     target: { source: 'file', path: 'gh-calls.log' }
     pattern: 'issue close 211 --reason duplicate --duplicate-of 210'
-  - type: 'regex'
+  - type: 'llm'
     name: 'a comment links the existing issue'
-    target: { source: 'file', path: 'gh-calls.log' }
-    pattern: 'issue comment 211'
+    criteria: 'The comment this run posts on issue #211 links issue #210 as the existing issue it duplicates.'

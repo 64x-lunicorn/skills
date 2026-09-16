@@ -19,7 +19,6 @@ graders:
     name: 'the Bug is closed as completed'
     target: { source: 'file', path: 'gh-calls.log' }
     pattern: 'issue close 212 --reason completed'
-  - type: 'regex'
+  - type: 'llm'
     name: 'the closing comment names the bugfix'
-    target: { source: 'file', path: 'gh-calls.log' }
-    pattern: 'issue comment 212'
+    criteria: 'The comment this run posts on issue #212 contains the text "Fixed by #221", naming the bugfix that closed it.'

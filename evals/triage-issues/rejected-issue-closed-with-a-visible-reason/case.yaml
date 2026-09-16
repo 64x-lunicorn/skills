@@ -21,7 +21,6 @@ graders:
     name: 'closed not planned'
     target: { source: 'file', path: 'gh-calls.log' }
     pattern: 'issue close 209 --reason "not planned"'
-  - type: 'regex'
+  - type: 'llm'
     name: 'a comment gives the reason'
-    target: { source: 'file', path: 'gh-calls.log' }
-    pattern: 'issue comment 209'
+    criteria: 'The comment this run posts on issue #209 gives Daniel''s reason for rejecting it: the footer link colour is off-brand but not worth the churn to fix.'
