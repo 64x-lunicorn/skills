@@ -1,0 +1,254 @@
+#!/usr/bin/env node
+// Fake `gh` for scenario evals (architecture issue #39, "The tracker is faked in eval runs by
+// a `gh` shim"). Shell commands in a `claude plugin eval` run cannot reach the network, so a
+// scenario that exercises the GitHub tracker path puts this on PATH ahead of the real `gh`
+// (tools/scenarios/src/cli.ts). It serves reads and applies writes to JSON fixtures under
+// `.gh/` in the run's workspace, and appends every invocation to `gh-calls.log` so graders can
+// assert on what was called, not only on the resulting state.
+//
+// Covers the subcommands the tickets of Spec #26 need: issue list/view/edit/comment/close/
+// create, label list, and the `api` calls for the blocked_by dependency relation. Anything else
+// exits non-zero naming the unsupported command, so a scenario fails on a clear message instead
+// of a silent no-op.
+
+import fs from "node:fs";
+import path from "node:path";
+
+const GH_DIR = path.resolve(".gh");
+const ISSUES_FILE = path.join(GH_DIR, "issues.json");
+const LABELS_FILE = path.join(GH_DIR, "labels.json");
+const LOG_FILE = path.resolve("gh-calls.log");
+
+function logCall(argv) {
+  const line = argv.map((arg) => (/\s/.test(arg) ? JSON.stringify(arg) : arg)).join(" ");
+  fs.appendFileSync(LOG_FILE, `gh ${line}\n`);
+}
+
+function fail(message) {
+  process.stderr.write(`gh: ${message}\n`);
+  process.exit(1);
+}
+
+function readJson(file, fallback) {
+  if (!fs.existsSync(file)) return fallback;
+  return JSON.parse(fs.readFileSync(file, "utf8"));
+}
+
+function writeJson(file, data) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, `${JSON.stringify(data, null, 2)}\n`);
+}
+
+const readIssues = () => readJson(ISSUES_FILE, []);
+const writeIssues = (issues) => writeJson(ISSUES_FILE, issues);
+
+// ---- argument parsing ------------------------------------------------------
+
+/**
+ * Splits the tokens after the subcommand into positional args (an issue number, an api route)
+ * and a map of flag name to every value given for it, in order, so a repeated flag such as
+ * `--label` collects into a list. `-X` and `-F`/`-f` (gh api's method and field flags) are read
+ * into `method` and `field` the same way.
+ */
+function parseFlags(argv) {
+  const positional = [];
+  const flags = {};
+  const add = (name, value) => (flags[name] ??= []).push(value);
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === "-X") add("method", argv[++i]);
+    else if (arg === "-F" || arg === "-f") add("field", argv[++i]);
+    else if (arg.startsWith("--")) {
+      const name = arg.slice(2);
+      const next = argv[i + 1];
+      if (next !== undefined && !next.startsWith("--")) add(name, argv[++i]);
+      else add(name, "true");
+    } else positional.push(arg);
+  }
+  return { positional, flags };
+}
+
+const flagValue = (flags, name) => flags[name]?.at(-1);
+const flagList = (flags, name) => flags[name] ?? [];
+
+function bodyFrom(flags) {
+  const bodyFile = flagValue(flags, "body-file");
+  if (bodyFile) return bodyFile === "-" ? fs.readFileSync(0, "utf8") : fs.readFileSync(bodyFile, "utf8");
+  return flagValue(flags, "body") ?? "";
+}
+
+function jsonFields(flags) {
+  const raw = flagValue(flags, "json");
+  return raw ? raw.split(",").map((field) => field.trim()) : null;
+}
+
+/** Projects `fields` off `obj`, the way `gh --json a,b,c` returns only the fields asked for. */
+function project(obj, fields) {
+  if (!fields) return obj;
+  return Object.fromEntries(fields.map((field) => [field, (obj[field] ?? null)]));
+}
+
+const printJson = (value) => process.stdout.write(`${JSON.stringify(value)}\n`);
+
+// ---- issue fixture helpers -------------------------------------------------
+
+function nextNumber(issues) {
+  return issues.reduce((max, issue) => Math.max(max, issue.number), 0) + 1;
+}
+
+function findIssue(issues, number) {
+  const issue = issues.find((candidate) => candidate.number === Number(number));
+  if (!issue) fail(`issue #${number} not found in .gh/issues.json`);
+  return issue;
+}
+
+/** `gh issue close --reason` values, as the state reason fixtures and `--json stateReason` use. */
+const REASON_CODES = { "not planned": "NOT_PLANNED", completed: "COMPLETED", duplicate: "DUPLICATE", reopened: "REOPENED" };
+
+// ---- issue subcommands ------------------------------------------------------
+
+/** True when `issue` carries the label named `name`, i.e. an entry in `labels` with that `name`. */
+const hasLabel = (issue, name) => (issue.labels ?? []).some((label) => label.name === name);
+
+function issueList(flags) {
+  let issues = readIssues();
+  const state = (flagValue(flags, "state") ?? "open").toLowerCase();
+  if (state !== "all") issues = issues.filter((issue) => issue.state.toLowerCase() === state);
+  for (const label of flagList(flags, "label")) issues = issues.filter((issue) => hasLabel(issue, label));
+  const search = flagValue(flags, "search");
+  if (search) issues = issues.filter((issue) => matchesSearch(issue, search));
+  printJson(issues.map((issue) => project(issue, jsonFields(flags))));
+}
+
+/**
+ * A pragmatic subset of GitHub search: the `reason:"…"` and `no:label` qualifiers this project's
+ * skills use, `in:title,body` accepted and ignored (title and body are already what is searched),
+ * and every remaining word required as a case-insensitive substring of title or body.
+ */
+function matchesSearch(issue, search) {
+  let text = search;
+  const reason = text.match(/reason:"([^"]+)"/);
+  if (reason) {
+    if (issue.stateReason !== REASON_CODES[reason[1].toLowerCase()]) return false;
+    text = text.replace(reason[0], "");
+  }
+  if (/\bno:label\b/.test(text)) {
+    if ((issue.labels ?? []).length > 0) return false;
+    text = text.replace(/\bno:label\b/, "");
+  }
+  text = text.replace(/\bin:title,body\b/, "").trim();
+  const haystack = `${issue.title}\n${issue.body ?? ""}`.toLowerCase();
+  return text
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((word) => haystack.includes(word.toLowerCase()));
+}
+
+function issueView(positional, flags) {
+  printJson(project(findIssue(readIssues(), positional[0]), jsonFields(flags)));
+}
+
+function issueEdit(positional, flags) {
+  const issues = readIssues();
+  const issue = findIssue(issues, positional[0]);
+  issue.labels ??= [];
+  for (const label of flagList(flags, "add-label")) if (!hasLabel(issue, label)) issue.labels.push({ name: label });
+  const removed = new Set(flagList(flags, "remove-label"));
+  if (removed.size > 0) issue.labels = issue.labels.filter((label) => !removed.has(label.name));
+  if (flags["body-file"] || flags.body) issue.body = bodyFrom(flags);
+  issue.updatedAt = new Date().toISOString();
+  writeIssues(issues);
+}
+
+function issueComment(positional, flags) {
+  const issues = readIssues();
+  const issue = findIssue(issues, positional[0]);
+  issue.comments ??= [];
+  issue.comments.push({ author: { login: "64x-lunicorn" }, body: bodyFrom(flags), createdAt: new Date().toISOString() });
+  issue.updatedAt = new Date().toISOString();
+  writeIssues(issues);
+  printJson({ url: `https://github.com/64x-lunicorn/skills/issues/${issue.number}#issuecomment-fixture` });
+}
+
+function issueClose(positional, flags) {
+  const issues = readIssues();
+  const issue = findIssue(issues, positional[0]);
+  const reason = flagValue(flags, "reason") ?? "completed";
+  issue.state = "CLOSED";
+  issue.stateReason = REASON_CODES[reason.toLowerCase()] ?? reason.toUpperCase();
+  const duplicateOf = flagValue(flags, "duplicate-of");
+  if (duplicateOf) issue.duplicateOf = Number(duplicateOf);
+  issue.closedAt = new Date().toISOString();
+  writeIssues(issues);
+}
+
+function issueCreate(flags) {
+  const issues = readIssues();
+  const number = nextNumber(issues);
+  issues.push({
+    number,
+    title: flagValue(flags, "title") ?? "",
+    body: bodyFrom(flags),
+    state: "OPEN",
+    stateReason: "",
+    author: { login: "64x-lunicorn" },
+    labels: flagList(flags, "label").map((name) => ({ name })),
+    comments: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  });
+  writeIssues(issues);
+  printJson({ number, url: `https://github.com/64x-lunicorn/skills/issues/${number}` });
+}
+
+function labelList(flags) {
+  printJson(readJson(LABELS_FILE, []).map((label) => project(label, jsonFields(flags))));
+}
+
+// ---- api subcommand ---------------------------------------------------------
+
+/** The one `gh api` route the Spec's skills call: reading and setting an issue's blocked_by relation. */
+const BLOCKED_BY_ROUTE = /^repos\/[^/]+\/[^/]+\/issues\/(\d+)\/dependencies\/blocked_by\/?$/;
+
+function api(route, flags) {
+  const match = (route ?? "").match(BLOCKED_BY_ROUTE);
+  if (!match) fail(`unsupported route for the scenario gh shim: ${route}`);
+  const issues = readIssues();
+  const issue = findIssue(issues, match[1]);
+  if ((flagValue(flags, "method") ?? "GET").toUpperCase() === "POST") {
+    const fields = Object.fromEntries(flagList(flags, "field").map((field) => splitOnce(field, "=")));
+    const blockerId = Number(fields.issue_id);
+    issue.blockedBy ??= [];
+    if (!issue.blockedBy.includes(blockerId)) issue.blockedBy.push(blockerId);
+    writeIssues(issues);
+    printJson({ issue_id: blockerId });
+    return;
+  }
+  printJson((issue.blockedBy ?? []).map((number) => findIssue(issues, number)));
+}
+
+function splitOnce(text, separator) {
+  const index = text.indexOf(separator);
+  return index < 0 ? [text, ""] : [text.slice(0, index), text.slice(index + 1)];
+}
+
+// ---- entry point -------------------------------------------------------------
+
+const argv = process.argv.slice(2);
+logCall(argv);
+const [group, action, ...rest] = argv;
+const { positional, flags } = parseFlags(rest);
+
+try {
+  if (group === "issue" && action === "list") issueList(flags);
+  else if (group === "issue" && action === "view") issueView(positional, flags);
+  else if (group === "issue" && action === "edit") issueEdit(positional, flags);
+  else if (group === "issue" && action === "comment") issueComment(positional, flags);
+  else if (group === "issue" && action === "close") issueClose(positional, flags);
+  else if (group === "issue" && action === "create") issueCreate(flags);
+  else if (group === "label" && action === "list") labelList(flags);
+  else if (group === "api") api(action, flags);
+  else fail(`unsupported command for the scenario gh shim: ${argv.join(" ")}`);
+} catch (error) {
+  fail(error.message);
+}
