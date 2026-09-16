@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: A suspected shallow module passes the deletion test before it becomes a candidate
+description: "Spec #33. src/billing/apply_discount.sh looks thin, but deleting it would make its discount-code branching, minimum-order-value rule and stacking refusal reappear in every caller (checkout.sh, refund.sh, quote.sh); the deletion test makes it a candidate."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: llm
+    name: apply_discount.sh is a candidate, reasoned through the deletion test
+    criteria: >-
+      A listed candidate concerns src/billing/apply_discount.sh (or the
+      discount handling it does). The reasoning, or the problem it states,
+      is that deleting the module would make its branching logic (discount
+      codes, the minimum order value, refusing a second code) reappear in
+      every caller rather than vanish, which is why it is a candidate.

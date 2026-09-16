@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: A missing seam weighs above frequent change
+description: "Spec #33. src/billing carries the missing-seam note of bugfix #0004; src/reports changed even more often but has no such note. A scan without a named area examines src/billing first."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: tool_order
+    name: "billing (missing seam) read before reports (frequency only)"
+    # Best-effort: whether a subagent's Read calls surface in this trace is open (architecture #40 risk
+    # "Subagent tool calls in the trace"). The chat-summary regex below is the documented fallback.
+    before: { tool: Read, input_match: 'src/billing/(apply_discount|totals|format_currency)\.sh' }
+    after: { tool: Read, input_match: 'src/reports/(summary|receipt|csv_export)\.sh' }
+  - type: regex
+    name: "fallback: billing named before reports in the chat summary"
+    target: trace
+    pattern: '(?s)src/billing.*src/reports'

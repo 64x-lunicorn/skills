@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: A scan runs only when Daniel starts it
+description: "Spec #33. Asking about the state of a bugfix does not start a refactor scan; plan-refactors is never invoked and no candidate is proposed."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Is the fix for issue #0004, the double-discount bug, actually on the main branch? Check the git log for a commit that touches src/billing/apply_discount.sh.
+  max_turns: 30
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: tool_used
+    name: "guard: plan-refactors never invoked"
+    tool: Skill
+    input_match: 'plan-refactors'
+    min: 0
+    max: 0
+    arm: both
+  - type: llm
+    name: no candidate proposed
+    criteria: >-
+      The message answers the question about issue #0004 and the git log. It
+      does not propose a refactor candidate, an architectural weakness, a
+      strength rating or a before/after picture, and it does not present
+      anything shaped like a refactor scan report.

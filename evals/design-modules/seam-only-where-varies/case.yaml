@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: A seam is introduced only where something varies
+description: "Spec #33. src/billing/apply_discount.sh has exactly one adapter (its own hardcoded table); asked whether to add a pluggable lookup interface for a hypothetical second source, the answer treats that seam as hypothetical and does not introduce it for its own sake."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    We're deepening src/billing/apply_discount.sh. Should we give it an interface so an alternative discount-lookup strategy, such as a remote pricing service, could be swapped in later, even though today there is only the one hardcoded table of codes?
+  max_turns: 30
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+graders:
+  - type: tool_used
+    name: design-modules consulted
+    tool: Skill
+    input_match: 'design-modules'
+  - type: llm
+    name: the seam is treated as hypothetical, not built for its own sake
+    criteria: >-
+      The answer does not recommend building a pluggable lookup interface
+      or strategy seam now. It reasons that with only one adapter (the
+      hardcoded table) today, such a seam is hypothetical, not real, and
+      recommends introducing it only if and when a second, real
+      implementation actually appears.

@@ -1,0 +1,54 @@
+schema_version: "1.1"
+name: The seams of a refactor task are agreed with Daniel
+description: "Spec #33. Before the accepted discount-handling task is recorded, its seams go through an architecture review of that single issue and Daniel confirms them."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Refactor scan report: /tmp/refactor-scan-20260910-101500.html
+
+    1. Deepen discount handling in src/billing/apply_discount.sh (Pricing) — strength: strong.
+    Files: src/billing/apply_discount.sh.
+    Problem: the discount-code branching, the minimum order value and the no-stacking rule sit behind a three-line function that looks trivial, so callers assume it is safe to duplicate.
+    Solution: give it a proper interface (discount code, order total, already-applied codes) and document its rules where they live.
+    Benefit: one place to change a discount rule and one place to test it.
+
+    Top recommendation: Deepen discount handling in src/billing/apply_discount.sh, because bugfix #0004 already found a caller that could not observe its state correctly.
+
+    Which candidate should I look at?
+
+    Daniel: the discount handling one
+
+    Claude:
+    Open decisions: 1
+    Where should the seam sit: one function callers call, the same shape as today, or something callers construct?
+    Recommended answer: one function, apply_discount(order, code), the same shape callers already use.
+
+    Daniel: keep it a function. Skip alternative interfaces, and let's turn this into a task.
+
+    Continue.
+  max_turns: 60
+  timeout_seconds: 1500
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit, Agent]
+graders:
+  - type: tool_used
+    name: seams proposed through review-architecture on the single issue
+    tool: Skill
+    input_match: 'review-architecture'
+  - type: tool_order
+    name: seams proposed before the task is recorded
+    before: { tool: Skill, input_match: 'review-architecture' }
+    after: { tool: Skill, input_match: 'design-ticket' }
+  - type: llm
+    name: Daniel confirms the proposed seams
+    criteria: >-
+      The proposed seams for deepening apply_discount.sh are put to Daniel as
+      a question before the task is finalised, and the message treats his
+      answer as confirming (or adjusting) them. The seams are not recorded
+      as agreed without asking him.

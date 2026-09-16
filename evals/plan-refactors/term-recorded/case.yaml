@@ -1,0 +1,44 @@
+schema_version: "1.1"
+name: A term that settled in the interview is recorded
+description: "Spec #33. While the discount-handling candidate is worked through, the word 'stacking' settles on one fixed meaning; once Daniel confirms it, the term is recorded in CONTEXT.md."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Refactor scan report: /tmp/refactor-scan-20260910-101500.html
+
+    1. Deepen discount handling in src/billing/apply_discount.sh (Pricing) — strength: strong.
+    Top recommendation: Deepen discount handling in src/billing/apply_discount.sh.
+
+    Which candidate should I look at?
+
+    Daniel: the discount handling one
+
+    Claude:
+    Open decisions: 1
+    We keep saying "stacking" for applying a second discount code on top of one already used. Should that be the fixed meaning of the word going forward?
+    Recommended answer: yes, record "Stacking": applying more than one discount code to the same order. Avoid: combining, layering.
+
+    Daniel: yes, record it exactly like that
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: regex
+    name: the settled term is recorded in CONTEXT.md
+    target: { source: file, path: CONTEXT.md }
+    pattern: '\*\*Stacking\*\*'
+  - type: llm
+    name: recorded only after Daniel's confirmation
+    criteria: >-
+      The term Stacking is recorded in CONTEXT.md with the meaning Daniel
+      confirmed (applying more than one discount code to the same order),
+      and the message treats it as recorded only after his yes, not before.

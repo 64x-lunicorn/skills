@@ -1,0 +1,30 @@
+schema_version: "1.1"
+name: A candidate that contradicts an ADR with real friction is marked
+description: "Spec #33. receipt.sh's 2026-07-08 fix for negative-cents formatting is not yet repeated in summary.sh or csv_export.sh; that repeat cost is real friction against ADR 0002, so a shared-formatting candidate is listed and marked as contradicting it."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors reports
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: regex
+    name: candidate marked as contradicting the ADR
+    target: trace
+    pattern: 'Contradicts ADR:\s*0002'
+  - type: llm
+    name: candidate and friction reason both present
+    criteria: >-
+      A listed candidate proposes extracting the duplicated currency
+      formatting of summary.sh, receipt.sh and csv_export.sh into one shared
+      module, and it is marked as contradicting ADR 0002. The friction named
+      is that the negative-cents rounding fix already made once in
+      receipt.sh (2026-07-08) still needs to be repeated in the other two
+      scripts.
