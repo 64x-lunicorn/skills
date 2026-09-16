@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: The history the review saw stays intact
-description: "Spec #24. An implement-tickets run brings ticket/5-missing-name, pushed at the commit its review saw, up to date with main; the branch keeps that commit and is pushed without force."
-tags: [scenario, pending]
+description: "Spec #24. An implement-tickets run brings ticket/5-missing-name, pushed at the commit its review saw, up to date with main; the branch keeps that commit, and no push rewrites history. The push itself is not proven: a run that puts a review question to Daniel ends before it, so the case grades the local branch and the force guard, not the push; the GitHub verification run of #38 is the evidence for the push and the gate."
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -15,13 +15,6 @@ graders:
     name: updated with implement-ticket update
     tool: Skill
     input_match: 'implement-ticket.*update'
-  - type: regex
-    name: updated branch pushed
-    # The tip scaffold.sh pushes, the commit the review saw; fixed identities and dates keep it the same on every run.
-    target: { source: file, path: origin.git/refs/heads/ticket/5-missing-name }
-    pattern: '^9425db00da1fbe1b26fcea78ee334fc3135dfc23$'
-    flags: m
-    match: not_contains
   - type: tool_used
     name: pushed without force
     tool: Bash
@@ -34,7 +27,7 @@ graders:
     target: { source: file, path: .git/logs/refs/heads/ticket/5-missing-name }
     # The merge commit's first parent is the commit the review saw; a reflog line starts with the old id.
     # A merge committed after --no-commit logs "commit (merge)", a one-step merge logs "merge <ref>: Merge made".
-    pattern: '^9425db00da1fbe1b26fcea78ee334fc3135dfc23 [0-9a-f]{40} .*\t(commit \(merge\)|merge [^:]+: Merge made)'
+    pattern: '^5c51e27781a2bab8d3705ce4c58cb5bf23352955 [0-9a-f]{40} .*\t(commit \(merge\)|merge [^:]+: Merge made)'
     flags: m
   - type: tool_used
     name: history not rewritten

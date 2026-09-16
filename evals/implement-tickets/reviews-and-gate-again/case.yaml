@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: An updated branch passes both reviews and the gate again
-description: "Spec #24. An implement-tickets run brings ticket/5-missing-name up to date with main; both review-change axes and the project's checks run on the branch again before any new ticket starts. The gate itself is not proven: review-change runs the same check.sh, and no field in a run tells its check from the gate's (https://github.com/64x-lunicorn/skills/issues/64#issuecomment-5669459728); #38 and verify-spec check the gate."
-tags: [scenario, pending]
+description: "Spec #24. An implement-tickets run brings ticket/5-missing-name up to date with main; both review-change axes and the project's checks run on the branch again before any new ticket starts. The gate itself is not proven: review-change runs the same check.sh, and no field in a run tells its check from the gate's (https://github.com/64x-lunicorn/skills/issues/64#issuecomment-5669459728); #38 and verify-spec check the gate. The push is not proven either: a run that puts a review question to Daniel ends before it, so the case grades the reviews after the update, not what follows that question; the GitHub verification run of #38 is the evidence for the push and the gate."
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -27,19 +27,18 @@ graders:
     name: reviews after the update
     before: { tool: Skill, input_match: 'implement-ticket.*update' }
     after: { tool: Skill, input_match: 'review-change' }
-  - type: tool_order
-    name: reviews ran before the push
-    before: { tool: Skill, input_match: 'review-change' }
-    # Matched against the Bash input as JSON; anchored to the command, so a description that names git push does not count.
-    after: { tool: Bash, input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b(?:[^|;&"\\]|\\"(?:[^"\\]|\\[^"])*\\"|\\[^"])*?\bpush\b' }
   - type: regex
     name: next frontier ticket proposed after the reviews
     # The step 3 question of implement-tickets; no run can answer it, so the run ends on it, after the reviews.
-    pattern: 'Implement [^?]*#0*6\b[^?]*\?'
+    # Any case, the number with or without # and zeros, and the tickets listed before the question count.
+    # A run that ends earlier, on a review question to Daniel, counts too: interview-user's two marker lines.
+    pattern: '\bimplement\b[^?]*(?<![\w/])#?0*6\b[^?]*\?|(?<![\w/])#?0*6\b[^?]*\bimplement\b[^?]*\?|^Open decisions: \d+$[\s\S]*?^Recommended answer: .+$'
+    flags: im
   - type: tool_used
     name: "guard: no branch for the next frontier ticket"
     tool: Bash
     # Matched against the Bash input as JSON; anchored to the command, so a description that names the branch does not count.
-    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?git\b(?:[^|;&"\\]|\\"(?:[^"\\]|\\[^"])*\\"|\\[^"])*?\b(checkout|switch|branch)\b(?:[^|;&"\\]|\\"(?:[^"\\]|\\[^"])*\\"|\\[^"])*?\sticket/0*6\b'
+    # A quoted branch name counts; listing branches with --list, -l or -a does not.
+    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?\bgit\b(?:(?![|;&])(?:[^"\\]|\\.))*?\b(?:checkout|switch|branch)\b(?!\s+(?:--list|-l|-a)\b)(?:(?![|;&])(?:[^"\\]|\\.))*?(?:\s|\\"|'')ticket/0*6\b'
     min: 0
     max: 0

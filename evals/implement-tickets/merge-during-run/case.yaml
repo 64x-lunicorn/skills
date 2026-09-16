@@ -1,7 +1,13 @@
 schema_version: "1.1"
 name: A merge during a run is not noticed inside that run
-description: "Spec #24. An implement-tickets run updates ticket/5-missing-name; a git hook stands in for Daniel merging a pull request during the run, and ticket/6-greet-several-names, behind only since then, is not updated in this run."
-tags: [scenario, pending]
+description: "Spec #24. An implement-tickets run updates ticket/5-missing-name; a stand-in merge moves main during the run in place of Daniel merging a pull request, and ticket/6-greet-several-names, behind only since then, is not updated in this run."
+tags: [scenario]
+# The stand-in merge: the eval runner sets core.hooksPath itself, so no repository hook runs inside a run.
+# The run executes the fixture's ci.command, sh scripts/check.sh, itself: in resolve-merge on the open merge,
+# in implement-ticket, in both reviews and the gate. check.sh calls .git/pre-check.sh, an untracked script
+# scaffold.sh writes, so a review has no project code to raise. On a ticket/* branch that holds an open merge
+# or already contains main, it moves main locally and on origin.git to refs/fixture/merged-during-run,
+# only while main is not yet that commit and is its ancestor, so at most once.
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -21,20 +27,20 @@ graders:
     pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
   - type: regex
     name: stand-in merge happened during the run
-    # The hook moves main on origin to refs/fixture/merged-during-run, the commit scaffold.sh creates for it.
+    # The stand-in merge moves main on origin to refs/fixture/merged-during-run, the commit scaffold.sh creates for it.
     target: { source: file, path: origin.git/refs/heads/main }
-    pattern: '^c6cf142792815673981e66cdae6098142f5850e2$'
+    pattern: '^055b0da465f70ad41320714ae5923ded785242a4$'
     flags: m
   - type: regex
     name: branch behind only during the run unchanged
     # The tip scaffold.sh creates; fixed identities and dates keep it the same on every run.
     target: { source: file, path: .git/refs/heads/ticket/6-greet-several-names }
-    pattern: '^260f6361767eb4a420243ab5918cc8369218efbc$'
+    pattern: '^05f776a14529d80ee44bcc0b1e1a8a10020b6877$'
     flags: m
   - type: tool_used
     name: no update of the branch behind only during the run
-    # The Skill input is graded as JSON, so the number may follow "args".
+    # The Skill input is graded as JSON; the number and update count in any order and with words between.
     tool: Skill
-    input_match: 'implement-ticket\W+(args\W+)?0*6\s+update'
+    input_match: 'implement-ticket(?!s)[^}]*?(?:(?<!\w)0*6\b[^}]*?\bupdate\b|\bupdate\b[^}]*?(?<!\w)0*6\b)'
     min: 0
     max: 0

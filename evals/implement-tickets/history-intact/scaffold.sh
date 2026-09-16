@@ -25,6 +25,8 @@ printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
 
 git checkout -q -b ticket/5-missing-name
+# The default stays in the printf line: main changes word= just above name=, so writing it
+# as name=${1:-stranger} would put both sides' changes on adjacent lines and the merge would conflict.
 cat > src/greet.sh <<'SH'
 greet() {
   word=Hello
@@ -32,13 +34,12 @@ greet() {
   printf '%s, %s\n' "$word" "${name:-stranger}"
 }
 SH
-cat > tests/default-name.test.sh <<'SH'
+cat > tests/missing-name.test.sh <<'SH'
 #!/bin/sh
 # Scenario: A missing name is greeted as stranger
-set -e
-. ./src/greet.sh
-actual=$(unset GREETING; greet)
-[ "$actual" = "Hello, stranger" ] || { echo "expected 'Hello, stranger', got '$actual'"; exit 1; }
+. ./tests/expect-greeting.sh
+unset GREETING
+expect_greeting 'Hello, stranger'
 SH
 commit 1 -m "feat: greet a missing name as stranger" -m "Refs #0005."
 
@@ -53,10 +54,9 @@ SH
 cat > tests/greeting-word.test.sh <<'SH'
 #!/bin/sh
 # Scenario: The greeting word comes from GREETING
-set -e
-. ./src/greet.sh
-actual=$(GREETING=Hi greet Ada)
-[ "$actual" = "Hi, Ada" ] || { echo "expected 'Hi, Ada', got '$actual'"; exit 1; }
+. ./tests/expect-greeting.sh
+GREETING=Hi
+expect_greeting 'Hi, Ada' Ada
 SH
 commit 2 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 
@@ -66,4 +66,4 @@ git remote add origin "$PWD/origin.git"
 git push -q origin main ticket/5-missing-name
 
 # The graders pin this commit id; a fixture edit that changes it must fail here, not look like missing behaviour.
-[ "$(git rev-parse ticket/5-missing-name)" = 9425db00da1fbe1b26fcea78ee334fc3135dfc23 ] || { echo "fixture drifted: ticket/5-missing-name"; exit 1; }
+[ "$(git rev-parse ticket/5-missing-name)" = 5c51e27781a2bab8d3705ce4c58cb5bf23352955 ] || { echo "fixture drifted: ticket/5-missing-name"; exit 1; }

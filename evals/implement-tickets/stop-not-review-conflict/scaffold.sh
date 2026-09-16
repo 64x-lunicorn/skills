@@ -29,13 +29,12 @@ greet() {
   printf 'Hello, %s\n' "${1:-stranger}"
 }
 SH
-cat > tests/default-name.test.sh <<'SH'
+cat > tests/missing-name.test.sh <<'SH'
 #!/bin/sh
 # Scenario: A missing name is greeted as stranger
-set -e
-. ./src/greet.sh
-actual=$(unset GREETING; greet)
-[ "$actual" = "Hello, stranger" ] || { echo "expected 'Hello, stranger', got '$actual'"; exit 1; }
+. ./tests/expect-greeting.sh
+unset GREETING
+expect_greeting 'Hello, stranger'
 SH
 commit 1 -m "feat: greet a missing name as stranger" -m "Refs #0005."
 
@@ -48,10 +47,9 @@ SH
 cat > tests/greeting-word.test.sh <<'SH'
 #!/bin/sh
 # Scenario: The greeting word comes from GREETING
-set -e
-. ./src/greet.sh
-actual=$(GREETING=Hi greet Ada)
-[ "$actual" = "Hi, Ada" ] || { echo "expected 'Hi, Ada', got '$actual'"; exit 1; }
+. ./tests/expect-greeting.sh
+GREETING=Hi
+expect_greeting 'Hi, Ada' Ada
 SH
 commit 2 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 
@@ -64,8 +62,9 @@ SH
 cat > tests/missing-name-refused.test.sh <<'SH'
 #!/bin/sh
 # Scenario: A missing name is refused
-. ./src/greet.sh
-if actual=$(unset GREETING; greet 2>/dev/null); then echo "expected greet to fail, got '$actual'"; exit 1; fi
+. ./tests/expect-greeting.sh
+unset GREETING
+if actual=$(greet 2>/dev/null); then echo "expected greet to fail, got '$actual'"; exit 1; fi
 [ -z "$actual" ] || { echo "expected no output, got '$actual'"; exit 1; }
 SH
 commit 3 -m "fix: refuse a missing name" -m "Closes #0007."

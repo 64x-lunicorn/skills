@@ -76,6 +76,8 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 
 **ADR index**: the table in `docs/adr/README.md` listing every ADR with its number, title and status.
 
+**Behind**: the default branch has changes the ticket branch does not have. On a forge this is the pull request's state; without a forge, the default branch is not part of the ticket branch's history. `implement-tickets` updates behind ticket branches at the start of every run.
+
 **Merge conflict**: a place where both sides changed the same lines and the merge cannot take both automatically. Not a review finding.
 
 **Intent**: what one side of a merge set out to achieve, taken from its primary sources: its commits, its pull request, its ticket and its Spec.

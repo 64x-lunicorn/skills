@@ -20,7 +20,20 @@ Find the wayfinder: the argument, or the `Order: #<n>` part of the named tickets
 
 For every unchecked ticket in the wayfinder that is closed because its pull request was merged, check it off and mark its node `done` in the progress graph. A ticket whose pull request was closed without merging stays unchecked and is named to Daniel. Without this step, merged work never unblocks the tickets waiting for it.
 
-**Done when** every closed ticket is checked off in the wayfinder and nothing else changed there.
+Then bring behind ticket branches up to date, before any new ticket starts. Daniel merges only squash commits into a default branch that requires branches to be up to date, so every merge puts the other open ticket pull requests behind.
+
+1. With the working tree clean, check out the default branch and, when a remote exists, run `git pull --ff-only`, so behind is measured against the current default branch.
+2. Find the ticket branches that are behind or have merge conflicts, once:
+   - **`forge: github`:** one `gh pr list --state open --base <default_branch> --json number,headRefName,closingIssuesReferences,mergeStateStatus,mergeable`. A pull request belongs to an unchecked ticket of the wayfinder when `closingIssuesReferences` names it, else when `headRefName` starts with `ticket/<n>-`. It is a hit when `mergeStateStatus` is `BEHIND` or `DIRTY`, or `mergeable` is `CONFLICTING`. `UNKNOWN` means GitHub is still calculating: query again up to three times, ten seconds apart; still `UNKNOWN`, name the pull request to Daniel as undetermined and leave it for the next run.
+   - **`forge: none`:** for each local `refs/heads/ticket/<n>-*` of an unchecked ticket, run `git merge-base --is-ancestor <default_branch> <ref>`. Exit 1 means behind, a hit; any other non-zero exit is an error: stop and show it.
+3. For each hit, in wayfinder order:
+   1. Invoke `implement-ticket` with `<n> update`. On `stopped`, such as `stopped: incompatible intents`, handle it like a stop in step 4: show it verbatim, post it on the wayfinder and wait for Daniel. No review runs on that branch, because a stop is not a review finding and must not become one of class `conflict`.
+   2. On `done`, run both reviews and their fix rounds as in step 5, with `<base>` the merge-base computed after the update. The reviews saw the branch before the merge.
+   3. Run `ci.command`, then, when a remote exists, push the branch with a plain `git push`, never with `--force` or `--force-with-lease`: the update only adds a merge commit, so every commit the reviews saw stays on the branch. With a forge, watch the checks as in step 6.3.
+
+Check only here, at the start of the run. A pull request Daniel merges while the run goes on puts other branches behind only after this check; they are updated at the start of the next run, not in this one.
+
+**Done when** every closed ticket is checked off in the wayfinder and nothing else changed there, and every ticket branch that was behind or had merge conflicts at the check is updated, reviewed and pushed with its checks green, or its stop is shown and posted, or it is named as undetermined.
 
 ## 2. Verify a completed Spec
 
@@ -86,8 +99,9 @@ Never merge and never enable auto-merge. Then go back to step 4 with the next ti
 End with one report:
 
 - **Spec:** the verification result, the terms recorded with `CONTEXT.md` named as changed and not committed, the terms still missing, follow-up tickets created, or the issues closed, when step 2 ran.
+- **Updated:** pull requests brought up to date in step 1, each with its link, review rounds per axis and Daniel's decisions verbatim, and pull requests named as undetermined.
 - **Per ticket:** pull request link, review rounds per axis, Daniel's decisions verbatim.
-- **Stopped:** tickets with their stop reason.
+- **Stopped:** tickets with their stop reason, updates included.
 - **Waiting:** tickets dropped for an open blocker, with the pull request to merge first.
 
 **Done when** every ticket from step 3, dropped ones included, and the outcome of step 2 appear in the report.
