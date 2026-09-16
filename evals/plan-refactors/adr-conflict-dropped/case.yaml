@@ -1,0 +1,24 @@
+schema_version: "1.1"
+name: A candidate that contradicts an ADR without real friction is dropped
+description: "Spec #33. Extracting the duplicated formatting out of src/reports would contradict ADR 0002, but the three scripts have never needed a shared fix; the friction does not justify reopening the ADR, so the candidate is not listed."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors reports
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: llm
+    name: no shared-formatting candidate listed
+    criteria: >-
+      The message does not list a candidate to extract the duplicated
+      currency or date formatting of summary.sh, receipt.sh and
+      csv_export.sh into one shared module. It may discuss ADR 0002, but not
+      as a listed, marked candidate.

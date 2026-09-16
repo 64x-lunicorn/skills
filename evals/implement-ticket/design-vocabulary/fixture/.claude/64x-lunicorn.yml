@@ -1,0 +1,15 @@
+setup_version: 3
+forge: none
+default_branch: main
+research:
+  path: research/
+  tracked: false
+issues:
+  tracker: local
+  path: issues/
+ci:
+  command: "sh tests/apply_discount.test.sh"
+  runtime: { stack: node, node: ">=24" }
+  runner: null
+  checks:
+    - { name: Tests, run: "sh tests/apply_discount.test.sh", required: true }

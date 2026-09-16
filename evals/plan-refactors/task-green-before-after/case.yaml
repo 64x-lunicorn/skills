@@ -1,0 +1,44 @@
+schema_version: "1.1"
+name: A refactor task is green before and after
+description: "Spec #33. The discount-handling refactor task (#0005), scenarios pinning today's behaviour, is built through implement-ticket; the scenarios pass before the change and pass again after it."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Refactor scan report: /tmp/refactor-scan-20260910-101500.html
+
+    1. Deepen discount handling in src/billing/apply_discount.sh (Pricing) — strength: strong.
+    Top recommendation: Deepen discount handling in src/billing/apply_discount.sh.
+
+    Which candidate should I look at?
+
+    Daniel: the discount handling one. Keep it a function, skip alternative interfaces, turn it into a task.
+
+    Claude:
+    Refactor task #0005 created: "Deepen discount handling in apply_discount.sh", no parent Spec. Its scenarios pin today's WELCOME10, FLAT5, minimum-order-value and no-stacking behaviour. Seams confirmed with you: apply_discount(order, code) stays the public entry point.
+
+    Daniel: good, build it now
+
+    Continue.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit, Agent]
+graders:
+  - type: tool_used
+    name: task #0005 built through implement-ticket
+    tool: Skill
+    input_match: 'implement-ticket'
+  - type: llm
+    name: scenarios pass before and after the change
+    criteria: >-
+      Before making the deepening change, task #0005's scenarios (pinning
+      today's discount behaviour) are confirmed to pass; the change is made;
+      the scenarios are confirmed to pass again afterward. The message does
+      not skip the before check, and does not claim the task is done without
+      running the scenarios after the change.
