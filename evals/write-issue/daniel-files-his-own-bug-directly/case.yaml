@@ -1,0 +1,36 @@
+schema_version: '1.1'
+name: 'Daniel files his own bug directly'
+description: 'Spec #26. Daniel found a bug himself: greet Ada prints "Hello Ada" instead of "Hello, Ada". He files it directly; no Bug issue and no triage happen at all.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:write-issue bugfix
+
+    I found this myself: running greet Ada prints "Hello Ada", missing the comma after the word, in src/greet.sh.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'filed through write-issue'
+    tool: 'Skill'
+    input_match: 'write-issue'
+  - type: 'tool_used'
+    name: 'write-issue diagnoses it itself'
+    tool: 'Skill'
+    input_match: 'diagnose-bug'
+  - type: 'tool_used'
+    name: 'a single bugfix issue is created'
+    tool: 'Bash'
+    input_match: 'issue create.*--label bugfix'
+  - type: 'tool_used'
+    name: 'no plain Bug issue is created'
+    tool: 'Bash'
+    input_match: 'issue create.*--label bug\b'
+    min: 0
+    max: 0
+  - type: 'llm'
+    name: 'no triage runs for Daniel''s own bug'
+    criteria: 'No Bug issue is created and no triage skill runs; write-issue diagnoses the bug and creates one bugfix issue directly, linked to nothing because there is no Bug to link.'

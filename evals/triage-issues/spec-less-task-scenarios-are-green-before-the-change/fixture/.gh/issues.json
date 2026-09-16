@@ -1,0 +1,41 @@
+[
+  {
+    "number": 214,
+    "title": "Extract the hard-coded currency symbol in render_price",
+    "body": "render_price has a literal $ in its printf format. Could that become a named constant instead? No behaviour should change.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 223,
+    "title": "Extract the hard-coded currency symbol in render_price",
+    "body": "> Task without a Spec.\n\n## Acceptance criteria\n\n```gherkin\nFeature: render_price keeps its output\n\n  Scenario: A price in cents renders with a dollar sign and two decimals\n    Given a price of 1099 cents\n    When render_price is called\n    Then it prints \"$10.99\"\n```\n\n## Implementation notes\n\n- Seam: `src/render.sh`, `render_price`.\n",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "task"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  }
+]

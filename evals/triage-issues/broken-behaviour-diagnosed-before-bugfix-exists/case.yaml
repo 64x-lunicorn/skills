@@ -1,0 +1,32 @@
+schema_version: '1.1'
+name: 'Broken behaviour is diagnosed before a bugfix exists'
+description: 'Spec #26. Daniel confirms issue #212 as broken behaviour; triage runs a diagnosis before any bugfix issue is created.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 212
+
+    When triage asks what kind of change this is, answer: broken behaviour, I can reproduce it every time by running greet Ada.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'tool_used'
+    name: 'a diagnosis runs before any bugfix issue exists'
+    tool: 'Skill'
+    input_match: 'diagnose-bug'
+  - type: 'tool_used'
+    name: 'no bugfix issue is created before the diagnosis'
+    tool: 'Bash'
+    input_match: 'issue create.*--label bugfix'
+    min: 0
+    max: 0
+  - type: 'llm'
+    name: 'the diagnosis has all four parts'
+    criteria: 'The diagnosis for issue #212 gives a deterministic command that shows the bug (running greet with a name), a minimal case, the root cause with evidence from src/greet.sh, and the affected code path.'

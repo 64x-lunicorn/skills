@@ -1,0 +1,20 @@
+schema_version: '1.1'
+name: 'Comments on a reporter''s issue name their writer'
+description: 'Spec #26. Issue #219 was filed by a reporter; every comment triage posts on it carries the line naming Claude as writer and Daniel as reviewer.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:triage-issues 219
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through triage-issues'
+    tool: 'Skill'
+    input_match: 'triage-issues'
+  - type: 'llm'
+    name: 'every comment carries the writer line'
+    criteria: 'Every comment this run posts on issue #219 contains, word for word, the line "Written by Claude during triage, reviewed by Daniel."'

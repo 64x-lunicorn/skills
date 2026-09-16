@@ -37,6 +37,15 @@ function addStubClaude(root: string, exitCode: number): NodeJS.ProcessEnv {
   return { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` };
 }
 
+/** Adds a stub `claude` that exits 0 only if `gh issue list` (whatever answers first on PATH) shows issue 42. */
+function addStubClaudeThatReadsGh(root: string): NodeJS.ProcessEnv {
+  const bin = path.join(root, "bin");
+  fs.mkdirSync(bin, { recursive: true });
+  const script = ['#!/bin/sh', 'case "$(gh issue list --json number)" in', '  *42*) exit 0 ;;', '  *) exit 1 ;;', 'esac', ''].join("\n");
+  fs.writeFileSync(path.join(bin, "claude"), script, { mode: 0o755 });
+  return { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` };
+}
+
 describe("CLI", () => {
   it("rejects the name of a pending scenario and exits with code 1", () => {
     const root = repoWith({
@@ -92,5 +101,20 @@ describe("CLI", () => {
     expect(result.stderr).toContain("Could not start claude:");
     expect(result.stderr).toContain("ENOENT");
     expect(result.stderr).toContain("Failed: A question carries a recommended answer");
+  });
+
+  it("puts the gh shim ahead of the real gh on PATH, so a scenario can fake the tracker", () => {
+    const root = repoWithRunnableCase();
+    fs.mkdirSync(path.join(root, ".gh"), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, ".gh", "issues.json"),
+      JSON.stringify([{ number: 42, title: "Fixture issue", state: "OPEN", labels: [], comments: [] }]),
+    );
+    const env = addStubClaudeThatReadsGh(root);
+
+    const result = run(root, [], env);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("1 of 1 scenario(s) passed.");
   });
 });

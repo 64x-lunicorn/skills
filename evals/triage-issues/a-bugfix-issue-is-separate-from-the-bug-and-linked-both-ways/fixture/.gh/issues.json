@@ -1,0 +1,23 @@
+[
+  {
+    "number": 212,
+    "title": "Greeting is missing the comma after the word",
+    "body": "Running `greet Ada` prints \"Hello Ada\"; I expected \"Hello, Ada\".",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  }
+]

@@ -1,0 +1,350 @@
+[
+  {
+    "number": 201,
+    "title": "Export button does nothing when clicked",
+    "body": "Clicking Export on the dashboard does nothing: no file downloads and no error appears.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 202,
+    "title": "Search results are missing recent entries",
+    "body": "Items added in the last day don't show up in search results until the next day.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 203,
+    "title": "Add bulk export for reports",
+    "body": "It would help to export more than one report at once.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-info"
+      }
+    ],
+    "comments": [
+      {
+        "author": {
+          "login": "64x-lunicorn"
+        },
+        "body": "Open decisions: 1\nDo you mean one file per report, or all reports zipped into one download?\nRecommended answer: a single zip, so one download covers the whole batch. Written by Claude during triage, reviewed by Daniel.",
+        "createdAt": "2026-09-05T09:00:00Z"
+      },
+      {
+        "author": {
+          "login": "reporter1"
+        },
+        "body": "Sure \u2014 a single zip download works, I need to export more than one report at once.",
+        "createdAt": "2026-09-12T09:00:00Z"
+      }
+    ],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 204,
+    "title": "Support keyboard-only navigation",
+    "body": "Every action on the dashboard should be reachable without a mouse.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-info"
+      }
+    ],
+    "comments": [
+      {
+        "author": {
+          "login": "64x-lunicorn"
+        },
+        "body": "Open decisions: 1\nWhich screen should this cover first: the dashboard, or the whole app?\nRecommended answer: the dashboard first, since that's the screen you named. Written by Claude during triage, reviewed by Daniel.",
+        "createdAt": "2026-09-10T09:00:00Z"
+      }
+    ],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 205,
+    "title": "Import silently fails sometimes",
+    "body": "Sometimes importing a file just doesn't work. No error, nothing in the log I could find.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 206,
+    "title": "Add CSV export for the dashboard",
+    "body": "Can the dashboard table be exported as CSV?",
+    "state": "CLOSED",
+    "stateReason": "NOT_PLANNED",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [],
+    "comments": [
+      {
+        "author": {
+          "login": "64x-lunicorn"
+        },
+        "body": "Not planned: dashboard exports are out of scope for now. Written by Claude during triage, reviewed by Daniel.",
+        "createdAt": "2026-08-20T09:00:00Z"
+      }
+    ],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z",
+    "closedAt": "2026-08-20T09:00:00Z"
+  },
+  {
+    "number": 207,
+    "title": "Please add CSV export to the dashboard",
+    "body": "Could we get a CSV export option on the dashboard table?",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 208,
+    "title": "Support exporting charts to Google Sheets",
+    "body": "Could we export a chart directly into a Google Sheet?",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 209,
+    "title": "Footer link colour is slightly off-brand",
+    "body": "Minor: the footer link colour looks a shade too light next to the rest of the palette.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 210,
+    "title": "Add a keyboard shortcut to focus search",
+    "body": "A shortcut to jump straight to the search box would save time.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 211,
+    "title": "Add a hotkey that jumps to the search box",
+    "body": "It would be nice to have a key that focuses the search field right away.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 216,
+    "title": "Add support for exporting reports as PDF",
+    "body": "Every report should be exportable as a PDF, not only as HTML.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 217,
+    "title": "Make the dashboard nicer somehow",
+    "body": "The dashboard feels cluttered. Could it be made nicer?",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 218,
+    "title": "Could the validator run incrementally, only on changed files?",
+    "body": "Not sure this is even possible given how the rules are written, but full runs are getting slow.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 219,
+    "title": "Notifications arrive twice",
+    "body": "Every notification shows up twice in the bell menu.",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      },
+      {
+        "name": "needs-triage"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 220,
+    "title": "Notifications de-duplicated by id",
+    "body": "> Bugfix for Bug #219.\n\n## Diagnosis\n\nCommand: `node scripts/notify.js --seed fixtures/dup.json`\nRoot cause: the bell menu appends every delivery event instead of upserting by notification id (`src/notify/render.js:41`).\n\n## Acceptance criteria\n\n```gherkin\nFeature: Notifications are not duplicated\n\n  Scenario: A redelivered notification does not appear twice\n    Given a notification already shown once\n    When the same notification is redelivered\n    Then the bell menu still shows it once\n```\n\n## Implementation notes\n\n- Seam: `src/notify/render.js`, dedupe by notification id before appending to the list.\n",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bugfix"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  }
+]

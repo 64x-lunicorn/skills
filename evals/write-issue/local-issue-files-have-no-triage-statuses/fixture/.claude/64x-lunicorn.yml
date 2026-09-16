@@ -1,0 +1,15 @@
+setup_version: 3
+forge: none
+default_branch: main
+research:
+  path: research/
+  tracked: false  # false = gitignored, local only
+issues:
+  tracker: local
+  path: issues/
+ci:
+  command: sh scripts/check.sh
+  runtime: { stack: shell }
+  runner: null
+  checks:
+    - { name: Tests, run: sh scripts/check.sh, required: true }

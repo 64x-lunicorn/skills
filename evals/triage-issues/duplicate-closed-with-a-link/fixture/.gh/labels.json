@@ -1,0 +1,67 @@
+[
+  {
+    "name": "bug",
+    "description": "A reporter's account of broken behaviour",
+    "color": "d73a4a"
+  },
+  {
+    "name": "request",
+    "description": "A reporter's request for new behaviour",
+    "color": "a2eeef"
+  },
+  {
+    "name": "spec",
+    "description": "Domain behaviour to build; never implemented directly",
+    "color": "5319e7"
+  },
+  {
+    "name": "task",
+    "description": "Agent-sized ticket cut from a Spec, or Spec-less work",
+    "color": "0e8a16"
+  },
+  {
+    "name": "bugfix",
+    "description": "Work order to restore broken behaviour",
+    "color": "b60205"
+  },
+  {
+    "name": "architecture",
+    "description": "Reviewed technical design for the tickets of a Spec",
+    "color": "1d76db"
+  },
+  {
+    "name": "wayfinder",
+    "description": "Order in which the tickets of a Spec are worked",
+    "color": "fbca04"
+  },
+  {
+    "name": "needs-triage",
+    "description": "Waiting for triage",
+    "color": "ededed"
+  },
+  {
+    "name": "needs-info",
+    "description": "Waiting on the reporter",
+    "color": "ededed"
+  },
+  {
+    "name": "ready-for-agent",
+    "description": "Ready for an agent to implement",
+    "color": "c2e0c6"
+  },
+  {
+    "name": "ready-for-human",
+    "description": "Needs a human's hand",
+    "color": "c2e0c6"
+  },
+  {
+    "name": "blocked",
+    "description": "Waiting on another issue",
+    "color": "e4e669"
+  },
+  {
+    "name": "dependencies",
+    "description": "Automated dependency update",
+    "color": "0366d6"
+  }
+]
