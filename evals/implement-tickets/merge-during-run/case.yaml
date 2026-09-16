@@ -39,9 +39,10 @@ graders:
     flags: m
   - type: tool_used
     name: no update of the branch behind only during the run
-    # The Skill input is graded as JSON; the number and update count in any order and with words between.
-    # A branch name or a plain mention such as ticket/6-… or #6 is not an argument and does not count.
+    # The Skill input is graded as JSON; only the args value counts, where the number and update may stand in
+    # any order and with words between, the number with or without # and zeros as elsewhere in this suite.
+    # A branch path such as ticket/6-… names no argument and does not count.
     tool: Skill
-    input_match: 'implement-ticket(?!s)[^}]*?(?:(?<![\w/#])0*6\b[^}]*?\bupdate\b|\bupdate\b[^}]*?(?<![\w/#])0*6\b)'
+    input_match: '"skill":"(?:64x-lunicorn:)?implement-ticket(?!s)"[^}]*?"args":"(?:[^"\\]|\\.)*?(?:(?<![\w/])#?0*6\b(?:[^"\\]|\\.)*?\bupdate\b|\bupdate\b(?:[^"\\]|\\.)*?(?<![\w/])#?0*6\b)'
     min: 0
     max: 0
