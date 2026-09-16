@@ -20,7 +20,7 @@ graders:
     target: { source: file, path: .git/logs/refs/heads/ticket/5-missing-name }
     pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
   - type: regex
-    name: frontier ticket proposed after the update
+    name: "frontier ticket proposed after the update, or the run ended on a review question"
     # The step 3 question of implement-tickets; no run can answer it, so the run ends on it, after the update.
     # Any case, the number with or without # and zeros, and the tickets listed before the question count.
     # A run that ends earlier, on a review question to Daniel, counts too: interview-user's two marker lines.
