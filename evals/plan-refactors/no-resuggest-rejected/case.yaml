@@ -1,0 +1,29 @@
+schema_version: "1.1"
+name: A later scan does not re-suggest a rejected candidate
+description: "Spec #33. ADR 0003 already records the rejection of extracting shared formatting out of the report scripts; a later scan of the reports area does not list that candidate again."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors reports
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: tool_used
+    name: prior rejection ADR read
+    tool: Read
+    input_match: '0003-keep-report-formatting-inline'
+  - type: llm
+    name: the rejected candidate is not re-listed
+    criteria: >-
+      The message does not list a candidate to extract the duplicated
+      formatting of summary.sh, receipt.sh and csv_export.sh into one shared
+      module. ADR 0003 already recorded that rejection, and no friction
+      beyond what ADR 0002 and ADR 0003 already weighed is present, so the
+      scan does not propose it again.

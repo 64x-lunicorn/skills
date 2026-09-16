@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: The report lands nowhere in the project
+description: "Spec #33. After a billing scan ends, the project's working tree is unchanged: git status is clean and no report file was written under the project root (architecture #40: the report goes to $TMPDIR, outside the run's workspace, so graders check the chat summary and git status instead of the file)."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+
+    Once the scan is done, run git status and show me its output.
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: file_exists
+    name: "guard: no report file written under the project root"
+    path: '*.html'
+    exists: false
+  - type: regex
+    name: git status shows a clean tree
+    target: trace
+    pattern: 'nothing to commit, working tree clean'

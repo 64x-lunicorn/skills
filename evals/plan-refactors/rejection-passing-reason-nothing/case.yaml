@@ -1,0 +1,52 @@
+schema_version: "1.1"
+name: A rejection with a passing reason records nothing
+description: "Spec #33. Daniel rejects the discount-handling candidate for a passing reason (not a priority right now); no ADR and nothing else is recorded."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors billing
+
+    Earlier turns of this run, quoted:
+
+    Claude:
+    Refactor scan report: /tmp/refactor-scan-20260910-101500.html
+
+    1. Deepen discount handling in src/billing/apply_discount.sh (Pricing) — strength: strong.
+    Top recommendation: Deepen discount handling in src/billing/apply_discount.sh.
+
+    Which candidate should I look at?
+
+    Daniel: the discount handling one
+
+    Claude:
+    Open decisions: 1
+    What must keep behaving exactly as it does today?
+    Recommended answer: the WELCOME10 and FLAT5 rules and the minimum-order-value checks, unchanged.
+
+    Daniel: yes, exactly that, but let's not do this one after all — it's just not a priority this quarter, nothing wrong with the reasoning.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: "guard: nothing handed to write-adr"
+    tool: Skill
+    input_match: 'write-adr'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: "guard: nothing written or edited"
+    tool: Write
+    min: 0
+    max: 0
+  - type: llm
+    name: nothing recorded for a passing reason
+    criteria: >-
+      The message accepts the rejection and does not propose or write an
+      ADR, a task or any other record. It treats "not a priority this
+      quarter" as a passing reason, not one a later scan would need
+      preserved.

@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: The change review uses the design vocabulary
+description: "Spec #33. ticket/9-print-total adds print_total.sh, a pass-through wrapper around format_currency.sh; the standards axis reports it as module, interface, depth, seam or adapter, not as component, service, API or boundary. Built by ticket #50, which adds the vocabulary to review-change step 3; this case stays pending until then."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Review the branch ticket/9-print-total against main on the standards axis for ticket #0009.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: tool_used
+    name: review-change invoked
+    tool: Skill
+    input_match: 'review-change'
+  - type: llm
+    name: the pass-through is described in the design vocabulary
+    criteria: >-
+      The standards-axis finding on src/billing/print_total.sh describes it
+      using at least one of the design vocabulary words module, interface,
+      depth, seam or adapter (for example, as a shallow module or a
+      needless layer at the seam format_currency already provides), not
+      only as duplication, a component, a service, an API or a boundary.

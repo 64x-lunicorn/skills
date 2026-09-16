@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: The architecture review uses the design vocabulary
+description: "Spec #33. Reviewing tickets #0003 and #0004 for Spec #0001, the implementation notes name apply_discount.sh's seam, interface and depth using the design vocabulary, not plain words like function, component or boundary. Built by ticket #50, which loads design-modules from review-architecture step 5; this case stays pending until then."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Tickets #0003 and #0004 for Spec #0001 are agreed. Review the architecture in #0002: decide the approach, order the tickets and write each one's implementation notes.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: tool_used
+    name: review-architecture invoked
+    tool: Skill
+    input_match: 'review-architecture'
+  - type: llm
+    name: implementation notes use the design vocabulary
+    criteria: >-
+      When the review names where apply_discount's behaviour is observed or
+      what a caller must know to use it, it uses at least two of the design
+      vocabulary words module, interface, depth or adapter — not only the
+      word seam, and not generic words like function, component, service or
+      boundary instead.

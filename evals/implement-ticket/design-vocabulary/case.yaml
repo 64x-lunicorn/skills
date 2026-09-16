@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: Ticket implementation uses the design vocabulary
+description: "Spec #33. Implementing ticket #0003 (add SUMMER15 to apply_discount.sh), the report's inventory and seam description use module and interface vocabulary, not just plain words. Built by ticket #50, which adds the vocabulary to implement-ticket steps 2 and 4; this case stays pending until then."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Implement ticket #0003.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: llm
+    name: inventory and seam description use the design vocabulary
+    criteria: >-
+      When the report describes what is reused and where the change is made
+      (the inventory and the seams), it uses at least one of the words
+      module or interface from the design vocabulary to describe
+      apply_discount.sh and its function, not only generic words like
+      function, file or component.
+  - type: regex
+    name: SUMMER15 scenario in the report
+    target: trace
+    pattern: 'SUMMER15'

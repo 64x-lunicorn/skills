@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: A deepened module replaces its shallow tests
+description: "Spec #33. Ticket #0001 moves format_currency's inline rounding into a shared round_half_up seam; the old test, which reached past the interface by recomputing the rounding formula, is replaced by a test at the new seam, not kept running alongside it."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Implement ticket #0001.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: the old test was read before it was touched
+    tool: Read
+    input_match: 'tests/format_currency\.test\.sh'
+  - type: llm
+    name: the old shallow test is replaced, not kept alongside a new one
+    criteria: >-
+      tests/format_currency.test.sh no longer recomputes the rounding
+      formula inline (the old, shallow-interface test is gone or rewritten
+      in place). A test now exercises the new round_half_up seam with
+      independently computed expected values. The old recompute-style
+      assertion is not left running next to the new test as a second,
+      separate test.

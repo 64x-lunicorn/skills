@@ -1,0 +1,29 @@
+schema_version: "1.1"
+name: The report ends with one top recommendation
+description: "Spec #33. A scan without a named area finds candidates in both src/billing and src/reports; the report ends with exactly one of them named as the one to tackle first."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:plan-refactors
+  max_turns: 60
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Agent]
+graders:
+  - type: tool_used
+    name: plan-refactors invoked
+    tool: Skill
+    input_match: 'plan-refactors'
+  - type: regex
+    name: exactly one top recommendation line
+    target: trace
+    pattern: '^Top recommendation:'
+    flags: m
+    match: count:1
+  - type: llm
+    name: top recommendation names one candidate with a reason
+    criteria: >-
+      The top recommendation names exactly one of the candidates already
+      presented and gives a reason to tackle it first. It does not name two
+      candidates as joint recommendations.

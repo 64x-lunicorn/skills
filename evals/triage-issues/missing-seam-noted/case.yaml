@@ -1,0 +1,30 @@
+schema_version: "1.1"
+name: A missing seam is noted on the bugfix issue
+description: "Spec #33. diagnose-bug found no correct seam for a regression test of issue #0002's rounding rule; triage writes that finding into the bugfix issue as a missing seam note, without a new label or a new file. Built by a Spec #26 ticket (triage-issues); this case stays pending until then."
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    Triage bugfix issue #0002. Its Diagnosis section already has diagnose-bug's finding: no correct seam exists for a regression test of the rounding rule, because format_currency only ever sees an already-computed integer of cents and the rounding itself happens earlier, in totals.sh. Write that finding onto the issue the way triage always does.
+  max_turns: 30
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+graders:
+  - type: regex
+    name: issue carries the missing seam note with its reason
+    target: { source: file, path: issues/0002-receipt-rounds-the-wrong-way-bugfix.md }
+    pattern: '^No correct seam: .+'
+    flags: m
+  - type: tool_used
+    name: "guard: no new issue file created"
+    tool: Write
+    input_match: 'issues/0003'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: "guard: no new label file or label-tracking file written"
+    tool: Write
+    input_match: 'label'
+    min: 0
+    max: 0
