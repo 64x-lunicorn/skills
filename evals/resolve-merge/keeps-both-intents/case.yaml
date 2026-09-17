@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: Merge conflicts are resolved keeping both intents
-description: "Spec #24. Merging main into a ticket branch has merge conflicts in src/greet.sh; the resolved file keeps the ticket's missing name greeted as stranger and main's greeting word from GREETING."
+description: "Spec #24. Merging main into a branch that belongs to no ticket has merge conflicts in src/greet.sh; the resolved file keeps this side's missing name greeted as stranger and main's greeting word from GREETING."
 tags: [scenario]
 context:
   scaffold_script: scaffold.sh

@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: The project's checks run before the merge is recorded
-description: "Spec #24. While main is merged into a ticket branch and its merge conflicts are resolved, the project's ci.command runs before the merge commit is made."
+description: "Spec #24. While main is merged into a branch that belongs to no ticket and its merge conflicts are resolved, the project's ci.command runs before the merge commit is made."
 tags: [scenario]
 context:
   scaffold_script: scaffold.sh

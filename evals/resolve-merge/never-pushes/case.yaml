@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: Resolving never pushes
-description: "Spec #24. resolve-merge records the merge of main into a ticket branch locally; the ticket branch on origin keeps the commit it had before the run."
+description: "Spec #24. resolve-merge records the merge of main into a branch that belongs to no ticket locally; the branch on origin keeps the commit it had before the run."
 tags: [scenario]
 context:
   scaffold_script: scaffold.sh
@@ -20,10 +20,10 @@ graders:
     target: { source: file, path: .git/logs/HEAD }
     pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
   - type: regex
-    name: ticket branch on origin unchanged
+    name: branch on origin unchanged
     # The tip scaffold.sh pushes; fixed identities and dates keep it the same on every run.
-    target: { source: file, path: origin.git/refs/heads/ticket/5-missing-name }
-    pattern: '^a8bde2b652e2da1c030f8ad0df85ed0200a9e9a8$'
+    target: { source: file, path: origin.git/refs/heads/missing-name-stranger }
+    pattern: '^67140abd81d64e1869eebeac590d295d728afe1b$'
     flags: m
   - type: tool_used
     name: nothing pushed

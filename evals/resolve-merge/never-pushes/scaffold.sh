@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Copies the case's project state into the run workspace and builds its git history:
-# main carries the squash commit of ticket #0004, and ticket/5-missing-name
-# changes the same line of src/greet.sh for ticket #0005, so merging main into it has merge conflicts.
-# Fixed identities and dates keep every commit id the same on every run.
+# main carries the squash commit of ticket #0004, and missing-name-stranger, a branch that
+# belongs to no ticket, changes the same line of src/greet.sh, so merging main into it has
+# merge conflicts. Fixed identities and dates keep every commit id the same on every run.
 set -euo pipefail
 cp -R "$(dirname "${BASH_SOURCE[0]}")/fixture/." .
 
@@ -24,7 +24,7 @@ git symbolic-ref HEAD refs/heads/main
 printf 'origin.git/\n' >> .git/info/exclude
 commit 0 -m "feat: greet a name"
 
-git checkout -q -b ticket/5-missing-name
+git checkout -q -b missing-name-stranger
 cat > src/greet.sh <<'EOF'
 greet() {
   printf 'Hello, %s\n' "${1:-stranger}"
@@ -38,7 +38,7 @@ set -e
 actual=$(unset GREETING; greet)
 [ "$actual" = "Hello, stranger" ] || { echo "expected 'Hello, stranger', got '$actual'"; exit 1; }
 EOF
-commit 1 -m "feat: greet a missing name as stranger" -m "Refs #0005."
+commit 1 -m "feat: greet a missing name as stranger"
 
 git checkout -q main
 cat > src/greet.sh <<'EOF'
@@ -59,8 +59,8 @@ commit 2 -m "feat: take the greeting word from GREETING" -m "Closes #0004."
 git init -q --bare origin.git
 git -C origin.git config gc.auto 0
 git remote add origin "$PWD/origin.git"
-git push -q origin main ticket/5-missing-name
-git checkout -q ticket/5-missing-name
+git push -q origin main missing-name-stranger
+git checkout -q missing-name-stranger
 
 # The graders pin this commit id; a fixture edit that changes it must fail here, not look like missing behaviour.
-[ "$(git rev-parse ticket/5-missing-name)" = a8bde2b652e2da1c030f8ad0df85ed0200a9e9a8 ] || { echo "fixture drifted: ticket/5-missing-name"; exit 1; }
+[ "$(git rev-parse missing-name-stranger)" = 67140abd81d64e1869eebeac590d295d728afe1b ] || { echo "fixture drifted: missing-name-stranger"; exit 1; }
