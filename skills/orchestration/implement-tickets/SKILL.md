@@ -28,14 +28,14 @@ Then bring behind ticket branches up to date, before any new ticket starts. Dani
    - **`forge: none`:** for each local `refs/heads/ticket/<n>-*` of an unchecked ticket, run `git merge-base --is-ancestor <default_branch> <ref>`. Exit 1 means behind, a hit; any other non-zero exit is an error: stop and show it.
 3. For each hit, in wayfinder order:
    1. Invoke `implement-ticket` with `<n> update`. On `stopped`, such as `stopped: incompatible intents`, handle it like a stop in step 4: show it verbatim, post it on the wayfinder and end the run at the report: the repository stays as the stop left it, mid-merge after incompatible intents or failed checks, until Daniel decides, and the hits after this one are named as not updated. No review runs on that branch, because a stop is not a review finding and must not become one of class `conflict`.
-   2. On `done`, run both reviews and their fix rounds as in step 5, with `<base>` the merge-base computed after the update. The reviews saw the branch before the merge.
+   2. On `done`, review only when the report's Deviations name files the merge resolved. Then run the reviews and their fix rounds as in step 5, with `<base>` the merge-base computed after the update, because a resolved merge conflict is new code the reviews never saw. With `None` or `already up to date`, git combined both sides without a choice, the scenario tests and `ci.command` cover that, and no review runs.
    3. Run `ci.command`, then, when a remote exists, push the branch with a plain `git push`, never with `--force` or `--force-with-lease`: the update only adds a merge commit, so every commit the reviews saw stays on the branch. With a forge, watch the checks as in step 6.3.
 
    A stop in item 2 or 3 is handled the same way: hard findings still open after two fix rounds or a conflict going to Daniel, a red `ci.command`, or checks still red after step 6.3 are shown verbatim, posted on the wayfinder and end the run at the report, and the hits after this one are named as not updated.
 
 Check only here, at the start of the run. A pull request Daniel merges while the run goes on puts other branches behind only after this check; they are updated at the start of the next run, not in this one.
 
-**Done when** every closed ticket is checked off in the wayfinder and nothing else changed there, and every ticket branch that was behind or had merge conflicts at the check is updated, reviewed, `ci.command` green, and, when a remote exists, pushed, with its checks green on a forge, or its stop is shown and posted, or it comes after a stop and is named as not updated, or it is named as undetermined.
+**Done when** every closed ticket is checked off in the wayfinder and nothing else changed there, and every ticket branch that was behind or had merge conflicts at the check is updated, reviewed when the merge resolved files, `ci.command` green, and, when a remote exists, pushed, with its checks green on a forge, or its stop is shown and posted, or it comes after a stop and is named as not updated, or it is named as undetermined.
 
 ## 2. Verify a completed Spec
 
@@ -78,17 +78,21 @@ On `stopped`, show Daniel the reason and the passage it concerns, verbatim, and 
 
 ## 5. Review
 
-Invoke `review-change` twice, as separate runs: `<ticket> <base> spec` and `<ticket> <base> standards`, with `<base>` the merge-base of the branch and the default branch. Separate runs keep one axis from masking the other, and neither shares the implementer's reasoning.
+Reviews cost most of a ticket's time and tokens, so each one gets what it needs prepared and sees only what is new to it.
 
-- **Hard findings:** write them to a file in the scratchpad and invoke `implement-ticket` with `<ticket> fix <file>`. Then run both reviews again, fresh. After two fix rounds, hard findings still open go to Daniel.
-- **Judgement findings:** interview Daniel on them with `interview-user`, one decision per finding, and keep his decisions verbatim. Accepted ones are fixed in one more fix round, followed by both reviews.
-- **Conflicts:** present them to Daniel before any fix round, with every quoted source. The ticket waits for his decision like a stop; which source gives way is his call, and a change to Spec, ticket or architecture issue happens outside this run.
+1. **Prepare the context directory** `<scratchpad>/review-<ticket>/`: write the ticket, its Spec and its architecture issue there as `ticket.md`, `spec.md` and `architecture.md` (`gh issue view <n> --comments`, or a copy of the local issue file), fetched once per ticket. Run `ci.command` and write its output to `ci.log`, with the `HEAD` commit as its first line. Every review then reads files instead of fetching issues and running the checks again.
+2. **Choose the runs.** `<base>` is the merge-base of the branch and the default branch. With at most 150 changed lines in `git diff --shortstat <base>...HEAD`, invoke `review-change` once with `<ticket> <base> both <dir>`: a change that small fits one reviewer's attention on both axes, and a second run would read the same sources again. Above that, invoke it twice, as separate runs, `<ticket> <base> spec <dir>` and `<ticket> <base> standards <dir>`, so one axis does not mask the other. Neither run shares the implementer's reasoning.
+3. **Act on the findings:**
+   - **Hard findings:** write them to `findings.md` in the context directory, note `HEAD`, and invoke `implement-ticket` with `<ticket> fix <file>`. Then write `ci.log` again and re-review: invoke `review-change` only for the axis, or `both`, that reported the hard findings, with `<base>` the noted commit, so the run checks the fix commits against `findings.md` instead of the whole change again. After two fix rounds, hard findings still open go to Daniel.
+   - **Judgement findings:** interview Daniel on them with `interview-user`, one decision per finding, and keep his decisions verbatim. Accepted ones are fixed in one more fix round, re-reviewed the same way.
+   - **Conflicts:** present them to Daniel before any fix round, with every quoted source. The ticket waits for his decision like a stop; which source gives way is his call, and a change to Spec, ticket or architecture issue happens outside this run.
+   - **Files named `not checked`:** name them to Daniel with the review's result; they are not reviewed again in this run.
 
 **Done when** no hard finding is open, every judgement finding has Daniel's decision, and no conflict is open.
 
 ## 6. Open the pull request
 
-1. On the ticket branch, run `ci.command` from `.claude/64x-lunicorn.yml`. The last fix round may have changed code after the implementer's own run.
+1. On the ticket branch, run `ci.command` from `.claude/64x-lunicorn.yml` when `HEAD` differs from the first line of `ci.log`; a green `ci.log` at the same commit already is that run.
 2. Push the branch and create the pull request from [the pull request template](references/pull-request-template.md), with the body passed as a file.
 3. Watch the checks with `gh pr checks <pr> --watch`. When they fail, invoke `implement-ticket` with `<ticket> fix <file>` holding the failing job's log, once. Still red: stop and show Daniel.
 
