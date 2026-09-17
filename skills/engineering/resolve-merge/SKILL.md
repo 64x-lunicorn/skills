@@ -1,6 +1,6 @@
 ---
 name: resolve-merge
-description: Brings the default branch into the current branch by merging, resolves each merge conflict keeping the intent of both sides and inventing no behaviour, stops on incompatible intents with both sides' sources quoted, and records the merge only after the project's checks passed, never pushing. Use when a branch that belongs to no ticket is to be brought up to date with the default branch or main, or when its merge conflicts are to be resolved. A ticket's branch or pull request that is behind or has merge conflicts goes through `implement-ticket` update instead.
+description: Brings the default branch into the current branch by merging, resolves each merge conflict keeping the intent of both sides and inventing no behaviour, stops on incompatible intents with both sides' sources quoted, and records the merge only after the project's checks passed, never pushing. Use when a branch that belongs to no ticket is to be brought up to date with the default branch or main, or when its merge conflicts are to be resolved. A ticket's branch or pull request that is behind or has merge conflicts goes through `implement-ticket <n> update` instead.
 ---
 
 Input: the intent of this side, what the current branch set out to achieve, as text from the caller, such as its ticket, Spec and scenarios. Output: `merged`, `stopped: incompatible intents` or `stopped: checks failed`, as in step 6.
