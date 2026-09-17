@@ -1,0 +1,37 @@
+schema_version: '1.1'
+name: 'The interview follows the chosen form (what they did is answered)'
+description: 'Spec #96. The reporter chose a bug and already said what they did; the next question asks what happened or what they expected, the Bug form fields still missing.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:report-issue
+
+    Earlier turns of this conversation, quoted:
+
+    Claude: Do you want to report a bug or a request?
+
+    Reporter: A bug.
+
+    Claude: What did you do?
+
+    Reporter: I staged two changed files in my shop project and ran /64x-lunicorn:write-commit-message.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through report-issue'
+    tool: 'Skill'
+    input_match: 'report-issue'
+  - type: 'llm'
+    name: 'the next question asks for a missing field of the Bug form'
+    criteria: 'Claude''s question to the reporter is about what happened or what they expected, the fields of the Bug form not answered yet, and does not ask again what the reporter did.'
+  - type: 'regex'
+    name: 'nothing is filed or commented'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue (create|comment)'
+    match: 'not_contains'

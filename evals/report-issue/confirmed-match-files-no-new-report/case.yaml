@@ -51,9 +51,9 @@ graders:
     tool: 'Skill'
     input_match: 'report-issue'
   - type: 'regex'
-    name: 'no new report is filed'
+    name: 'nothing is filed or commented'
     target: { source: 'file', path: 'gh-calls.log' }
-    pattern: 'issue create'
+    pattern: 'issue (create|comment)'
     match: 'not_contains'
   - type: 'llm'
     name: 'adding to the existing report is offered'
