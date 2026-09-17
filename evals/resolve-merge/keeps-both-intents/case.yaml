@@ -22,7 +22,7 @@ graders:
     flags: m
     match: not_contains
   - type: regex
-    name: keeps the ticket's intent, a missing name greeted as stranger
+    name: keeps this side's intent, a missing name greeted as stranger
     target: { source: file, path: src/greet.sh }
     pattern: '\$\{1:-stranger\}'
   - type: regex
