@@ -30,7 +30,7 @@ greet() {
   printf 'Hello, %s\n' "${1:-stranger}"
 }
 EOF
-cat > tests/default-name.test.sh <<'EOF'
+cat > tests/missing-name.test.sh <<'EOF'
 #!/bin/sh
 # Scenario: A missing name is greeted as stranger
 set -e
@@ -63,4 +63,4 @@ git push -q origin main missing-name-stranger
 git checkout -q missing-name-stranger
 
 # The graders pin this commit id; a fixture edit that changes it must fail here, not look like missing behaviour.
-[ "$(git rev-parse missing-name-stranger)" = 67140abd81d64e1869eebeac590d295d728afe1b ] || { echo "fixture drifted: missing-name-stranger"; exit 1; }
+[ "$(git rev-parse missing-name-stranger)" = 73f086b8ab80f11bbc780d3c5437de2d7f4bfcb1 ] || { echo "fixture drifted: missing-name-stranger"; exit 1; }

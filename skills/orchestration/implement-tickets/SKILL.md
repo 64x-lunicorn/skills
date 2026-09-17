@@ -1,6 +1,6 @@
 ---
 name: implement-tickets
-description: Implements one or many agreed tickets in wayfinder order, each in a fresh subagent on its own branch, reviewed on a spec and a standards axis and delivered as its own pull request, and verifies and closes the Spec once all its tickets are merged.
+description: Implements one or many agreed tickets in wayfinder order, each in a fresh subagent on its own branch, reviewed once and delivered as its own pull request, and verifies and closes the Spec once all its tickets are merged.
 argument-hint: "[ticket numbers, or a wayfinder issue number]"
 disable-model-invocation: true
 ---
@@ -28,14 +28,13 @@ Then bring behind ticket branches up to date, before any new ticket starts. Dani
    - **`forge: none`:** for each local `refs/heads/ticket/<n>-*` of an unchecked ticket, run `git merge-base --is-ancestor <default_branch> <ref>`. Exit 1 means behind, a hit; any other non-zero exit is an error: stop and show it.
 3. For each hit, in wayfinder order:
    1. Invoke `implement-ticket` with `<n> update`. On `stopped`, such as `stopped: incompatible intents`, handle it like a stop in step 4: show it verbatim, post it on the wayfinder and end the run at the report: the repository stays as the stop left it, mid-merge after incompatible intents or failed checks, until Daniel decides, and the hits after this one are named as not updated. No review runs on that branch, because a stop is not a review finding and must not become one of class `conflict`.
-   2. On `done`, run both reviews and their fix rounds as in step 5, with `<base>` the merge-base computed after the update. The reviews saw the branch before the merge.
-   3. Run `ci.command`, then, when a remote exists, push the branch with a plain `git push`, never with `--force` or `--force-with-lease`: the update only adds a merge commit, so every commit the reviews saw stays on the branch. With a forge, watch the checks as in step 6.3.
+   2. On `done`, push the branch when a remote exists, with a plain `git push`, never with `--force` or `--force-with-lease`: the update only adds a merge commit, so every commit already on the branch stays. With a forge, watch the checks as in step 6.2. No review runs: the update holds no ticket behaviour of its own, and `implement-ticket` already ran the scenario tests and `ci.command` on the merged branch.
 
-   A stop in item 2 or 3 is handled the same way: hard findings still open after two fix rounds or a conflict going to Daniel, a red `ci.command`, or checks still red after step 6.3 are shown verbatim, posted on the wayfinder and end the run at the report, and the hits after this one are named as not updated.
+   Checks still red after step 6.2 are a stop handled the same way: shown verbatim, posted on the wayfinder, ending the run at the report, with the hits after this one named as not updated.
 
 Check only here, at the start of the run. A pull request Daniel merges while the run goes on puts other branches behind only after this check; they are updated at the start of the next run, not in this one.
 
-**Done when** every closed ticket is checked off in the wayfinder and nothing else changed there, and every ticket branch that was behind or had merge conflicts at the check is updated, reviewed, `ci.command` green, and, when a remote exists, pushed, with its checks green on a forge, or its stop is shown and posted, or it comes after a stop and is named as not updated, or it is named as undetermined.
+**Done when** every closed ticket is checked off in the wayfinder and nothing else changed there, and every ticket branch that was behind or had merge conflicts at the check is updated and, when a remote exists, pushed, with its checks green on a forge, or its stop is shown and posted, or it comes after a stop and is named as not updated, or it is named as undetermined.
 
 ## 2. Verify a completed Spec
 
@@ -78,19 +77,19 @@ On `stopped`, show Daniel the reason and the passage it concerns, verbatim, and 
 
 ## 5. Review
 
-Invoke `review-change` twice, as separate runs: `<ticket> <base> spec` and `<ticket> <base> standards`, with `<base>` the merge-base of the branch and the default branch. Separate runs keep one axis from masking the other, and neither shares the implementer's reasoning.
+Invoke `review-change` once with `<ticket> <base>`, `<base>` the merge-base of the branch and the default branch. It runs in a fresh subagent that does not share the implementer's reasoning.
 
-- **Hard findings:** write them to a file in the scratchpad and invoke `implement-ticket` with `<ticket> fix <file>`. Then run both reviews again, fresh. After two fix rounds, hard findings still open go to Daniel.
-- **Judgement findings:** interview Daniel on them with `interview-user`, one decision per finding, and keep his decisions verbatim. Accepted ones are fixed in one more fix round, followed by both reviews.
-- **Conflicts:** present them to Daniel before any fix round, with every quoted source. The ticket waits for his decision like a stop; which source gives way is his call, and a change to Spec, ticket or architecture issue happens outside this run.
+- **Conflicts:** present them to Daniel first, with every quoted source. The ticket waits for his decision like a stop; which source gives way is his call, and a change to Spec, ticket or architecture issue happens outside this run.
+- **Judgement findings:** interview Daniel on them with `interview-user`, one decision per finding, and keep his decisions verbatim.
+- **Fix once:** write the hard findings and the judgement findings Daniel accepted to a file in the scratchpad and invoke `implement-ticket` with `<ticket> fix <file>`. It ends with `ci.command` green. No second review runs: Daniel reviews the pull request, and a loop of reviews costs more than it finds.
+- **Files named `not checked`:** name them to Daniel with the pull request.
 
-**Done when** no hard finding is open, every judgement finding has Daniel's decision, and no conflict is open.
+**Done when** no conflict is open, every judgement finding has Daniel's decision, and the fix run returned `done`, or there was nothing to fix.
 
 ## 6. Open the pull request
 
-1. On the ticket branch, run `ci.command` from `.claude/64x-lunicorn.yml`. The last fix round may have changed code after the implementer's own run.
-2. Push the branch and create the pull request from [the pull request template](references/pull-request-template.md), with the body passed as a file.
-3. Watch the checks with `gh pr checks <pr> --watch`. When they fail, invoke `implement-ticket` with `<ticket> fix <file>` holding the failing job's log, once. Still red: stop and show Daniel.
+1. Push the branch and create the pull request from [the pull request template](references/pull-request-template.md), with the body passed as a file.
+2. Watch the checks with `gh pr checks <pr> --watch`. When they fail, invoke `implement-ticket` with `<ticket> fix <file>` holding the failing job's log, once. Still red: stop and show Daniel.
 
 Never merge and never enable auto-merge. Then go back to step 4 with the next ticket.
 
@@ -101,8 +100,8 @@ Never merge and never enable auto-merge. Then go back to step 4 with the next ti
 End with one report:
 
 - **Spec:** the verification result, the terms recorded with `CONTEXT.md` named as changed and not committed, the terms still missing, follow-up tickets created, or the issues closed, when step 2 ran.
-- **Updated:** pull requests or, without a forge, ticket branches brought up to date in step 1, each with its pull request link or, without a forge, its branch name, review rounds per axis and Daniel's decisions verbatim, pull requests named as undetermined, and the hits after a stop named as not updated.
-- **Per ticket:** pull request link, review rounds per axis, Daniel's decisions verbatim.
+- **Updated:** pull requests or, without a forge, ticket branches brought up to date in step 1, each with its pull request link or, without a forge, its branch name, pull requests named as undetermined, and the hits after a stop named as not updated.
+- **Per ticket:** pull request link, review findings fixed, files `not checked`, Daniel's decisions verbatim.
 - **Stopped:** tickets with their stop reason, updates included.
 - **Waiting:** tickets dropped for an open blocker, with the pull request to merge first.
 

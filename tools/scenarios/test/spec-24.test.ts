@@ -9,7 +9,7 @@ const SCENARIOS = [
   "The update runs in the ticket's own context",
   "Incompatible intents stop the update",
   "An incompatible-intents stop is not a review conflict",
-  "An updated branch passes both reviews and the gate again",
+  "An updated branch passes the gate again without a review",
   "The history the review saw stays intact",
   "Resolving never pushes",
   "The project's checks run before the merge is recorded",
