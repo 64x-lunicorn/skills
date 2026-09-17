@@ -1,6 +1,6 @@
 # 0014 — Cheaper change reviews
 
-Status: accepted, 2026-09-17. Extends [0008](0008-implementing-tickets.md) and [0013](0013-merge-default-branch-into-ticket-branches.md).
+Status: superseded by [0015](0015-one-review-per-ticket.md), 2026-09-17. Extends [0008](0008-implementing-tickets.md) and [0013](0013-merge-default-branch-into-ticket-branches.md).
 
 ## Context
 

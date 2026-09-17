@@ -4,8 +4,8 @@ description: "Spec #24. An implement-tickets run updates ticket/5-missing-name; 
 tags: [scenario]
 # The stand-in merge: the eval runner sets core.hooksPath itself, so no repository hook runs inside a run.
 # The run executes the fixture's ci.command, sh scripts/check.sh, itself: in resolve-merge on the open merge,
-# in implement-ticket, in both reviews and the gate. check.sh calls .git/pre-check.sh, an untracked script
-# scaffold.sh writes, so a review has no project code to raise. On a ticket/* branch that holds an open merge
+# in implement-ticket and the gate. check.sh calls .git/pre-check.sh, an untracked script
+# scaffold.sh writes, so no project code changes. On a ticket/* branch that holds an open merge
 # or already contains main, it moves main locally and on origin.git to refs/fixture/merged-during-run,
 # only while main is not yet that commit and is its ancestor, so at most once.
 context:

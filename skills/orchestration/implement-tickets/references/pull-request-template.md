@@ -1,6 +1,6 @@
 # Pull request template
 
-Read when opening the pull request in step 5. Replace every `<…>`. Title: a Conventional Commits summary of the ticket's behaviour, following `write-commit-message`.
+Read when opening the pull request in step 6. Replace every `<…>`. Title: a Conventional Commits summary of the ticket's behaviour, following `write-commit-message`.
 
 ```markdown
 Closes #<ticket>. Part of Spec #<spec>. Order: #<wayfinder>.
@@ -20,8 +20,8 @@ Closes #<ticket>. Part of Spec #<spec>. Order: #<wayfinder>.
 
 ## Review
 
-- Spec axis: <rounds>, <open findings, or none>
-- Standards axis: <rounds>, <open findings, or none>
+- Findings fixed: <count, or none>
+- Not checked: <files, or none>
 - Daniel's decisions: "<verbatim>"
 
 ## Deviations
