@@ -37,3 +37,4 @@ A `## Verification` section before Consequences records how the decision was che
 | [0011](0011-readme-community-files-and-agent-docs.md) | README, community files and agent docs | accepted |
 | [0012](0012-gitlab-and-forgejo.md) | GitLab and Forgejo | accepted |
 | [0013](0013-merge-default-branch-into-ticket-branches.md) | Merge the default branch into ticket branches | accepted |
+| [0014](0014-cheaper-change-reviews.md) | Cheaper change reviews | accepted |
