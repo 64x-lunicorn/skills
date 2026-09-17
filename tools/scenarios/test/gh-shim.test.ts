@@ -144,6 +144,33 @@ describe("issue close and create", () => {
     const view = run(root, ["issue", "view", "207", "--json", "title,labels,state"]);
     expect(JSON.parse(view.stdout)).toEqual({ title: "A new bugfix", labels: [{ name: "bugfix" }], state: "OPEN" });
   });
+  it("records the repository an issue is created in from --repo", () => {
+    const root = seed([openBug]);
+
+    run(root, ["issue", "create", "--repo", "64x-lunicorn/skills", "--title", "Report", "--body", "What happened"]);
+    const view = run(root, ["issue", "view", "202", "--json", "title,repo"]);
+
+    expect(JSON.parse(view.stdout)).toEqual({ title: "Report", repo: "64x-lunicorn/skills" });
+  });
+});
+
+describe("auth status", () => {
+  it("fails with gh's not-logged-in message when .gh/auth.json says loggedIn false", () => {
+    const root = repoWith({ ".gh/auth.json": JSON.stringify({ loggedIn: false }) });
+
+    const result = run(root, ["auth", "status", "--hostname", "github.com"]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("You are not logged into any GitHub hosts.");
+  });
+
+  it("succeeds when no .gh/auth.json fixture exists", () => {
+    const root = repoWith({ "README.md": "x" });
+
+    const result = run(root, ["auth", "status", "--hostname", "github.com"]);
+
+    expect(result.status).toBe(0);
+  });
 });
 
 describe("label list", () => {

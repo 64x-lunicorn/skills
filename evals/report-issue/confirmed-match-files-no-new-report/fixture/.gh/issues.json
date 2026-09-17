@@ -1,0 +1,102 @@
+[
+  {
+    "number": 41,
+    "title": "Validator rejects a skill name that contains a digit",
+    "body": "### What happened\n\nA skill named `write-v2-notes` fails SK006.\n\n### What you expected\n\nDigits are allowed after the verb.\n\n### Version or environment\n\nmacOS",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 45,
+    "title": "Support GitLab merge request templates",
+    "body": "### Which problem\n\nwrite-community-files writes no GitLab templates.\n\n### How you imagine it\n\n_No response_",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 52,
+    "title": "write-commit-message returns an empty message",
+    "body": "### What happened\n\nRunning write-commit-message with staged changes printed an empty commit message.\n\n### What you expected\n\nA commit message.\n\n### Version or environment\n\nLinux",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 58,
+    "title": "Empty commit message from write-commit-message for staged files",
+    "body": "### What happened\n\nI staged files and ran /64x-lunicorn:write-commit-message; the message was empty.\n\n### What you expected\n\nA Conventional Commits message for the staged files.\n\n### Version or environment\n\nmacOS",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 61,
+    "title": "write-commit-message: empty message when a file is renamed",
+    "body": "### What happened\n\nWith a staged rename the commit message came back empty.\n\n### What you expected\n\nA message naming the rename.\n\n### Version or environment\n\nWindows",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 66,
+    "title": "write-commit-message gives an empty message in a monorepo",
+    "body": "### What happened\n\nIn a monorepo the staged changes produce an empty commit message.\n\n### What you expected\n\nA scoped message.\n\n### Version or environment\n\nmacOS",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  }
+]

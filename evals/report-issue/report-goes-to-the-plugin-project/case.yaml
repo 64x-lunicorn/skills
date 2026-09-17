@@ -1,0 +1,82 @@
+schema_version: '1.1'
+name: 'A report goes to the plugin project'
+description: 'Spec #96. The reporter works in their own project acme/shop and confirms the draft; the report is filed in 64x-lunicorn/skills and nothing in acme/shop.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:report-issue
+
+    Earlier turns of this conversation, quoted:
+
+    Claude: Do you want to report a bug or a request?
+
+    Reporter: A bug.
+
+    Claude: What did you do?
+
+    Reporter: I staged two changed files in my shop project and ran /64x-lunicorn:write-commit-message.
+
+    Claude: What happened?
+
+    Reporter: It printed "Commit message:" and then nothing, no message at all. It happens every time, also after restarting Claude Code.
+
+    Claude: What did you expect instead?
+
+    Reporter: A Conventional Commits message for the two staged files.
+
+    Claude: Which operating system do you run Claude Code on?
+
+    Reporter: macOS 15.
+
+    Claude: I found no similar reports in the plugin project.
+
+    Claude:
+    Draft of the report for the plugin project 64x-lunicorn/skills:
+
+    Title: write-commit-message prints an empty message for staged changes
+
+    ### What happened
+
+    I staged two changed files in my shop project and ran /64x-lunicorn:write-commit-message. It printed "Commit message:" and then nothing, no message at all. It happens every time, also after restarting Claude Code.
+
+    ### What you expected
+
+    A Conventional Commits message for the two staged files.
+
+    ### Version or environment
+
+    64x-lunicorn at the installed version read at the start of this report; Claude Code on macOS 15.
+
+    File this report?
+
+    Reporter: Yes, file it.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through report-issue'
+    tool: 'Skill'
+    input_match: 'report-issue'
+  - type: 'regex'
+    name: 'the report is filed in the plugin project'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue create.*--repo 64x-lunicorn/skills'
+  - type: 'regex'
+    name: 'exactly one report is filed'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue create'
+    match: 'count:1'
+  - type: 'regex'
+    name: 'the filed report belongs to the plugin project'
+    target: { source: 'file', path: '.gh/issues.json' }
+    pattern: '"repo": "64x-lunicorn/skills"'
+  - type: 'regex'
+    name: 'nothing names the reporter''s project'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'acme/shop'
+    match: 'not_contains'
