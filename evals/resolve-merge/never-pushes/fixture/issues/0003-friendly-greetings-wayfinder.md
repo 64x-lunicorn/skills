@@ -14,16 +14,14 @@ parent: 0001
 flowchart LR
     classDef done fill:#22c55e,color:#fff
     T4["#0004 Take the greeting word from GREETING"] --> T6["#0006 Greet several names one per line"]
-    T5["#0005 Greet a missing name as stranger"]
     class T4 done
 ```
 
 ## Phases
 
-### Phase 1: Greeting word and missing name
+### Phase 1: Greeting word
 
 - [x] #0004 Take the greeting word from GREETING
-- [ ] #0005 Greet a missing name as stranger
 
 ### Phase 2: Several names
 

@@ -1,1 +1,1 @@
-PR #12 for ticket #5 is behind main and has conflicts, bring it up to date.
+PR #12 is behind main and has conflicts; it belongs to no ticket. Its own change: cap retries at 3 so a flaky request cannot loop forever. Main's change since: lower the default request timeout from 30s to 10s. Bring it up to date with main and resolve the conflicts.

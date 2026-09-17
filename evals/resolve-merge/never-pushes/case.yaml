@@ -1,12 +1,12 @@
 schema_version: "1.1"
 name: Resolving never pushes
-description: "Spec #24. resolve-merge records the merge of main into a ticket branch locally; the ticket branch on origin keeps the commit it had before the run."
+description: "Spec #24. resolve-merge records the merge of main into a branch that belongs to no ticket locally; the branch on origin keeps the commit it had before the run."
 tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
   prompt: |
-    Bring this branch, ticket/5-missing-name, up to date with main and resolve the merge conflicts. The intent of the ticket side comes from ticket #0005 in issues/, its Spec #0001 and its scenarios.
+    Bring this branch up to date with main and resolve the merge conflicts. It belongs to no ticket. Its own change: `greet` no longer leaves a missing name blank, defaulting it to "stranger".
   max_turns: 40
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
@@ -20,10 +20,10 @@ graders:
     target: { source: file, path: .git/logs/HEAD }
     pattern: '\t(commit \(merge\)|merge [^:]+: Merge made)'
   - type: regex
-    name: ticket branch on origin unchanged
+    name: branch on origin unchanged
     # The tip scaffold.sh pushes; fixed identities and dates keep it the same on every run.
-    target: { source: file, path: origin.git/refs/heads/ticket/5-missing-name }
-    pattern: '^c6887d2aac95cb66d7764d518f8c33a19c4a19cd$'
+    target: { source: file, path: origin.git/refs/heads/missing-name-stranger }
+    pattern: '^73f086b8ab80f11bbc780d3c5437de2d7f4bfcb1$'
     flags: m
   - type: tool_used
     name: nothing pushed

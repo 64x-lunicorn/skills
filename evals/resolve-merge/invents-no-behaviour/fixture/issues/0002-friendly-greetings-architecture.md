@@ -15,4 +15,4 @@ parent: 0001
 
 ## Ticket dependencies
 
-#0004 and #0005 are independent of each other. #0006 needs #0004.
+#0004 is independent of #0006.
