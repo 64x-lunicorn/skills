@@ -1,5 +1,5 @@
 {
   "private": true,
   "type": "module",
-  "description": "Keeps ./gh parsed as ESM wherever it runs: in place here, or copied to $TMPDIR/64x-scenarios/bin by the scenario runner, where no other package.json would be found."
+  "description": "Keeps ./gh, ./curl and ./github-fixture.js parsed as ESM wherever they run: in place here, or copied to $TMPDIR/64x-scenarios/bin by the scenario runner, where no other package.json would be found."
 }

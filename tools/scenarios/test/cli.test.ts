@@ -46,6 +46,22 @@ function addStubClaudeThatReadsGh(root: string): NodeJS.ProcessEnv {
   return { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` };
 }
 
+/** Adds a stub `claude` that exits 0 only if `curl` (whatever answers first on PATH) serves the fixture's latest release. */
+function addStubClaudeThatReadsCurl(root: string): NodeJS.ProcessEnv {
+  const bin = path.join(root, "bin");
+  fs.mkdirSync(bin, { recursive: true });
+  const script = [
+    "#!/bin/sh",
+    'case "$(curl -fsS https://api.github.com/repos/64x-lunicorn/skills/releases/latest)" in',
+    "  *v99.0.0*) exit 0 ;;",
+    "  *) exit 1 ;;",
+    "esac",
+    "",
+  ].join("\n");
+  fs.writeFileSync(path.join(bin, "claude"), script, { mode: 0o755 });
+  return { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` };
+}
+
 describe("CLI", () => {
   it("rejects the name of a pending scenario and exits with code 1", () => {
     const root = repoWith({
@@ -111,6 +127,18 @@ describe("CLI", () => {
       JSON.stringify([{ number: 42, title: "Fixture issue", state: "OPEN", labels: [], comments: [] }]),
     );
     const env = addStubClaudeThatReadsGh(root);
+
+    const result = run(root, [], env);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("1 of 1 scenario(s) passed.");
+  });
+
+  it("puts the curl stand-in ahead of the real curl on PATH, so a scenario can fake the GitHub REST reads", () => {
+    const root = repoWithRunnableCase();
+    fs.mkdirSync(path.join(root, ".gh"), { recursive: true });
+    fs.writeFileSync(path.join(root, ".gh", "releases.json"), JSON.stringify([{ tag_name: "v99.0.0" }]));
+    const env = addStubClaudeThatReadsCurl(root);
 
     const result = run(root, [], env);
 
