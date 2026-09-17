@@ -1,0 +1,45 @@
+schema_version: '1.1'
+name: 'The installed version is filled in without asking'
+description: 'Spec #96. The installed plugin version is readable; after the interview the draft states it as a version number and the reporter is never asked for it.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:report-issue
+
+    Earlier turns of this conversation, quoted:
+
+    Claude: Do you want to report a bug or a request?
+
+    Reporter: A bug.
+
+    Claude: What did you do?
+
+    Reporter: I staged two changed files in my shop project on macOS 15 and ran /64x-lunicorn:write-commit-message.
+
+    Claude: What happened?
+
+    Reporter: It printed "Commit message:" and then nothing, no message at all. It happens every time, also after restarting Claude Code.
+
+    Claude: What did you expect instead?
+
+    Reporter: A Conventional Commits message for the two staged files.
+
+    Claude: I found no similar reports in the plugin project.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through report-issue'
+    tool: 'Skill'
+    input_match: 'report-issue'
+  - type: 'regex'
+    name: 'the draft states a version number'
+    pattern: '\b\d+\.\d+\.\d+\b'
+  - type: 'llm'
+    name: 'the reporter is not asked for the version'
+    criteria: 'Claude shows the draft of the bug report, the draft states the installed 64x-lunicorn plugin version as a version number, and at no point in this run does Claude ask the reporter which plugin version they run.'

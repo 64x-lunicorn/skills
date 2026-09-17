@@ -1,0 +1,38 @@
+[
+  {
+    "number": 41,
+    "title": "Validator rejects a skill name that contains a digit",
+    "body": "### What happened\n\nA skill named `write-v2-notes` fails SK006.\n\n### What you expected\n\nDigits are allowed after the verb.\n\n### Version or environment\n\nmacOS",
+    "state": "OPEN",
+    "stateReason": "",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  },
+  {
+    "number": 45,
+    "title": "Support GitLab merge request templates",
+    "body": "### Which problem\n\nwrite-community-files writes no GitLab templates.\n\n### How you imagine it\n\n_No response_",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "author": {
+      "login": "reporter1"
+    },
+    "labels": [
+      {
+        "name": "request"
+      }
+    ],
+    "comments": [],
+    "createdAt": "2026-08-15T09:00:00Z",
+    "updatedAt": "2026-09-01T09:00:00Z"
+  }
+]

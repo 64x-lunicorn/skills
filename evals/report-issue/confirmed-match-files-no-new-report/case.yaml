@@ -1,0 +1,60 @@
+schema_version: '1.1'
+name: 'A confirmed match files no new report'
+description: 'Spec #96. The reporter says their problem is the similar report #58; no new report is filed and adding to #58 is offered.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:report-issue
+
+    Earlier turns of this conversation, quoted:
+
+    Claude: Do you want to report a bug or a request?
+
+    Reporter: A bug.
+
+    Claude: What did you do?
+
+    Reporter: I staged two changed files in my shop project and ran /64x-lunicorn:write-commit-message.
+
+    Claude: What happened?
+
+    Reporter: It printed "Commit message:" and then nothing, no message at all. It happens every time, also after restarting Claude Code.
+
+    Claude: What did you expect instead?
+
+    Reporter: A Conventional Commits message for the two staged files.
+
+    Claude: Which operating system do you run Claude Code on?
+
+    Reporter: macOS 15.
+
+    Claude:
+    These reports in the plugin project look similar:
+
+    - #58 Empty commit message from write-commit-message for staged files (open) https://github.com/64x-lunicorn/skills/issues/58
+    - #52 write-commit-message returns an empty message (open) https://github.com/64x-lunicorn/skills/issues/52
+    - #61 write-commit-message: empty message when a file is renamed (closed) https://github.com/64x-lunicorn/skills/issues/61
+
+    Is your problem one of them?
+
+    Reporter: Yes, it is #58.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through report-issue'
+    tool: 'Skill'
+    input_match: 'report-issue'
+  - type: 'regex'
+    name: 'no new report is filed'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue create'
+    match: 'not_contains'
+  - type: 'llm'
+    name: 'adding to the existing report is offered'
+    criteria: 'Claude does not file a new report and offers the reporter to add to the existing report #58, by a comment on it or through its link.'

@@ -1,0 +1,53 @@
+schema_version: '1.1'
+name: 'Similar reports are shown before the draft'
+description: 'Spec #96. The plugin project has four reports about write-commit-message returning an empty message; after the interview the reporter sees at most three of them and is asked whether the problem is one of them, before any draft.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:report-issue
+
+    Earlier turns of this conversation, quoted:
+
+    Claude: Do you want to report a bug or a request?
+
+    Reporter: A bug.
+
+    Claude: What did you do?
+
+    Reporter: I staged two changed files in my shop project and ran /64x-lunicorn:write-commit-message.
+
+    Claude: What happened?
+
+    Reporter: It printed "Commit message:" and then nothing, no message at all. It happens every time, also after restarting Claude Code.
+
+    Claude: What did you expect instead?
+
+    Reporter: A Conventional Commits message for the two staged files.
+
+    Claude: Which operating system do you run Claude Code on?
+
+    Reporter: macOS 15.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through report-issue'
+    tool: 'Skill'
+    input_match: 'report-issue'
+  - type: 'regex'
+    name: 'similar reports are searched'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'curl .*search/issues'
+  - type: 'llm'
+    name: 'at most three similar reports and a question'
+    criteria: 'Claude lists at most three existing reports from the plugin project that look similar, from #52, #58, #61 and #66, and asks the reporter whether their problem is one of them. No draft of a new report is shown yet.'
+  - type: 'regex'
+    name: 'nothing is filed or commented'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue (create|comment)'
+    match: 'not_contains'
