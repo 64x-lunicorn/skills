@@ -1,6 +1,6 @@
 {
   "name": "64x-lunicorn-skills",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "Skills as code for Claude Code: harvested from real corrections, enforced by a validator",
