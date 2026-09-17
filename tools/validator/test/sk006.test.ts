@@ -60,4 +60,8 @@ describe("SK006: skill name lowercase, hyphenated, verb-noun", () => {
   it("accepts interview as the verb of the interview skill", () => {
     expect(validate(fixture("sk006/pass-interview"))).toEqual([]);
   });
+
+  it("accepts report as the verb of the issue-reporting skill", () => {
+    expect(validate(fixture("sk006/pass-report"))).toEqual([]);
+  });
 });

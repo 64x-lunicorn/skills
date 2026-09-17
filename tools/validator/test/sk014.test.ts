@@ -36,4 +36,8 @@ describe("SK014: user-invoked skills check the project setup as step 0", () => {
   it("exempts setup-project, which the notice points to", () => {
     expect(validate(fixture("sk014/pass-setup-project"))).toEqual([]);
   });
+
+  it("exempts report-issue, which runs in a plugin user's own project", () => {
+    expect(validate(fixture("sk014/pass-report-issue"))).toEqual([]);
+  });
 });
