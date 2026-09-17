@@ -36,6 +36,15 @@ describe("releases/latest", () => {
     expect(result.status).toBe(22);
     expect(result.stderr).toContain("404");
   });
+
+  it("exits 22 for the latest release of any repository other than the plugin project", () => {
+    const root = repoWith({ ".gh/releases.json": JSON.stringify([release]) });
+
+    const result = run(root, ["-fsS", "https://api.github.com/repos/acme/shop/releases/latest"]);
+
+    expect(result.status).toBe(22);
+    expect(result.stdout).toBe("");
+  });
 });
 
 describe("search/issues", () => {
@@ -90,6 +99,20 @@ describe("search/issues", () => {
     const result = run(root, ["-fsS", "https://api.github.com/search/issues?q=repo%3A64x-lunicorn%2Fskills+export"]);
 
     expect(JSON.parse(result.stdout).items.map((item: { number: number }) => item.number)).toEqual([74]);
+  });
+
+  it("exits 22 when data is given without -G, since curl would send it as a POST body", () => {
+    const root = repoWith({ ".gh/issues.json": JSON.stringify(issues) });
+
+    const result = run(root, [
+      "-fsS",
+      "https://api.github.com/search/issues",
+      "--data-urlencode",
+      "q=repo:64x-lunicorn/skills is:issue version",
+    ]);
+
+    expect(result.status).toBe(22);
+    expect(result.stdout).toBe("");
   });
 });
 
