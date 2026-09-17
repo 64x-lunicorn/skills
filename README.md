@@ -95,7 +95,7 @@ Run these directly, as `/64x-lunicorn:<skill>`.
 | Skill | Command | What it does |
 | :--- | :--- | :--- |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | `/64x-lunicorn:harvest-skill` | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
-| [`implement-tickets`](skills/orchestration/implement-tickets/SKILL.md) | `/64x-lunicorn:implement-tickets <tickets or wayfinder>` | Implements agreed tickets one at a time in wayfinder order, reviewed on two axes, one pull request each. |
+| [`implement-tickets`](skills/orchestration/implement-tickets/SKILL.md) | `/64x-lunicorn:implement-tickets <tickets or wayfinder>` | Implements agreed tickets one at a time in wayfinder order, reviewed once, one pull request each. |
 | [`interview-me`](skills/orchestration/interview-me/SKILL.md) | `/64x-lunicorn:interview-me` | Interviews Daniel about a plan of his own and names the next command to start, without starting it or saving anything. |
 | [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | `/64x-lunicorn:plan-tickets <spec>` | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
 | [`promote-research`](skills/orchestration/promote-research/SKILL.md) | `/64x-lunicorn:promote-research` | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
@@ -117,7 +117,7 @@ Never run directly. These fire on their own description, or get called by a user
 | [`interview-user`](skills/engineering/interview-user/SKILL.md) | Interviews Daniel one question at a time, with the open decision count and a recommended answer, and looks facts up instead of asking. |
 | [`resolve-merge`](skills/engineering/resolve-merge/SKILL.md) | Merges the default branch into a branch, resolves merge conflicts keeping both intents and inventing no behaviour, stops on incompatible intents, and records the merge only after the checks passed, never pushing. |
 | [`review-architecture`](skills/engineering/review-architecture/SKILL.md) | Reviews the technical approach and order for a Spec's tickets in a forked agent and returns diagrams and proposals. |
-| [`review-change`](skills/engineering/review-change/SKILL.md) | Reviews a branch on the spec or the standards axis, including smells and duplication across the codebase, without changing anything. |
+| [`review-change`](skills/engineering/review-change/SKILL.md) | Reviews a branch against its ticket, Spec and standards in one run, including smells and duplication across the codebase, without changing anything. |
 | [`verify-claims`](skills/engineering/verify-claims/SKILL.md) | Traces factual claims to their primary source and records them with date, version and confidence. |
 | [`verify-spec`](skills/engineering/verify-spec/SKILL.md) | Verifies a Spec once all its tickets are merged: scenarios, domain rules, duplication and drift across tickets, leftovers. |
 | [`write-adr`](skills/engineering/write-adr/SKILL.md) | Proposes an ADR only for a decision that is hard to reverse, surprising without context and a real trade-off, and writes it with a regenerated index after Daniel's ok. |
@@ -276,7 +276,7 @@ write it.
 ```text
 wayfinder  -->  tickets  -->  implement-ticket  -->  review-change  -->  pull request  -->  Daniel merges
                   |               |                      |
-                  |               |                      +-- spec and standards axes, fresh agents
+                  |               |                      +-- one run, fresh agent, tool-call budget
                   |               +-- fresh agent, reuse inventory, test-first, refactor under green
                   +-- checked, read back, one at a time
 ```
@@ -287,8 +287,8 @@ wayfinder  -->  tickets  -->  implement-ticket  -->  review-change  -->  pull re
 | Reuse inventory before the first test, duplication search in review | Duplicated code |
 | Refactor under green tests in every ticket | Smells left for later |
 | Diff checked against the implementation notes after every green | Scope and architecture drift |
-| Spec axis and standards axis in separate forked reviews | Deviations from the Spec, self-biased review |
-| Hard findings fixed and re-reviewed, judgement calls decided by Daniel | Findings nobody acts on |
+| One forked review against Spec and standards | Deviations from the Spec, self-biased review |
+| Hard findings fixed once, judgement calls decided by Daniel | Findings nobody acts on |
 | One pull request per ticket, wayfinder reconciled on the next run | Tickets that never close, blocked work that never unblocks |
 | `verify-spec` over the whole Spec once every ticket is merged | Duplication and drift between tickets, leftovers, Specs that never close |
 

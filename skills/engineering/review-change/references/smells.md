@@ -1,6 +1,6 @@
 # Smell baseline
 
-Read on the standards axis. Every smell is a judgement finding unless a documented standard makes it hard. Report it as "possible <smell>" with the quoted code.
+Read in step 3. Every smell is a judgement finding unless a documented standard makes it hard. Report it as "possible <smell>" with the quoted code.
 
 | Smell | Sign in the diff | Usual fix |
 |---|---|---|
