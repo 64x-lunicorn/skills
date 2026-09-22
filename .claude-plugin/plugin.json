@@ -42,6 +42,7 @@
     "./skills/orchestration/interview-me",
     "./skills/orchestration/plan-tickets",
     "./skills/orchestration/promote-research",
+    "./skills/orchestration/report-issue",
     "./skills/orchestration/research-idea",
     "./skills/orchestration/setup-project",
     "./skills/orchestration/write-spec"
