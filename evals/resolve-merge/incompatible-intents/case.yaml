@@ -29,7 +29,7 @@ graders:
     # (resolve-merge step 1) or the branch's own commit and test, never a ticket file.
     # Measured over live runs: a rule-following agent paraphrases rather than repeating the
     # prompt verbatim, e.g. "no longer leaves a missing name blank", "a missing name is
-    # greeted as stranger" (tests/default-name.test.sh) or "greet a missing name as stranger"
+    # greeted as stranger" (tests/missing-name.test.sh) or "greet a missing name as stranger"
     # (the commit subject) all appear across runs, so the two content words are matched near
     # each other instead of one exact sentence.
     pattern: 'missing name[\s\S]{0,60}(stranger|blank)'
