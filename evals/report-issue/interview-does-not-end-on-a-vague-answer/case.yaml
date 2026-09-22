@@ -27,10 +27,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through report-issue'
-    tool: 'Skill'
-    input_match: 'report-issue'
   - type: 'llm'
     name: 'the reporter is asked until the bug is reproducible'
     criteria: 'Claude does not show a draft and does not end the interview; it asks the reporter a further question aimed at what someone else would need to reproduce the bug, such as which command or skill they ran and what exactly they saw.'

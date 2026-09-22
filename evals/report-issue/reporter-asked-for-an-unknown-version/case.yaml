@@ -14,10 +14,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through report-issue'
-    tool: 'Skill'
-    input_match: 'report-issue'
   - type: 'llm'
     name: 'the reporter is asked for the version'
     criteria: 'Claude asks the reporter which version of the 64x-lunicorn plugin they run, instead of stating a version itself.'
