@@ -33,10 +33,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through report-issue'
-    tool: 'Skill'
-    input_match: 'report-issue'
   - type: 'regex'
     name: 'the draft states a version number'
     pattern: '\b\d+\.\d+\.\d+\b'

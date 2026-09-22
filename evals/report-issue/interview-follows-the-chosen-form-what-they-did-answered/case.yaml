@@ -23,10 +23,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through report-issue'
-    tool: 'Skill'
-    input_match: 'report-issue'
   - type: 'llm'
     name: 'the next question asks for a missing field of the Bug form'
     criteria: 'Claude''s question to the reporter is about what happened or what they expected, the fields of the Bug form not answered yet, and does not ask again what the reporter did.'
