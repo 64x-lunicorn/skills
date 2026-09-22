@@ -30,7 +30,7 @@ Then bring behind ticket branches up to date, before any new ticket starts. Dani
    - **`forge: none`:** for each local `refs/heads/ticket/<n>-*` of an unchecked ticket, run `git merge-base --is-ancestor <default_branch> <ref>`. Exit 1 means behind, a hit; any other non-zero exit is an error: stop and show it.
    - **Every tracker:** an unchecked ticket is a hit too when the wayfinder's last `Update stop for #<n>` entry for it — a comment, read with `gh issue view <wayfinder> --comments`, or without a forge the last matching line under the wayfinder's final `## Update stops` section — is not yet followed by an `Update stop for #<n> resolved` entry. The merge commit an earlier update recorded already landed on the branch, so git and `gh pr list` no longer report it behind or conflicting; only the wayfinder still shows the stop as open, whatever its cause: a scenario failing after the merge, a conflict from the review that follows, or a red `ci.command`, before or after the push.
 3. For each hit, in wayfinder order:
-   1. Invoke `implement-ticket` with `<n> update`. On `stopped`, such as `stopped: incompatible intents`, handle it like a stop in step 4: show it verbatim, post `Update stop for #<n>: <stop, verbatim>` on the wayfinder — a comment on a forge, else a line added under the wayfinder's final `## Update stops` section, the section added when the wayfinder has none yet — and end the run at the report: the repository stays as the stop left it, mid-merge after incompatible intents or failed checks, until Daniel decides, and the hits after this one are named as not updated. No review runs on that branch, because a stop is not a review finding and must not become one of class `conflict`.
+   1. Tell Daniel which ticket is being updated, then invoke `implement-ticket` with `<n> update`. It now runs in the background, so that message is the only sign of progress until its report returns. On `stopped`, such as `stopped: incompatible intents`, handle it like a stop in step 4: show it verbatim, post `Update stop for #<n>: <stop, verbatim>` on the wayfinder — a comment on a forge, else a line added under the wayfinder's final `## Update stops` section, the section added when the wayfinder has none yet — and end the run at the report: the repository stays as the stop left it, mid-merge after incompatible intents or failed checks, until Daniel decides, and the hits after this one are named as not updated. No review runs on that branch, because a stop is not a review finding and must not become one of class `conflict`.
    2. On `done` for a ticket that was a hit only because it was behind or had merge conflicts, push the branch when a remote exists, with a plain `git push`, never with `--force` or `--force-with-lease`: the update only adds a merge commit, so every commit already on the branch stays. With a forge, watch the checks as in step 6.2. No review runs: the update holds no ticket behaviour of its own, and `implement-ticket` already ran the scenario tests and `ci.command` on the merged branch.
    3. On `done` for a ticket that was a hit through its wayfinder's `Update stop for #<n>` entry — an update that stopped after an earlier merge commit, picked up again — invoke `review-change` once with `<n> <base>`, `<base>` the merge-base of the branch and the default branch, and handle its findings exactly as step 5 does. A conflict waits for Daniel like any other stop: post `Update stop for #<n>: <conflict, verbatim>` on the wayfinder the same way as item 1 and end the run at the report. Once review leaves nothing open, push and watch the checks as in item 2, then post `Update stop for #<n> resolved` on the wayfinder the same way `Update stop for #<n>` was posted, so the next run's detection above stops counting this ticket a hit.
 
@@ -73,27 +73,27 @@ Read back number, title and Spec of every remaining ticket, and ask: "Implement 
 
 Before each ticket: when the working tree is not clean or a merge is in progress, stop as at the start of step 1, with `git status` shown verbatim, the repository left as it is and the run ended at the report. Otherwise check out the default branch from `.claude/64x-lunicorn.yml` and bring it up to date with `git pull --ff-only`.
 
-Invoke `implement-ticket` with the ticket number. It runs in a fresh subagent and returns a report that ends either `done` or `stopped`.
+Tell Daniel the ticket is starting, then invoke `implement-ticket` with the ticket number. It runs in a fresh, background subagent, so that message is what shows the run is alive while it builds; wait for its report, which ends either `done` or `stopped`.
 
 On `stopped`, show Daniel the reason and the passage it concerns, verbatim, and post the same as a comment on the wayfinder. Ask how to proceed and leave the ticket untouched until he decides; working around a stop is exactly the drift this skill prevents.
 
-**Done when** the report says `done` with a branch and commits, or the stop is shown to Daniel and posted.
+**Done when** Daniel saw the ticket start, and the report says `done` with a branch and commits, or the stop is shown to Daniel and posted.
 
 ## 5. Review
 
-Invoke `review-change` once with `<ticket> <base>`, `<base>` the merge-base of the branch and the default branch. It runs in a fresh subagent that does not share the implementer's reasoning.
+Tell Daniel the review is starting, then invoke `review-change` once with `<ticket> <base>`, `<base>` the merge-base of the branch and the default branch. It runs in a fresh, background subagent that does not share the implementer's reasoning; that message is what shows the run is alive while it reads.
 
 - **Conflicts:** present them to Daniel first, with every quoted source. The ticket waits for his decision like a stop; which source gives way is his call, and a change to Spec, ticket or architecture issue happens outside this run.
 - **Judgement findings:** interview Daniel on them with `interview-user`, one decision per finding, and keep his decisions verbatim.
-- **Fix once:** write the hard findings and the judgement findings Daniel accepted to a file in the scratchpad and invoke `implement-ticket` with `<ticket> fix <file>`. It ends with `ci.command` green. No second review runs: Daniel reviews the pull request, and a loop of reviews costs more than it finds.
+- **Fix once:** write the hard findings and the judgement findings Daniel accepted to a file in the scratchpad, tell Daniel the fix run is starting, then invoke `implement-ticket` with `<ticket> fix <file>`. It ends with `ci.command` green. No second review runs: Daniel reviews the pull request, and a loop of reviews costs more than it finds.
 - **Files named `not checked`:** name them to Daniel with the pull request.
 
-**Done when** no conflict is open, every judgement finding has Daniel's decision, and the fix run returned `done`, or there was nothing to fix.
+**Done when** Daniel saw the review start, no conflict is open, every judgement finding has Daniel's decision, and the fix run returned `done`, or there was nothing to fix.
 
 ## 6. Open the pull request
 
 1. Push the branch and create the pull request from [the pull request template](references/pull-request-template.md), with the body passed as a file.
-2. Watch the checks with `gh pr checks <pr> --watch`. When they fail, invoke `implement-ticket` with `<ticket> fix <file>` holding the failing job's log, once. Still red: stop and show Daniel.
+2. Watch the checks with `gh pr checks <pr> --watch`. When they fail, tell Daniel a fix run is starting, then invoke `implement-ticket` with `<ticket> fix <file>` holding the failing job's log, once. Still red: stop and show Daniel.
 
 Never merge and never enable auto-merge. Then go back to step 4 with the next ticket.
 

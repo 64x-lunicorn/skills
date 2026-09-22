@@ -3,7 +3,7 @@ name: implement-ticket
 description: Implements one agreed ticket in a fresh subagent on its own branch, activating its pending scenarios, building test-first at the seams named by the architecture issue, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket's branch or pull request is to be brought up to date with main or the default branch, is behind it or has merge conflicts.
 context: fork
 agent: general-purpose
-background: false
+background: true
 ---
 
 Implement: $ARGUMENTS

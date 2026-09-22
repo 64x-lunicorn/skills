@@ -3,7 +3,7 @@ name: review-change
 description: Reviews a branch against a base in one run, checking ticket scenarios, Spec, architecture decisions and scope creep as well as documented standards, code smells, duplication across the codebase and test quality, within a fixed tool-call budget, and returns classified findings without changing anything. Use when a ticket's change is reviewed before its pull request, or when a branch or pull request needs a spec or standards review.
 context: fork
 agent: Plan
-background: false
+background: true
 ---
 
 Review: $ARGUMENTS
