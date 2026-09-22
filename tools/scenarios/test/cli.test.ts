@@ -37,12 +37,11 @@ function addStubClaude(root: string, exitCode: number): NodeJS.ProcessEnv {
   return { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` };
 }
 
-/** Adds a stub `claude` that exits 0 only if `gh issue list` (whatever answers first on PATH) shows issue 42. */
-function addStubClaudeThatReadsGh(root: string): NodeJS.ProcessEnv {
+/** Adds a stub `claude` running the shell `scriptLines` to `root` and returns an env that finds it first. */
+function addStubClaudeRunning(root: string, scriptLines: string[]): NodeJS.ProcessEnv {
   const bin = path.join(root, "bin");
   fs.mkdirSync(bin, { recursive: true });
-  const script = ['#!/bin/sh', 'case "$(gh issue list --json number)" in', '  *42*) exit 0 ;;', '  *) exit 1 ;;', 'esac', ''].join("\n");
-  fs.writeFileSync(path.join(bin, "claude"), script, { mode: 0o755 });
+  fs.writeFileSync(path.join(bin, "claude"), ["#!/bin/sh", ...scriptLines, ""].join("\n"), { mode: 0o755 });
   return { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` };
 }
 
@@ -110,7 +109,26 @@ describe("CLI", () => {
       path.join(root, ".gh", "issues.json"),
       JSON.stringify([{ number: 42, title: "Fixture issue", state: "OPEN", labels: [], comments: [] }]),
     );
-    const env = addStubClaudeThatReadsGh(root);
+    // Exits 0 only if `gh issue list` (whatever answers first on PATH) shows issue 42.
+    const env = addStubClaudeRunning(root, ['case "$(gh issue list --json number)" in', "  *42*) exit 0 ;;", "  *) exit 1 ;;", "esac"]);
+
+    const result = run(root, [], env);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("1 of 1 scenario(s) passed.");
+  });
+
+  it("puts the curl stand-in ahead of the real curl on PATH, so a scenario can fake the GitHub REST reads", () => {
+    const root = repoWithRunnableCase();
+    fs.mkdirSync(path.join(root, ".gh"), { recursive: true });
+    fs.writeFileSync(path.join(root, ".gh", "releases.json"), JSON.stringify([{ tag_name: "v99.0.0" }]));
+    // Exits 0 only if `curl` (whatever answers first on PATH) serves the fixture's latest release.
+    const env = addStubClaudeRunning(root, [
+      'case "$(curl -fsS https://api.github.com/repos/64x-lunicorn/skills/releases/latest)" in',
+      "  *v99.0.0*) exit 0 ;;",
+      "  *) exit 1 ;;",
+      "esac",
+    ]);
 
     const result = run(root, [], env);
 

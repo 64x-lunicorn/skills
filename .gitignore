@@ -4,3 +4,5 @@ evals/results/
 .claude/worktrees/
 # Research objects live only locally in this repo (ADR 0005, amendment).
 /research/
+# Skill copied into a scenario's fixture plugin by its scaffold.sh (#102); eval cases cannot hold symlinks.
+evals/report-issue/*/plugin/skills/

@@ -1,0 +1,37 @@
+schema_version: '1.1'
+name: 'An outdated version gets an update recommendation'
+description: 'Spec #96. The latest release is v99.0.0, newer than any installed version; starting a report names it, says how to update and asks whether to report anyway.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:report-issue
+
+    I want to report a bug.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through report-issue'
+    tool: 'Skill'
+    input_match: 'report-issue'
+  - type: 'regex'
+    name: 'the latest release is looked up'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'curl .*releases/latest'
+  - type: 'regex'
+    name: 'the latest version is named'
+    pattern: '99\.0\.0'
+  - type: 'regex'
+    name: 'how to update is named'
+    pattern: 'plugin update'
+  - type: 'llm'
+    name: 'the reporter is asked whether to report anyway'
+    criteria: 'Claude tells the reporter that a newer version, 99.0.0, is available, says how to update the plugin, and asks whether they want to report anyway.'
+  - type: 'regex'
+    name: 'nothing is filed or commented'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue (create|comment)'
+    match: 'not_contains'

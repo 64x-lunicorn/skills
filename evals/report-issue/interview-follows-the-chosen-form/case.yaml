@@ -1,0 +1,36 @@
+schema_version: '1.1'
+name: 'The interview follows the chosen form'
+description: 'Spec #96. The reporter chose a bug; the interview asks along the Bug form, what they did, what happened and what they expected, one question at a time and without suggesting answers.'
+tags: [scenario, pending]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:report-issue
+
+    Earlier turns of this conversation, quoted:
+
+    Claude: Do you want to report a bug or a request?
+
+    Reporter: A bug.
+
+    Continue.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash]
+graders:
+  - type: 'tool_used'
+    name: 'routed through report-issue'
+    tool: 'Skill'
+    input_match: 'report-issue'
+  - type: 'llm'
+    name: 'the question follows the Bug form'
+    criteria: 'Claude''s question to the reporter is about what the reporter did, what happened, or what they expected, the fields of the Bug form.'
+  - type: 'llm'
+    name: 'one question at a time without suggested answers'
+    criteria: 'Claude''s last message asks exactly one question, and offers no suggested answers: no options, examples, multiple choice or recommended answer.'
+  - type: 'regex'
+    name: 'nothing is filed or commented'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue (create|comment)'
+    match: 'not_contains'

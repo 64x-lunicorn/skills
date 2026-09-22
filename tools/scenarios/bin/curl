@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+// Fake `curl` for scenario evals (architecture issue #101, Q1). The report-issue skill makes its
+// anonymous GitHub reads with `curl`, and a `claude plugin eval` run cannot reach the network, so
+// the scenario runner puts this on PATH ahead of the real `curl` (tools/scenarios/src/cli.ts).
+//
+// Serves the two REST GETs the tickets of Spec #96 need: the plugin project's `releases/latest` from
+// `.gh/releases.json` (newest first, as the API lists them) and `search/issues` from
+// `.gh/issues.json`. Anything else exits 22, the code `curl -f` returns on an HTTP error, naming
+// the URL. Every invocation is appended to `gh-calls.log` prefixed `curl`.
+
+import path from "node:path";
+import { GH_DIR, ISSUES_FILE, logCall, matchesSearch, readJson } from "./github-fixture.js";
+
+const RELEASES_FILE = path.join(GH_DIR, "releases.json");
+
+/** Exits the way `curl -fsS` does on an HTTP error status. */
+function httpError(status, url) {
+  process.stderr.write(`curl: (22) The requested URL returned error: ${status} (${url})\n`);
+  process.exit(22);
+}
+
+/**
+ * The URL, whether the request is a GET, and the query parameters given in the URL itself or by
+ * `-d`/`--data`/`--data-urlencode`. Real curl sends data as a query string only with `-G`/`--get`;
+ * without it the data becomes a POST body, which none of the served routes accept.
+ */
+function parseRequest(argv) {
+  let url;
+  let hasData = false;
+  const params = new URLSearchParams();
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === "-d" || arg === "--data" || arg === "--data-urlencode") {
+      hasData = true;
+      const [name, ...value] = argv[++i].split("=");
+      params.append(name, value.join("="));
+    } else if (/^https?:\/\//.test(arg)) url = new URL(arg);
+  }
+  const isGet = !hasData || argv.includes("-G") || argv.includes("--get");
+  for (const [name, value] of url?.searchParams ?? []) params.append(name, value);
+  return { url, isGet, params };
+}
+
+const printJson = (value) => process.stdout.write(`${JSON.stringify(value)}\n`);
+
+function latestRelease(url) {
+  const [latest] = readJson(RELEASES_FILE, []);
+  if (!latest) httpError(404, url);
+  printJson(latest);
+}
+
+/** Issues in the REST shape: lowercase state and the issue's `html_url` in the plugin project. */
+function searchIssues(params) {
+  const matches = readJson(ISSUES_FILE, []).filter((issue) => matchesSearch(issue, params.get("q") ?? ""));
+  const perPage = Number(params.get("per_page") ?? 30);
+  printJson({
+    total_count: matches.length,
+    incomplete_results: false,
+    items: matches.slice(0, perPage).map((issue) => ({
+      ...issue,
+      state: issue.state.toLowerCase(),
+      html_url: `https://github.com/64x-lunicorn/skills/issues/${issue.number}`,
+    })),
+  });
+}
+
+const argv = process.argv.slice(2);
+logCall("curl", argv);
+const { url, isGet, params } = parseRequest(argv);
+const route = url && isGet ? `${url.origin}${url.pathname}` : "";
+
+if (/^https:\/\/api\.github\.com\/repos\/64x-lunicorn\/skills\/releases\/latest\/?$/.test(route)) latestRelease(route);
+else if (route === "https://api.github.com/search/issues") searchIssues(params);
+else httpError(404, url?.href ?? argv.join(" "));
