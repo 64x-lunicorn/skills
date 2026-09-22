@@ -34,7 +34,33 @@ Ask for the version of the 64x-lunicorn plugin the reporter runs, unless they al
 
 ## 5. Look for similar reports
 
-Not built yet, go on.
+Take 3 to 5 distinctive words from the reporter's answers and look for similar reports in the plugin project, open and closed together, with the command in [references/github.md](references/github.md).
+
+- **The search fails:** say so in one line and go on to step 6.
+- **No similar report:** say "I found no similar reports in the plugin project." and go on to step 6.
+- **One or more similar reports:** show at most three, each with its number, title, state and link, and end the turn with the question:
+
+```
+These reports in the plugin project look similar:
+
+- #<number> <title> (<state>) <link>
+
+Is your problem one of them?
+```
+
+On the reporter's answer:
+
+- **None of them:** go on to step 6.
+- **One of them:** file no new report. Build a comment from the reporter's answers, in the same fields as the draft in step 6 but without a title, show it and end the turn with the question "Add this to #<number>?"
+
+  On a clear yes, check whether the reporter can file directly, with the commands in [references/github.md](references/github.md):
+
+  - **Can file directly:** add the confirmed comment with `gh issue comment` and give the reporter the link it prints.
+  - **Cannot file directly:** add nothing and give the reporter the report's link.
+
+  On anything else, such as a no, a correction or no answer, add nothing: after a correction, show the corrected comment again; otherwise say that nothing was added.
+
+**Done when** the reporter has seen any similar reports and, on a confirmed match, the offer to add to it, or the search found nothing or failed and step 6 follows.
 
 ## 6. Show the draft and ask for confirmation
 
