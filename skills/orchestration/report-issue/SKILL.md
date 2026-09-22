@@ -12,7 +12,11 @@ When earlier turns of this report are in the conversation, continue from where t
 
 ## 1. Determine the installed version
 
-Not built yet, go on.
+!`grep -m1 '"version"' "${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json" || echo "version unknown"`
+
+A version number there is the installed 64x-lunicorn plugin version: it goes straight into the draft in step 6, and the reporter is not asked for it. `version unknown`, or any other line without a version number, such as a note that shell command execution is disabled, means the version could not be determined: ask the reporter which version of the 64x-lunicorn plugin they run, and end the turn.
+
+**Done when** the installed version is known, or the reporter has named it after being asked.
 
 ## 2. Check for a newer release
 
@@ -28,9 +32,9 @@ Ask the reporter whether they want to report a bug or a request, and end the tur
 
 Read the chosen form in [references/forms.md](references/forms.md). Ask one question per turn, one per required field, and end the turn after each; for the optional field of a request, ask once and accept that the reporter has nothing to add. Ask in plain words and suggest no answers: the reporter describes the problem in their own words.
 
-Ask for the version of the 64x-lunicorn plugin the reporter runs, unless they already named it: a bug asks for it in the question for `Version or environment`, a request as a question of its own after the form's fields.
+Step 1 already settled the plugin version: for a bug's `environment` field, ask only about the reporter's operating system or browser, not the version again.
 
-**Done when** every required field of the chosen form and the plugin version have an answer from the reporter.
+**Done when** every required field of the chosen form has an answer from the reporter, and the plugin version is known from step 1.
 
 ## 5. Look for similar reports
 
@@ -38,7 +42,7 @@ Not built yet, go on.
 
 ## 6. Show the draft and ask for confirmation
 
-Build the draft only from the reporter's answers in this interview and the plugin version they named. Leave out everything else in the session, such as file contents, earlier messages, file names, the reporter's repository and anything Claude knows about their project, even where it would explain the problem: the plugin project is public.
+Build the draft only from the reporter's answers in this interview and the plugin version from step 1. Leave out everything else in the session, such as file contents, earlier messages, file names, the reporter's repository and anything Claude knows about their project, even where it would explain the problem: the plugin project is public.
 
 Show it in this shape and end the turn with the question:
 

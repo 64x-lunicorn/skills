@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'The reporter is asked for an unknown version'
 description: 'Spec #96. The plugin under test is a fixture plugin whose manifest has no version, so the installed version cannot be determined; starting a report asks the reporter for it.'
-tags: [scenario, pending]
+tags: [scenario]
 plugins: [plugin]
 context:
   scaffold_script: scaffold.sh
