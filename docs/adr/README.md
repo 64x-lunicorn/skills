@@ -39,3 +39,4 @@ A `## Verification` section before Consequences records how the decision was che
 | [0013](0013-merge-default-branch-into-ticket-branches.md) | Merge the default branch into ticket branches | accepted |
 | [0014](0014-cheaper-change-reviews.md) | Cheaper change reviews | superseded by [0015](0015-one-review-per-ticket.md) |
 | [0015](0015-one-review-per-ticket.md) | One review per ticket | accepted |
+| [0016](0016-review-after-a-resumed-update-stop.md) | Review after a resumed update stop | accepted |
