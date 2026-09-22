@@ -95,7 +95,7 @@ Run these directly, as `/64x-lunicorn:<skill>`.
 | Skill | Command | What it does |
 | :--- | :--- | :--- |
 | [`harvest-skill`](skills/orchestration/harvest-skill/SKILL.md) | `/64x-lunicorn:harvest-skill` | Turns a harvested correction or a proven gap into a new skill, wrapping `skill-creator` with the repo's rules. |
-| [`implement-tickets`](skills/orchestration/implement-tickets/SKILL.md) | `/64x-lunicorn:implement-tickets <tickets or wayfinder>` | Implements agreed tickets one at a time in wayfinder order, reviewed once, one pull request each. |
+| [`implement-tickets`](skills/orchestration/implement-tickets/SKILL.md) | `/64x-lunicorn:implement-tickets <tickets or wayfinder>` | Implements agreed tickets one at a time in wayfinder order, reviewed once, one pull request each, and at the start of every run brings ticket branches that are behind or have merge conflicts up to date. |
 | [`interview-me`](skills/orchestration/interview-me/SKILL.md) | `/64x-lunicorn:interview-me` | Interviews Daniel about a plan of his own and names the next command to start, without starting it or saving anything. |
 | [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | `/64x-lunicorn:plan-tickets <spec>` | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
 | [`promote-research`](skills/orchestration/promote-research/SKILL.md) | `/64x-lunicorn:promote-research` | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
@@ -114,7 +114,7 @@ Never run directly. These fire on their own description, or get called by a user
 | [`design-http-api`](skills/engineering/design-http-api/SKILL.md) | Designs or changes an HTTP API against fixed REST guidelines and keeps its OpenAPI document, Swagger UI and Bruno collection in the same change. |
 | [`design-spec`](skills/engineering/design-spec/SKILL.md) | Drafts a Spec that describes domain behaviour only, with a Mermaid domain flow and Gherkin acceptance criteria. |
 | [`design-ticket`](skills/engineering/design-ticket/SKILL.md) | Cuts a Spec into vertical-slice tickets, one pull request each, with the Spec's scenarios as acceptance criteria. |
-| [`implement-ticket`](skills/engineering/implement-ticket/SKILL.md) | Builds one ticket in a fresh agent: reuse inventory, test-first at agreed seams, refactor under green, stop on any deviation. |
+| [`implement-ticket`](skills/engineering/implement-ticket/SKILL.md) | Builds one ticket in a fresh agent: reuse inventory, test-first at agreed seams, refactor under green, stop on any deviation. In update mode, brings its ticket branch up to date with the default branch through `resolve-merge`. |
 | [`interview-user`](skills/engineering/interview-user/SKILL.md) | Interviews Daniel one question at a time, with the open decision count and a recommended answer, and looks facts up instead of asking. |
 | [`resolve-merge`](skills/engineering/resolve-merge/SKILL.md) | Merges the default branch into a branch, resolves merge conflicts keeping both intents and inventing no behaviour, stops on incompatible intents, and records the merge only after the checks passed, never pushing. |
 | [`review-architecture`](skills/engineering/review-architecture/SKILL.md) | Reviews the technical approach and order for a Spec's tickets in a forked agent and returns diagrams and proposals. |
@@ -135,10 +135,10 @@ User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` use
 `write-skill`, `setup-project` uses `configure-ci-gate`, `write-issue-templates`, `write-agent-docs`,
 `write-community-files` and `write-readme`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
 use `design-spec`, `plan-tickets` uses `design-ticket` and `review-architecture`,
-`implement-tickets` uses `implement-ticket`, which builds with `write-tests`, `review-change`
-and `verify-spec`. `write-spec`, `promote-research` and `plan-tickets` record the terms and decisions
-they settled with `write-term` and `write-adr`, and `implement-tickets` records a Spec's missing terms
-with `write-term`. `setup-project`, `research-idea`, `promote-research`,
+`implement-tickets` uses `implement-ticket`, `review-change` and `verify-spec`; `implement-ticket`
+builds with `write-tests` and updates a behind ticket branch with `resolve-merge`. `write-spec`,
+`promote-research` and `plan-tickets` record the terms and decisions they settled with `write-term` and `write-adr`,
+and `implement-tickets` records a Spec's missing terms with `write-term`. `setup-project`, `research-idea`, `promote-research`,
 `write-spec`, `plan-tickets`, `implement-tickets` and `interview-me` interview Daniel with `interview-user`.
 
 ## Project setup
@@ -291,6 +291,7 @@ wayfinder  -->  tickets  -->  implement-ticket  -->  review-change  -->  pull re
 | One forked review against Spec and standards | Deviations from the Spec, self-biased review |
 | Hard findings fixed once, judgement calls decided by Daniel | Findings nobody acts on |
 | One pull request per ticket, wayfinder reconciled on the next run | Tickets that never close, blocked work that never unblocks |
+| Behind ticket branches updated by merge at the start of every run, gated again without a review | Branches that cannot merge, history rewritten by force pushes |
 | `verify-spec` over the whole Spec once every ticket is merged | Duplication and drift between tickets, leftovers, Specs that never close |
 
 A stop is shown to Daniel and posted on the wayfinder, never worked around. Merging stays with
