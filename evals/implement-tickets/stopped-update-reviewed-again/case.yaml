@@ -1,0 +1,36 @@
+schema_version: "1.1"
+name: A stopped update passes both reviews and the gate before a new ticket starts
+description: "Spec #24, ticket #90. ticket/5-missing-name already carries the merge commit of an earlier update, so it is no longer behind or conflicting; only an open `Update stop for #0005` entry on the wayfinder keeps it in this run's hits. An implement-tickets run picks it up, runs review-change on it and gates it again before ticket #0006 could start. The gate itself is not proven: #38 and verify-spec check it; the GitHub verification run of #38 is the evidence for the push and the gate."
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-tickets 0003
+  max_turns: 100
+  timeout_seconds: 2400
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: picked up with implement-ticket update, although the branch is not behind
+    tool: Skill
+    input_match: 'implement-ticket.*update'
+  - type: tool_used
+    name: reviewed, unlike a plain update
+    tool: Skill
+    input_match: 'review-change'
+  - type: regex
+    name: "next frontier ticket proposed after the update, or the run ended on a review question"
+    # The step 3 question of implement-tickets; no run can answer it, so the run ends on it, after the update.
+    # Any case, the number with or without # and zeros, and the tickets listed before the question count.
+    # A run that ends earlier, on a review question to Daniel, counts too: interview-user's two marker lines.
+    pattern: '\bimplement\b[^?]*(?<![\w/])#?0*6\b[^?]*\?|(?<![\w/])#?0*6\b[^?]*\bimplement\b[^?]*\?|^Open decisions: \d+$[\s\S]*?^Recommended answer: .+$'
+    flags: im
+  - type: tool_used
+    name: "guard: no branch for the next frontier ticket"
+    tool: Bash
+    # Matched against the Bash input as JSON; anchored to the command, so a description that names the branch does not count.
+    # A quoted branch name counts; listing branches with --list, -l or -a does not.
+    input_match: '"command"\s*:\s*"(?:[^"\\]|\\.)*?\bgit\b(?:(?![|;&])(?:[^"\\]|\\.))*?\b(?:checkout|switch|branch)\b(?!\s+(?:--list|-l|-a)\b)(?:(?![|;&])(?:[^"\\]|\\.))*?(?:\s|\\"|'')ticket/0*6\b'
+    min: 0
+    max: 0
