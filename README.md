@@ -135,9 +135,9 @@ User-invoked skills orchestrate and call model-invoked ones: `harvest-skill` use
 `write-skill`, `setup-project` uses `configure-ci-gate`, `write-issue-templates`, `write-agent-docs`,
 `write-community-files` and `write-readme`, `research-idea` uses `verify-claims`, `write-spec` and `promote-research`
 use `design-spec`, `plan-tickets` uses `design-ticket` and `review-architecture`,
-`implement-tickets` uses `implement-ticket`, which builds with `write-tests`, `review-change`
-and `verify-spec` and updates a behind ticket branch with `resolve-merge`. `write-spec`, `promote-research`
-and `plan-tickets` record the terms and decisions they settled with `write-term` and `write-adr`,
+`implement-tickets` uses `implement-ticket`, `review-change` and `verify-spec`; `implement-ticket`
+builds with `write-tests` and updates a behind ticket branch with `resolve-merge`. `write-spec`,
+`promote-research` and `plan-tickets` record the terms and decisions they settled with `write-term` and `write-adr`,
 and `implement-tickets` records a Spec's missing terms with `write-term`. `setup-project`, `research-idea`, `promote-research`,
 `write-spec`, `plan-tickets`, `implement-tickets` and `interview-me` interview Daniel with `interview-user`.
 
