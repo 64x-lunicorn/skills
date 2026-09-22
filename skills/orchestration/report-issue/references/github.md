@@ -1,9 +1,10 @@
 # GitHub commands
 
-Read in steps 5 and 7. The plugin project is always `64x-lunicorn/skills`; it is passed with `--repo` on every call, so the reporter's own repository and its remote never decide where a report goes.
+Read in steps 2, 5 and 7. The plugin project is always `64x-lunicorn/skills`; it is passed with `--repo` on every call, so the reporter's own repository and its remote never decide where a report goes.
 
 | Operation | Command |
 |---|---|
+| Look up the latest release | `curl -fsS https://api.github.com/repos/64x-lunicorn/skills/releases/latest`; the release's version is its `tag_name` with the leading `v` stripped |
 | Can the reporter file directly | `command -v gh` succeeds and `gh auth status --hostname github.com` exits 0 |
 | Look for similar reports | `curl -fsS -G https://api.github.com/search/issues --data-urlencode "q=repo:64x-lunicorn/skills is:issue <3 to 5 distinctive words>" -d per_page=3`; open and closed, each result's number, title, state and link |
 | File the report | `gh issue create --repo 64x-lunicorn/skills --title "<title>" --body-file -` with the draft's body on stdin; the report's link is the URL it prints |
