@@ -8,7 +8,7 @@ Claude Code plugin `64x-lunicorn`. Terms live in [CONTEXT.md](CONTEXT.md), decis
 
 ## Conventions no validator can check
 
-- **Skills are harvested, not invented.** A skill only comes into being once the same correction was needed three times. Until then: an entry in `inbox.md`, verbatim.
+- **Skills are harvested, not invented.** A skill only comes into being once the same correction was needed three times, or Daniel names a gap in the repo's process (ADR 0004). Until then: an entry in `inbox.md`, verbatim.
 - **Layering.** User-invoked orchestrates, model-invoked holds the reusable discipline. User-invoked calls model-invoked, never the other way round, never user-invoked to user-invoked.
 - **The description is the only API.** It stays in context permanently; the body loads only on invocation. A vague description is the most common reason a skill never fires.
 - **One skill, one decision.** Test: can you say in one sentence what goes wrong when the skill does not kick in? If not, it is too broad.

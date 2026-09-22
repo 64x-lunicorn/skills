@@ -8,7 +8,7 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 
 **model-invoked**: the model invokes the skill on its own, triggered by the description.
 
-**user-invoked**: only Daniel invokes the skill, by command. Marked by `disable-model-invocation: true`. Orchestrators are always user-invoked.
+**user-invoked**: only a person invokes the skill, by command, never the model. Marked by `disable-model-invocation: true`. Orchestrators are always user-invoked.
 
 **Layering**: user-invoked orchestrates, model-invoked holds the reusable discipline. User-invoked calls model-invoked, never the other way round, never user-invoked to user-invoked.
 

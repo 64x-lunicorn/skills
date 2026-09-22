@@ -43,13 +43,13 @@ Most skill collections start from ideas. This one starts from friction: when an 
 | **Versioned releases** | Changesets, a changelog and tagged releases. Installed plugins update when the version moves. |
 
 > [!NOTE]
-> This collection is young and grows slowly on purpose. It holds twenty-eight skills today:
+> This collection is young and grows slowly on purpose. It holds twenty-nine skills today:
 > two for creating the rest, six for setting up projects, three for researching and
 > promoting ideas before anything is built, two for writing specs, three for splitting them
 > into tickets, six for implementing tickets, bringing their branches up to date and
 > verifying the result, two for interviewing
-> Daniel, one for recording terms, one for writing ADRs, one for designing HTTP APIs, and
-> one for commits.
+> Daniel, one for recording terms, one for writing ADRs, one for designing HTTP APIs,
+> one for commits, and one for reporting bugs and requests to this project.
 > More arrive as they are harvested.
 
 ## How it works
@@ -99,6 +99,7 @@ Run these directly, as `/64x-lunicorn:<skill>`.
 | [`interview-me`](skills/orchestration/interview-me/SKILL.md) | `/64x-lunicorn:interview-me` | Interviews Daniel about a plan of his own and names the next command to start, without starting it or saving anything. |
 | [`plan-tickets`](skills/orchestration/plan-tickets/SKILL.md) | `/64x-lunicorn:plan-tickets <spec>` | Splits an agreed Spec into sub-issue tickets, a reviewed architecture issue and a wayfinder that fixes the order. |
 | [`promote-research`](skills/orchestration/promote-research/SKILL.md) | `/64x-lunicorn:promote-research` | Runs the quality gates on a concluded research object and, on an explicit go, turns it into a self-contained Spec issue. |
+| [`report-issue`](skills/orchestration/report-issue/SKILL.md) | `/64x-lunicorn:report-issue` | Reports a bug or a request about this plugin to its project through a short interview, and files it only after the reporter confirms the draft. |
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | `/64x-lunicorn:research-idea <idea or number>` | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
 | [`setup-project`](skills/orchestration/setup-project/SKILL.md) | `/64x-lunicorn:setup-project` | Sets up a project through a guided interview with detected defaults, writes the marker every other skill checks, and generates the CI gate, issue templates, agent docs, community files and README from it. |
 | [`write-spec`](skills/orchestration/write-spec/SKILL.md) | `/64x-lunicorn:write-spec` | Turns a functional change from a conversation into a Spec issue after light quality gates. |
