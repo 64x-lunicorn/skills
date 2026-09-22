@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'An outdated version gets an update recommendation'
 description: 'Spec #96. The latest release is v99.0.0, newer than any installed version; starting a report names it, says how to update and asks whether to report anyway.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

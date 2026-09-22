@@ -20,7 +20,20 @@ A version number there is the installed 64x-lunicorn plugin version: it goes str
 
 ## 2. Check for a newer release
 
-Not built yet, go on.
+Look up the latest release of the plugin project with the command in [references/github.md](references/github.md). Strip the leading `v` from its tag and compare it, as semver, against the installed version from step 1.
+
+- **The lookup fails:** say nothing about it and go on to step 3.
+- **The installed version is the same as or newer than the latest release:** go on to step 3.
+- **The installed version is older than the latest release:** tell the reporter and end the turn with the question:
+
+  ```
+  You run an older version of 64x-lunicorn than the latest release, <latest version>. To update, run `claude plugin update 64x-lunicorn` (or `/plugin update`), then `/reload-plugins`. The problem may already be fixed there. Do you want to report anyway?
+  ```
+
+  - **A clear yes:** go on to step 3. The draft in step 6 keeps stating the installed version from step 1, never the latest release.
+  - **Anything else, such as a no, a correction or no answer:** say that nothing was filed, and end the report.
+
+**Done when** no newer release applies, or the reporter has decided whether to report anyway.
 
 ## 3. Choose bug or request
 

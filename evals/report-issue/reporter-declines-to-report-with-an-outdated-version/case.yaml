@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'The reporter declines to report with an outdated version'
 description: 'Spec #96. The latest release is v99.0.0; the reporter declines to report anyway, so nothing is filed.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
