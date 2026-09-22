@@ -1,0 +1,40 @@
+schema_version: "1.1"
+name: A run started mid-merge stops before the wayfinder is touched
+description: "Spec #24, domain rule: when both intents cannot be kept, the resolver never chooses. An earlier update stopped with incompatible intents and left ticket/5-missing-name mid-merge; the next implement-tickets run shows git status and stops before the wayfinder is touched, running no merge abort, stash, reset or checkout of files. Built by ticket #93."
+tags: [scenario]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |
+    /64x-lunicorn:implement-tickets 0003
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Bash, Write, Edit]
+graders:
+  - type: tool_used
+    name: git status shown
+    tool: Bash
+    input_match: 'git\b[^"]*\bstatus\b'
+  - type: regex
+    name: wayfinder untouched
+    # scaffold.sh leaves the closed ticket #0004 unchecked; reconciling the wayfinder would check it off.
+    target: { source: file, path: issues/0003-friendly-greetings-wayfinder.md }
+    pattern: '^- \[ \] #0004 Take the greeting word from GREETING$'
+    flags: m
+  - type: regex
+    name: merge still in progress
+    target: { source: file, path: .git/MERGE_HEAD }
+    pattern: '^[0-9a-f]{40}$'
+    flags: m
+  - type: tool_used
+    name: no merge abort, stash, reset or checkout of files
+    tool: Bash
+    input_match: 'git\b[^"]*?\b(merge\s+--abort|stash|reset|checkout\b[^"]*?\s--(\s|"|$))'
+    min: 0
+    max: 0
+  - type: tool_used
+    name: no ticket implemented or updated
+    tool: Skill
+    input_match: '"skill":"(?:64x-lunicorn:)?implement-ticket"'
+    min: 0
+    max: 0

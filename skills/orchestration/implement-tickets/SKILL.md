@@ -16,13 +16,15 @@ Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in e
 
 ## 1. Reconcile the wayfinder and update behind branches
 
+First, before the wayfinder is touched: when `git status --porcelain` prints anything or a merge is in progress (`git rev-parse -q --verify MERGE_HEAD` succeeds), stop, show `git status` verbatim and end the run at the report. Leave the repository exactly as it is: an earlier update that stopped left its merge open for Daniel to decide, so `git merge --abort`, `git stash`, `git reset` or `git checkout -- <file>` would decide on his behalf. Never run them to get a clean tree.
+
 Find the wayfinder: the argument, or the `Order: #<n>` part of the named tickets' reference line. Supported trackers are GitHub via `gh` and local issue files; for any other forge, stop and name the gap.
 
 For every unchecked ticket in the wayfinder that is closed because its pull request was merged, check it off and mark its node `done` in the progress graph. A ticket whose pull request was closed without merging stays unchecked and is named to Daniel. Without this step, merged work never unblocks the tickets waiting for it.
 
 Then bring behind ticket branches up to date, before any new ticket starts. Daniel merges only squash commits into a default branch that requires branches to be up to date, so every merge puts the other open ticket pull requests behind.
 
-1. With the working tree clean, check out the default branch and, when a remote exists, run `git pull --ff-only`, so behind is measured against the current default branch.
+1. Check out the default branch and, when a remote exists, run `git pull --ff-only`, so behind is measured against the current default branch.
 2. Find the ticket branches that are behind or have merge conflicts, once:
    - **`forge: github`:** one `gh pr list --state open --base <default_branch> --json number,headRefName,closingIssuesReferences,mergeStateStatus,mergeable`. A pull request belongs to an unchecked ticket of the wayfinder when `closingIssuesReferences` names it, else when `headRefName` starts with `ticket/<n>-`. It is a hit when `mergeStateStatus` is `BEHIND` or `DIRTY`, or `mergeable` is `CONFLICTING`. `UNKNOWN` means GitHub is still calculating: query again up to three times, ten seconds apart; still `UNKNOWN`, name the pull request to Daniel as undetermined and leave it for the next run.
    - **`forge: none`:** for each local `refs/heads/ticket/<n>-*` of an unchecked ticket, run `git merge-base --is-ancestor <default_branch> <ref>`. Exit 1 means behind, a hit; any other non-zero exit is an error: stop and show it.
@@ -34,7 +36,7 @@ Then bring behind ticket branches up to date, before any new ticket starts. Dani
 
 Check only here, at the start of the run. A pull request Daniel merges while the run goes on puts other branches behind only after this check; they are updated at the start of the next run, not in this one.
 
-**Done when** every closed ticket is checked off in the wayfinder and nothing else changed there, and every ticket branch that was behind or had merge conflicts at the check is updated and, when a remote exists, pushed, with its checks green on a forge, or its stop is shown and posted, or it comes after a stop and is named as not updated, or it is named as undetermined.
+**Done when** the run stopped on a working tree that was not clean or a merge in progress, with `git status` shown and the repository unchanged, or every closed ticket is checked off in the wayfinder and nothing else changed there, and every ticket branch that was behind or had merge conflicts at the check is updated and, when a remote exists, pushed, with its checks green on a forge, or its stop is shown and posted, or it comes after a stop and is named as not updated, or it is named as undetermined.
 
 ## 2. Verify a completed Spec
 
@@ -67,7 +69,7 @@ Read back number, title and Spec of every remaining ticket, and ask: "Implement 
 
 ## 4. Implement
 
-Before each ticket: the working tree is clean, and the default branch from `.claude/64x-lunicorn.yml` is checked out and up to date with `git pull --ff-only`.
+Before each ticket: when the working tree is not clean or a merge is in progress, stop as at the start of step 1, with `git status` shown verbatim, the repository left as it is and the run ended at the report. Otherwise check out the default branch from `.claude/64x-lunicorn.yml` and bring it up to date with `git pull --ff-only`.
 
 Invoke `implement-ticket` with the ticket number. It runs in a fresh subagent and returns a report that ends either `done` or `stopped`.
 
@@ -102,7 +104,7 @@ End with one report:
 - **Spec:** the verification result, the terms recorded with `CONTEXT.md` named as changed and not committed, the terms still missing, follow-up tickets created, or the issues closed, when step 2 ran.
 - **Updated:** pull requests or, without a forge, ticket branches brought up to date in step 1, each with its pull request link or, without a forge, its branch name, pull requests named as undetermined, and the hits after a stop named as not updated.
 - **Per ticket:** pull request link, review findings fixed, files `not checked`, Daniel's decisions verbatim.
-- **Stopped:** tickets with their stop reason, updates included.
+- **Stopped:** tickets with their stop reason, updates included, and a stop on a working tree that was not clean or a merge in progress, with its `git status` verbatim.
 - **Waiting:** tickets dropped for an open blocker, with the pull request to merge first.
 
 **Done when** every ticket from step 3, dropped ones included, every branch updated, stopped, named as undetermined or named as not updated in step 1, and the outcome of step 2 appear in the report.
