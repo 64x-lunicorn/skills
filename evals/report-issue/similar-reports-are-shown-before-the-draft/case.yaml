@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'Similar reports are shown before the draft'
 description: 'Spec #96. The plugin project has four reports about write-commit-message returning an empty message; after the interview the reporter sees at most three of them and is asked whether the problem is one of them, before any draft.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

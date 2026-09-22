@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'A confirmed match files no new report'
 description: 'Spec #96. The reporter says their problem is the similar report #58; no new report is filed and adding to #58 is offered.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

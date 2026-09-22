@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'The installed version is filled in without asking'
 description: 'Spec #96. The installed plugin version is readable; after the interview the draft states it as a version number and the reporter is never asked for it.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

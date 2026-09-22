@@ -12,7 +12,11 @@ When earlier turns of this report are in the conversation, continue from where t
 
 ## 1. Determine the installed version
 
-Not built yet, go on.
+!`grep -m1 '"version"' "${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json" || echo "version unknown"`
+
+A version number there is the installed 64x-lunicorn plugin version: it goes straight into the draft in step 6, and the reporter is not asked for it. `version unknown`, or any other line without a version number, such as a note that shell command execution is disabled, means the version could not be determined: ask the reporter which version of the 64x-lunicorn plugin they run, and end the turn.
+
+**Done when** the installed version is known, or the reporter has named it after being asked.
 
 ## 2. Check for a newer release
 
@@ -26,19 +30,45 @@ Ask the reporter whether they want to report a bug or a request, and end the tur
 
 ## 4. Interview along the form
 
-Read the chosen form in [references/forms.md](references/forms.md). Ask one question per turn, one per required field, and end the turn after each; for the optional field of a request, ask once and accept that the reporter has nothing to add. Ask in plain words and suggest no answers: the reporter describes the problem in their own words.
+Read the chosen form and its concreteness criteria in [references/forms.md](references/forms.md). Ask one question at a time, end the turn after each, and suggest no answers: the reporter describes the problem in their own words. Ask it as plain conversation, never naming the field, its label or the form; for the optional field of a request, ask once and accept that the reporter has nothing to add. An answer that does not yet meet its field's criteria gets a follow-up aimed at what is missing, in place of the next field's question: someone else must be able to reproduce the bug or understand the request from it.
 
-Ask for the version of the 64x-lunicorn plugin the reporter runs, unless they already named it: a bug asks for it in the question for `Version or environment`, a request as a question of its own after the form's fields.
+Step 1 already settled the plugin version: for a bug's `environment` field, ask only about the reporter's operating system or browser, not the version again.
 
-**Done when** every required field of the chosen form and the plugin version have an answer from the reporter.
+**Done when** every required field of the chosen form meets its concreteness criteria, and the plugin version is known from step 1.
 
 ## 5. Look for similar reports
 
-Not built yet, go on.
+Take 3 to 5 distinctive words from the reporter's answers and look for similar reports in the plugin project, open and closed together, with the command in [references/github.md](references/github.md).
+
+- **The search fails:** say so in one line and go on to step 6.
+- **No similar report:** say "I found no similar reports in the plugin project." and go on to step 6.
+- **One or more similar reports:** show at most three, each with its number, title, state and link, and end the turn with the question:
+
+```
+These reports in the plugin project look similar:
+
+- #<number> <title> (<state>) <link>
+
+Is your problem one of them?
+```
+
+On the reporter's answer:
+
+- **None of them:** go on to step 6.
+- **One of them:** file no new report. Build a comment from the reporter's answers, in the same fields as the draft in step 6 but without a title, show it and end the turn with the question "Add this to #<number>?"
+
+  On a clear yes, check whether the reporter can file directly, with the commands in [references/github.md](references/github.md):
+
+  - **Can file directly:** add the confirmed comment with `gh issue comment` and give the reporter the link it prints.
+  - **Cannot file directly:** add nothing and give the reporter the report's link.
+
+  On anything else, such as a no, a correction or no answer, add nothing: after a correction, show the corrected comment again; otherwise say that nothing was added.
+
+**Done when** the reporter has seen any similar reports and, on a confirmed match, the offer to add to it, or the search found nothing or failed and step 6 follows.
 
 ## 6. Show the draft and ask for confirmation
 
-Build the draft only from the reporter's answers in this interview and the plugin version they named. Leave out everything else in the session, such as file contents, earlier messages, file names, the reporter's repository and anything Claude knows about their project, even where it would explain the problem: the plugin project is public.
+Build the draft only from the reporter's answers in this interview and the plugin version from step 1. Leave out everything else in the session, such as file contents, earlier messages, file names, the reporter's repository and anything Claude knows about their project, even where it would explain the problem: the plugin project is public.
 
 Show it in this shape and end the turn with the question:
 

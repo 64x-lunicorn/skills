@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'The interview does not end on a vague answer'
 description: 'Spec #96. The reporter describes the bug only as "it does not work"; the interview goes on asking instead of showing a draft.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
