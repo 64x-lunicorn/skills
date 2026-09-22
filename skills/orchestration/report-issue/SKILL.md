@@ -26,11 +26,11 @@ Ask the reporter whether they want to report a bug or a request, and end the tur
 
 ## 4. Interview along the form
 
-Read the chosen form in [references/forms.md](references/forms.md). Ask one question per turn, one per required field, and end the turn after each; for the optional field of a request, ask once and accept that the reporter has nothing to add. Ask in plain words and suggest no answers: the reporter describes the problem in their own words.
+Read the chosen form and its concreteness criteria in [references/forms.md](references/forms.md). Ask one question at a time, end the turn after each, and suggest no answers: the reporter describes the problem in their own words. Ask it as plain conversation, never naming the field, its label or the form; for the optional field of a request, ask once and accept that the reporter has nothing to add. An answer that does not yet meet its field's criteria gets a follow-up aimed at what is missing, in place of the next field's question: someone else must be able to reproduce the bug or understand the request from it.
 
 Ask for the version of the 64x-lunicorn plugin the reporter runs, unless they already named it: a bug asks for it in the question for `Version or environment`, a request as a question of its own after the form's fields.
 
-**Done when** every required field of the chosen form and the plugin version have an answer from the reporter.
+**Done when** every required field of the chosen form meets its concreteness criteria, and the plugin version has an answer from the reporter.
 
 ## 5. Look for similar reports
 
