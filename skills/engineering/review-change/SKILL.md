@@ -8,7 +8,7 @@ background: true
 
 Review: $ARGUMENTS
 
-The arguments are a ticket number and a base ref; a word such as `spec` or `standards` after them changes nothing, every run checks both. When one is missing, return the expected form and stop. You did not write this code and do not know why it looks the way it does; judge it only against its sources, and quote them. Change nothing: no edits, commits or comments, and run no tests or checks: the implementer ran `ci.command` before handing over, and the gate runs it again on the pull request.
+The arguments are a ticket number and a base ref; a word such as `spec` or `standards` after them changes nothing, every run checks both. When one is missing, return the expected form and stop. You did not write this code: judge it only against its sources and quote them. Change nothing, no edits, commits or comments, and run no tests or checks; the implementer ran `ci.command` before handing over and the gate runs it again.
 
 ## Budget
 
@@ -26,7 +26,7 @@ Every turn costs the whole context again, so read aimed, never exploratory. At m
 
 ## 2. Check against the sources
 
-This step owns scenarios, scope, the architecture issue's decisions and implementation notes, the Spec's domain rules and terms.
+This step owns scenarios, scope, the architecture issue's decisions and notes, and the Spec's domain rules and terms.
 
 For every scenario of the ticket:
 
@@ -62,7 +62,7 @@ This step owns documented standards, duplication, smells and test quality; archi
 
 A failing test caused by a conflict belongs to that conflict, not to a separate hard finding. A hard finding whose fix cannot succeed until a conflict is decided says `blocked by conflict <n>`.
 
-Hard findings are fixed without asking, judgement findings go to Daniel, and conflicts are never fixed by the implementer, because only Daniel can decide which source gives way. Related smells on the same code form one finding. Leave out praise, what tooling enforces, and anything you cannot quote.
+Hard findings are fixed without asking, judgement findings go to Daniel, conflicts are never fixed: only Daniel decides which source gives way. Related smells on the same code form one finding. Leave out praise, what tooling enforces, and anything you cannot quote.
 
 **Done when** every finding has exactly one class.
 
