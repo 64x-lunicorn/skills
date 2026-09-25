@@ -52,7 +52,7 @@ Drop a ticket and say why when it is closed, has neither a `task` nor a `bugfix`
 
 When no ticket remains, go to step 7.
 
-Read back number, title and Spec of every remaining ticket, and ask: "Implement <#n title, …> in this order, each on its own branch with a pull request?" Only a yes to this question counts; branches and pull requests are visible to others.
+Read back number, title and Spec of every remaining ticket (number and title only for a bugfix or Spec-less task, which has no Spec), and ask: "Implement <#n title, …> in this order, each on its own branch with a pull request?" Only a yes to this question counts; branches and pull requests are visible to others.
 
 **Done when** Daniel has confirmed the list and every dropped ticket is named with its reason, or no ticket remains.
 
@@ -62,7 +62,7 @@ Before each ticket: stop as at the start of step 1 when the tree is not clean or
 
 Tell Daniel the ticket is starting, then invoke `implement-ticket` with the ticket number. It runs in a fresh, background subagent, so that message is what shows the run is alive; wait for its report, which ends `done` or `stopped`.
 
-On `stopped`, show Daniel the reason and the passage it concerns, verbatim, and post the same as a comment on the wayfinder. Ask how to proceed and leave the ticket untouched until he decides; working around a stop is exactly the drift this skill prevents.
+On `stopped`, show Daniel the reason and the passage it concerns, verbatim, and post the same as a comment on the wayfinder, or on the issue itself for a bugfix or Spec-less task, which has no wayfinder. Ask how to proceed and leave the ticket untouched until he decides; working around a stop is exactly the drift this skill prevents.
 
 **Done when** Daniel saw the ticket start, and the report says `done` with a branch and commits, or the stop is shown to Daniel and posted.
 

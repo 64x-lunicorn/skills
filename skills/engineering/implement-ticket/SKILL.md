@@ -31,7 +31,7 @@ Stop when:
 
 ## 2. Inventory what exists
 
-Before the first test, search the codebase for functions, types, modules, test helpers and patterns that already do part of the job: by the Spec's domain terms, by similar names, and inside the components from the implementation notes.
+Before the first test, search the codebase for functions, types, modules, test helpers and patterns that already do part of the job: by the Spec's domain terms (the Goal and Diagnosis of the issue for a bugfix or Spec-less task), by similar names, and inside the components from the implementation notes.
 
 Write the inventory: what you will reuse, and for everything new, why nothing existing fits. The reviewer checks the change against this list.
 
@@ -50,7 +50,7 @@ Find this ticket's scenario tests by their names, which are the scenario names v
 Build every behaviour with `write-tests`, at the seams from the implementation notes, until the ticket's scenarios pass one by one. Where `write-tests` says to ask the caller, stop and report instead; nobody can answer inside this run.
 
 - Run the typecheck, when the project has one, and the affected test file after every green; the full suite comes in step 6.
-- Follow the Decisions of the architecture issue. Needing a library, component or seam it does not name: stop.
+- Follow the Decisions of the architecture issue; for a bugfix or Spec-less task, which has none, the seams of its Implementation notes. Needing a library, component or seam it does not name: stop.
 - When the ticket adds, changes or removes an HTTP endpoint, build it with `design-http-api`, OpenAPI document and Bruno collection in the same commits. A per-API choice that is not recorded is a stop.
 - Write only what the scenarios need; options, hooks and abstractions for later stay out.
 
