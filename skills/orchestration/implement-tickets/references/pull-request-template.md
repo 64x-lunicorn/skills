@@ -28,3 +28,5 @@ Closes #<ticket>. Part of Spec #<spec>. Order: #<wayfinder>.
 
 <Files changed outside the ticket's implementation notes, each with its reason. Or: None.>
 ```
+
+A bugfix or Spec-less task has no Spec and no wayfinder: replace the first line with `Closes #<bugfix>. Bug: #<bug>.` (`Bug: none` when the bugfix has no Bug issue) or `Closes #<task>. Task without a Spec.`, never `Fixes #<bug>`, because the Bug is closed by triage with its own comment. For a bugfix, list the scenario with its red and green run.

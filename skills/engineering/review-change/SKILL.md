@@ -1,6 +1,6 @@
 ---
 name: review-change
-description: Reviews a branch against a base in one run, checking ticket scenarios, Spec, architecture decisions and scope creep as well as documented standards, code smells, duplication across the codebase and test quality, within a fixed tool-call budget, and returns classified findings without changing anything. Use when a ticket's change is reviewed before its pull request, or when a branch or pull request needs a spec or standards review.
+description: Reviews a branch against a base in one run, checking ticket scenarios, Spec, architecture decisions and scope creep, or for a bugfix or Spec-less task the issue's own scenarios and seams, as well as documented standards, code smells, duplication across the codebase and test quality, within a fixed tool-call budget, and returns classified findings without changing anything. Use when a ticket's change is reviewed before its pull request, or when a branch or pull request needs a spec or standards review.
 context: fork
 agent: Plan
 background: true
@@ -20,9 +20,10 @@ Every turn costs the whole context again, so read aimed, never exploratory. At m
 
 - In one call: `git rev-parse <base>`, `git log <base>..HEAD --oneline` and `git diff <base>...HEAD`. A bad ref or an empty diff ends the review with that as its only result.
 - Read the tracker from `.claude/64x-lunicorn.yml`. With `issues.tracker: forge`, read issues with `gh issue view <n>`. With `local`, issue `<n>` is the file in `issues.path` whose name starts with the number, zero-padded to four digits.
-- Read the ticket. Its reference line starts with `> Part of Spec #<spec>. Architecture: #<architecture>.` and may carry more parts such as `Order:`; numbers may be zero-padded. Read the Spec and the architecture issue it names.
+- Read the ticket. A bugfix (label `bugfix`) or Spec-less task (label `task`, body starting `> Task without a Spec.`) has no Spec and no architecture issue: its own scenarios and the seams in its Implementation notes are the contract, so read nothing else and check it as step 2 says for a Spec-less issue.
+- Otherwise its reference line starts with `> Part of Spec #<spec>. Architecture: #<architecture>.` and may carry more parts such as `Order:`; numbers may be zero-padded. Read the Spec and the architecture issue it names.
 
-**Done when** the diff, the commits and all three issues are known.
+**Done when** the diff, the commits and every source the issue has are known.
 
 ## 2. Check against the sources
 
@@ -39,6 +40,8 @@ Across the whole diff:
 - Behaviour a caller can observe that no scenario asks for: options, flags, endpoints, fields, fallbacks. Structure without observable behaviour, such as an unused parameter, is a smell for step 3.
 - Departures from the Decisions or the ticket's implementation notes, and from the Spec's domain rules. Code that copies what a decision says to reuse is reported here as a departure from that decision.
 - Terms that differ from the Spec, and from `CONTEXT.md` when the project has one.
+
+For a bugfix or Spec-less task the same checks run against the issue alone: a departure from the agreed seams replaces a departure from a decision, scope creep is behaviour no scenario of the issue asks for, and a Spec's domain rules and terms do not apply. A bugfix's test must be able to fail on the unfixed code; a task's scenarios pin today's behaviour and must still hold.
 
 **Done when** every scenario and every changed file is checked.
 

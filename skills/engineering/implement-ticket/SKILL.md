@@ -1,6 +1,6 @@
 ---
 name: implement-ticket
-description: Implements one agreed ticket in a fresh subagent on its own branch, activating its pending scenarios, building test-first at the seams named by the architecture issue, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket's branch or pull request is to be brought up to date with main or the default branch, is behind it or has merge conflicts.
+description: Implements one agreed ticket, bugfix or Spec-less task in a fresh subagent on its own branch, activating its pending scenarios or writing them itself for a bugfix or Spec-less task, building test-first at the agreed seams, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket, a bugfix issue or a Spec-less task is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket's branch or pull request is to be brought up to date with main or the default branch, is behind it or has merge conflicts.
 context: fork
 agent: general-purpose
 background: true
@@ -14,7 +14,9 @@ The arguments are a ticket number, optionally followed by `fix <findings file>`,
 
 Read `.claude/64x-lunicorn.yml` for `ci.command` and the tracker. With `issues.tracker: forge`, read issues with `gh issue view <n> --comments`; with `local`, issue `<n>` is the file in `issues.path` whose name starts with the number, zero-padded to four digits, its label the frontmatter `type`, its state `status`, and every number in `blocked_by` open until its own file says `closed`.
 
-Read the ticket. Its reference line starts with `> Part of Spec #<spec>. Architecture: #<architecture>.` and may carry more parts such as `Order:`; numbers may be zero-padded. Read the Spec and the architecture issue it names, `CONTEXT.md` when the project has one, and the ADRs in `docs/adr/` that concern the area you touch.
+Read the ticket. A bugfix (label `bugfix`) or a Spec-less task (label `task`, body starting `> Task without a Spec.`) has no Spec and no architecture issue: follow [references/without-spec.md](references/without-spec.md) instead of the rest of this step and of step 3.
+
+Otherwise its reference line starts with `> Part of Spec #<spec>. Architecture: #<architecture>.` and may carry more parts such as `Order:`; numbers may be zero-padded. Read the Spec and the architecture issue it names, `CONTEXT.md` when the project has one, and the ADRs in `docs/adr/` that concern the area you touch.
 
 Stop when:
 
@@ -29,7 +31,7 @@ Stop when:
 
 ## 2. Inventory what exists
 
-Before the first test, search the codebase for functions, types, modules, test helpers and patterns that already do part of the job: by the Spec's domain terms, by similar names, and inside the components from the implementation notes.
+Before the first test, search the codebase for functions, types, modules, test helpers and patterns that already do part of the job: by the Spec's domain terms (the Goal and Diagnosis of the issue for a bugfix or Spec-less task), by similar names, and inside the components from the implementation notes.
 
 Write the inventory: what you will reuse, and for everything new, why nothing existing fits. The reviewer checks the change against this list.
 
@@ -48,7 +50,7 @@ Find this ticket's scenario tests by their names, which are the scenario names v
 Build every behaviour with `write-tests`, at the seams from the implementation notes, until the ticket's scenarios pass one by one. Where `write-tests` says to ask the caller, stop and report instead; nobody can answer inside this run.
 
 - Run the typecheck, when the project has one, and the affected test file after every green; the full suite comes in step 6.
-- Follow the Decisions of the architecture issue. Needing a library, component or seam it does not name: stop.
+- Follow the Decisions of the architecture issue; for a bugfix or Spec-less task, which has none, the seams of its Implementation notes. Needing a library, component or seam it does not name: stop.
 - When the ticket adds, changes or removes an HTTP endpoint, build it with `design-http-api`, OpenAPI document and Bruno collection in the same commits. A per-API choice that is not recorded is a stop.
 - Write only what the scenarios need; options, hooks and abstractions for later stay out.
 

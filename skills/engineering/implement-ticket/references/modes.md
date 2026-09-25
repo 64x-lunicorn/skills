@@ -11,7 +11,7 @@ With `fix <file>`, the file holds findings as `review-change` returns them (clas
 With `update`, the ticket branch is brought up to date with the default branch. Only this ticket knows what its side of the merge set out to achieve; a resolver working from the branch name alone guesses it.
 
 1. Check out the existing branch whose name starts with `ticket/<n>-`.
-2. Invoke `resolve-merge` and hand it the intent of this side as text, from what section 1 read: the ticket's reference (its number, and its file name with local issues), its Goal and Scope in its own words, the Spec's reference, and the names of the ticket's scenarios. Ask for the ticket's reference and scenario names to appear in the merge commit body as handed over; that is what traces the merge back to the ticket.
+2. Invoke `resolve-merge` and hand it the intent of this side as text, from what section 1 read: the ticket's reference (its number, and its file name with local issues), its Goal and Scope in its own words, the Spec's reference (a bugfix or Spec-less task has none), and the names of the ticket's scenarios. Ask for the ticket's reference and scenario names to appear in the merge commit body as handed over; that is what traces the merge back to the ticket.
 3. On `merged`, run this ticket's scenario tests by their names, then steps 5 and 6. A scenario test failing after the merge is a stop returned with its failing output, and steps 5 and 6 do not run: the required checks do not run scenario tests, so nothing later would catch it.
 4. On `stopped: incompatible intents` or `stopped: checks failed`, return the stop verbatim, quoted sources or failing output included. The merge stays open for Daniel.
 
