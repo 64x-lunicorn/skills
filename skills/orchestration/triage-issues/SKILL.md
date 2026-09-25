@@ -32,6 +32,31 @@ Tell Daniel which issues were picked up, with number, title and why each is wait
 
 **Done when** Daniel has the list of picked-up issues with the reason for each, or was told that none is waiting.
 
+## 5. Route by kind of change
+
+Decide the route of every picked-up issue from its kind of change, never from its size: a small change to new domain behaviour still needs a Spec, and a large refactor still needs none. The kinds and their routes:
+
+| Kind of change | Route |
+|---|---|
+| Broken behaviour | bugfix |
+| No behaviour change (refactor, docs, chore) | Spec-less task |
+| New domain behaviour, clear | Spec |
+| New domain behaviour, still unclear | research object |
+| Open feasibility question (spike) | research object |
+| Rejected, out of scope or duplicate | closed with reason |
+
+Ask Daniel which kind it is, through `interview-user`, one issue at a time, with a recommended kind and the reason for it taken from what the examination found. Daniel decides: a reporter's label or wording is evidence, not the answer. When `interview-user` is not available, ask the same question inline with the same recommendation.
+
+Then set the route:
+
+- **Spec:** name `/64x-lunicorn:write-spec` in inline code as the next step for the issue.
+- **Research object:** name `/64x-lunicorn:research-idea` in inline code as the next step for the issue.
+- Triage is user-invoked and cannot call another user-invoked skill, so it names the command and creates neither a Spec nor a research object.
+- Remove `needs-triage` and `needs-info` from the issue, and set no status label: the route is what steps 6 to 9 attach to, and a lingering triage label would put the issue back in the next run.
+- **Bugfix, Spec-less task, closed with reason:** the route is recorded; the later steps carry it out.
+
+**Done when** every picked-up issue has exactly one route with its kind of change confirmed by Daniel, and the issues routed to a Spec or a research object have the next command named.
+
 ## 10. Report
 
 Name every picked-up issue with number and title, and every issue that was left out with its reason, for example a `needs-info` issue without a reporter reply. Later steps add what triage did with each issue.

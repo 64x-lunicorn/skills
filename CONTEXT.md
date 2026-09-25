@@ -89,3 +89,5 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **`resolve-merge`**: the model-invoked skill that holds the resolving discipline: read both sides' sources, keep both intents, invent no behaviour, stop on incompatible intents, run the project's checks, record the merge.
 
 **Triage**: the activity Daniel starts by command that turns waiting issues into a route. It handles the issues Daniel names, or without names everything waiting: unlabelled issues, `needs-triage`, and `needs-info` with a reporter reply since the last triage.
+
+**Kind of change**: what an issue asks for, one of new domain behaviour, broken behaviour, no behaviour change, or an open feasibility question. The only thing triage routes by, never the size of the change.

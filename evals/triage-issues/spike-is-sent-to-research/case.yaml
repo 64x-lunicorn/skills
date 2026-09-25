@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'A spike is sent to research'
 description: 'Spec #26. Issue #218 is an open feasibility question; triage names the research-starting command as the next step.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
