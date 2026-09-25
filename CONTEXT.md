@@ -87,3 +87,5 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Behind**: the default branch has changes the ticket branch does not have. On a forge this is the pull request's state; without a forge, the default branch is not part of the ticket branch's history.
 
 **`resolve-merge`**: the model-invoked skill that holds the resolving discipline: read both sides' sources, keep both intents, invent no behaviour, stop on incompatible intents, run the project's checks, record the merge.
+
+**Triage**: the activity Daniel starts by command that turns waiting issues into a route. It handles the issues Daniel names, or without names everything waiting: unlabelled issues, `needs-triage`, and `needs-info` with a reporter reply since the last triage.

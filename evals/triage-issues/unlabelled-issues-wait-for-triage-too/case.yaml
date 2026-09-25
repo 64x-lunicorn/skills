@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'Unlabelled issues wait for triage too'
 description: 'Spec #26. Issue #202 has no label at all; a triage run started without naming any issue still picks it up.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
