@@ -1,6 +1,6 @@
 # Tracker operations
 
-Read in step 2. GitHub only; the commands need a logged-in `gh`.
+Read in steps 2 and 3. GitHub only; the commands need a logged-in `gh`.
 
 ## Pick-up queries
 
@@ -14,6 +14,14 @@ Read in step 2. GitHub only; the commands need a logged-in `gh`.
 A named issue whose `url` contains `/pull/`, or whose `state` is not `OPEN`, is left out with that reason and not handled.
 
 Each `comments` entry has `author`, `body` and `createdAt`.
+
+## Earlier rejections
+
+Read in step 3. Run one search per issue with its key terms (two to four words from its title and body):
+
+`gh issue list --state closed --search 'reason:"not planned" <key terms>' --limit 50 --json number,title,url,stateReason,closedAt,comments`
+
+`reason:"not planned"` limits the result to issues closed as not planned. Repeat with a synonym when the first terms find nothing. A closed issue of the same request is named with its number, title and the reason in its close comment.
 
 ## The `needs-info` rule
 

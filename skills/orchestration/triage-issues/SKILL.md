@@ -32,8 +32,19 @@ Tell Daniel which issues were picked up, with number, title and why each is wait
 
 **Done when** Daniel has the list of picked-up issues with the reason for each, or was told that none is waiting.
 
+## 3. Examine each picked-up issue
+
+Triage asks Daniel nothing about an issue before it has looked at what the project already has. For each picked-up issue, in this order:
+
+1. **Existing behaviour.** Search the codebase (Glob, Grep, Read) by the issue's domain terms, their synonyms and the names in its title, and read what already does part of the asked job. A Bug is checked against the code that should produce the behaviour it reports.
+2. **Earlier rejections.** Search the closed issues that were closed as not planned by the issue's key terms, with the search in [references/tracker.md](references/tracker.md). An issue is an earlier rejection when it asks for the same thing, not merely the same area; read its close comment for the reason it gave.
+
+Report per issue, before any question to Daniel: the existing behaviour or context found, with file paths, and every earlier rejection by number and title with its reason. When a search finds nothing, say so: `no earlier rejection found`. Change nothing on the issue.
+
+**Done when** every picked-up issue has its existing behaviour and earlier rejections reported, or the statement that none was found, before Daniel was asked anything about it.
+
 ## 10. Report
 
-Name every picked-up issue with number and title, and every issue that was left out with its reason, for example a `needs-info` issue without a reporter reply. Later steps add what triage did with each issue.
+Name every picked-up issue with number and title, and every issue that was left out with its reason, for example a `needs-info` issue without a reporter reply. The examination of step 3 is included per issue. Later steps add what triage did with each issue.
 
 **Done when** Daniel has the report.

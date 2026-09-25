@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'An issue waiting for triage is examined'
 description: 'Spec #26. Triage examines issue #201, labelled needs-triage, and reports what it found for it before asking Daniel anything.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
