@@ -20,11 +20,11 @@ Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 2 in e
 
 Follow [references/tracker.md](references/tracker.md) for the commands.
 
-- **Issue numbers given:** exactly those issues, whatever their labels. Read each one with its comments.
+- **Issue numbers given:** exactly those issues, whatever their labels, read with their comments. A number that resolves to a pull request or a closed issue is left out with that reason and not handled.
 - **Nothing given:** the union of three lists, each issue once:
   1. every open issue without any label, because reports filed from a session by someone without write access arrive unlabelled;
   2. every open issue labelled `needs-triage`;
-  3. every open `needs-info` issue whose reporter replied since the last triage. The last triage is the newest comment carrying the line `Written by Claude during triage, reviewed by Daniel.`; a reply is a newer comment without that line. A `needs-info` issue with no triage comment at all counts as waiting, because its label was set by hand. A `needs-info` issue nobody commented on since stays out, or a reporter who has not answered would be asked again.
+  3. every open `needs-info` issue whose reporter replied since the last triage. The last triage is the newest comment carrying the line `Written by Claude during triage, reviewed by Daniel.`; a reply is any newer comment without that line, whoever wrote it, Daniel and bots included. A `needs-info` issue with no triage comment at all counts as waiting, because its label was set by hand. A `needs-info` issue nobody commented on since stays out, or a reporter who has not answered would be asked again.
 
 Pull requests are never picked up. `gh issue list` returns issues only, so an automated dependency update pull request never appears, and no issue is created for it.
 
