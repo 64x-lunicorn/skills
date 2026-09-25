@@ -1,6 +1,6 @@
 ---
 name: implement-tickets
-description: Implements one or many agreed tickets in wayfinder order, each in a fresh subagent on its own branch, reviewed once and delivered as its own pull request, and verifies and closes the Spec once all its tickets are merged.
+description: Implements one or many agreed tickets in wayfinder order, or bugfix and Spec-less task issues by number, each in a fresh subagent on its own branch, reviewed once and delivered as its own pull request, and verifies and closes the Spec once all its tickets are merged.
 argument-hint: "[ticket numbers, or a wayfinder issue number]"
 disable-model-invocation: true
 ---
@@ -20,7 +20,7 @@ Read `.claude/64x-lunicorn.yml` in the project root, then go on with step 1 in e
 
 Before the wayfinder is touched: when `git status --porcelain` prints anything or a merge is in progress (`git rev-parse -q --verify MERGE_HEAD` succeeds), stop, show `git status` verbatim and end the run at the report. An earlier update that stopped left its merge open for Daniel to decide, so never run `git merge --abort`, `git stash`, `git reset` or `git checkout -- <file>` to get a clean tree.
 
-Find the wayfinder: the argument, or the `Order: #<n>` part of the named tickets' reference line.
+Find the wayfinder: the argument, or the `Order: #<n>` part of the named tickets' reference line. Skip the rest of this step when every named issue is a bugfix or Spec-less task (label `bugfix`, or `task` with a first line `> Task without a Spec.`): they have no wayfinder, no order and no Spec to close.
 
 Check off every unchecked ticket that is closed because its pull request was merged and mark its node `done` in the progress graph; without this, merged work never unblocks the tickets waiting for it. A ticket whose pull request was closed without merging stays unchecked and is named to Daniel.
 
@@ -38,17 +38,17 @@ Check only here. Branches that fall behind while the run goes on are updated at 
 
 ## 2. Verify a completed Spec
 
-Skip this step while any ticket in the wayfinder is unchecked. When every ticket is checked off, follow [references/verify-and-close-spec.md](references/verify-and-close-spec.md): it holds the `verify-spec` run, the missing terms, the follow-up tickets and the close question.
+Skip this step without a wayfinder, and while any ticket in the wayfinder is unchecked. When every ticket is checked off, follow [references/verify-and-close-spec.md](references/verify-and-close-spec.md): it holds the `verify-spec` run, the missing terms, the follow-up tickets and the close question.
 
 **Done when** the wayfinder has an unchecked ticket, or follow-up tickets exist, or a conflict waits for Daniel, or a Spec term stays missing and is named in the report, or the three issues are closed. While `write-term` waits for Daniel's answer, this step is paused, not done.
 
 ## 3. Choose the tickets
 
-- **Ticket numbers given:** those tickets, ordered as in the wayfinder.
+- **Ticket numbers given:** those tickets, ordered as in the wayfinder. Bugfix and Spec-less task numbers need no `Order:` and no wayfinder, and stay in the order given.
 - **Wayfinder given:** its frontier, the unchecked tickets whose blockers are all closed, in phase order.
 - **Nothing given:** list the frontier and ask which.
 
-Drop a ticket and say why when it is closed, has no `task` label, is labelled `spec`, `architecture` or `wayfinder`, or points into `research/`. Drop it too when a blocker is still open, even if the blocker is part of this run: dependent work starts only after Daniel has merged the blocker's pull request.
+Drop a ticket and say why when it is closed, has neither a `task` nor a `bugfix` label, is labelled `spec`, `architecture` or `wayfinder`, or points into `research/`. Drop it too when a blocker is still open, even if the blocker is part of this run: dependent work starts only after Daniel has merged the blocker's pull request.
 
 When no ticket remains, go to step 7.
 

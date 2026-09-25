@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'A bugfix or Spec-less task is reviewed against its own contract'
 description: 'Spec #26. ticket/3-fix-greeting-comma implements bugfix #0003; reviewing it checks the change against #0003''s own scenario and seam instead of a Spec and an architecture issue that do not exist.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

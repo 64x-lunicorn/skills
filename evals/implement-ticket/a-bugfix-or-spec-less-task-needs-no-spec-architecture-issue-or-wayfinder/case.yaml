@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'A bugfix or Spec-less task needs no Spec, architecture issue or wayfinder'
 description: 'Spec #26. Bugfix #0003 carries no Spec, architecture issue or wayfinder reference at all; implementation proceeds from the bugfix issue alone instead of stopping to look for one.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

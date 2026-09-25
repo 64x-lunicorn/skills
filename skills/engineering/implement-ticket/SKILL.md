@@ -1,6 +1,6 @@
 ---
 name: implement-ticket
-description: Implements one agreed ticket in a fresh subagent on its own branch, activating its pending scenarios, building test-first at the seams named by the architecture issue, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket's branch or pull request is to be brought up to date with main or the default branch, is behind it or has merge conflicts.
+description: Implements one agreed ticket, bugfix or Spec-less task in a fresh subagent on its own branch, activating its pending scenarios or writing them itself for a bugfix or Spec-less task, building test-first at the agreed seams, reusing existing code and stopping at any deviation from ticket, Spec or architecture. Use when an agreed ticket, a bugfix issue or a Spec-less task is to be built, when review or CI findings on a ticket branch are to be fixed, or when a ticket's branch or pull request is to be brought up to date with main or the default branch, is behind it or has merge conflicts.
 context: fork
 agent: general-purpose
 background: true
@@ -14,7 +14,9 @@ The arguments are a ticket number, optionally followed by `fix <findings file>`,
 
 Read `.claude/64x-lunicorn.yml` for `ci.command` and the tracker. With `issues.tracker: forge`, read issues with `gh issue view <n> --comments`; with `local`, issue `<n>` is the file in `issues.path` whose name starts with the number, zero-padded to four digits, its label the frontmatter `type`, its state `status`, and every number in `blocked_by` open until its own file says `closed`.
 
-Read the ticket. Its reference line starts with `> Part of Spec #<spec>. Architecture: #<architecture>.` and may carry more parts such as `Order:`; numbers may be zero-padded. Read the Spec and the architecture issue it names, `CONTEXT.md` when the project has one, and the ADRs in `docs/adr/` that concern the area you touch.
+Read the ticket. A bugfix (label `bugfix`) or a Spec-less task (label `task`, body starting `> Task without a Spec.`) has no Spec and no architecture issue: follow [references/without-spec.md](references/without-spec.md) instead of the rest of this step and of step 3.
+
+Otherwise its reference line starts with `> Part of Spec #<spec>. Architecture: #<architecture>.` and may carry more parts such as `Order:`; numbers may be zero-padded. Read the Spec and the architecture issue it names, `CONTEXT.md` when the project has one, and the ADRs in `docs/adr/` that concern the area you touch.
 
 Stop when:
 
