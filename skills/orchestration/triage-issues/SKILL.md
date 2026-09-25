@@ -45,14 +45,14 @@ Decide the route of every picked-up issue from its kind of change, never from it
 | Open feasibility question (spike) | research object |
 | Rejected, out of scope or duplicate | closed with reason |
 
-Ask Daniel which kind it is, through `interview-user`, one issue at a time, with a recommended kind and the reason for it taken from what the examination found. Daniel decides: a reporter's label or wording is evidence, not the answer. When `interview-user` is not available, ask the same question inline with the same recommendation.
+Ask Daniel which kind it is, through `interview-user`, one issue at a time, with a recommended kind and the reason for it taken from what the examination found. Daniel decides: a reporter's label or wording is evidence, not the answer.
 
 Then set the route:
 
 - **Spec:** name `/64x-lunicorn:write-spec` in inline code as the next step for the issue.
 - **Research object:** name `/64x-lunicorn:research-idea` in inline code as the next step for the issue.
 - Triage is user-invoked and cannot call another user-invoked skill, so it names the command and creates neither a Spec nor a research object.
-- Remove `needs-triage` and `needs-info` from the issue, and set no status label: the route is what steps 6 to 9 attach to, and a lingering triage label would put the issue back in the next run.
+- Remove `needs-triage` and `needs-info` from the issue, and set no status label: the route is what steps 6 to 9 attach to, and a lingering triage label would put the issue back in the next run. Follow the Routing section of [references/tracker.md](references/tracker.md).
 - **Bugfix, Spec-less task, closed with reason:** the route is recorded; the later steps carry it out.
 
 **Done when** every picked-up issue has exactly one route with its kind of change confirmed by Daniel, and the issues routed to a Spec or a research object have the next command named.
