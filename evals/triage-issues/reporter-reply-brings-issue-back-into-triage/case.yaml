@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'A reporter reply brings an issue back into triage'
 description: 'Spec #26. Issue #203 is needs-info; the reporter replied on 2026-09-12, after triage''s own comment on 2026-09-05, so a triage run without named issues picks it up again.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:

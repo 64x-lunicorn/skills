@@ -102,6 +102,7 @@ Run these directly, as `/64x-lunicorn:<skill>`.
 | [`report-issue`](skills/orchestration/report-issue/SKILL.md) | `/64x-lunicorn:report-issue` | Reports a bug or a request about this plugin to its project through a short interview, and files it only after the reporter confirms the draft. |
 | [`research-idea`](skills/orchestration/research-idea/SKILL.md) | `/64x-lunicorn:research-idea <idea or number>` | Creates or continues a research object under `research/` and leads the discussion of an idea, without implementing it. |
 | [`setup-project`](skills/orchestration/setup-project/SKILL.md) | `/64x-lunicorn:setup-project` | Sets up a project through a guided interview with detected defaults, writes the marker every other skill checks, and generates the CI gate, issue templates, agent docs, community files and README from it. |
+| [`triage-issues`](skills/orchestration/triage-issues/SKILL.md) | `/64x-lunicorn:triage-issues [issues]` | Picks up the issues waiting for triage: the ones Daniel names, or every unlabelled, `needs-triage` and replied-to `needs-info` issue. |
 | [`write-spec`](skills/orchestration/write-spec/SKILL.md) | `/64x-lunicorn:write-spec` | Turns a functional change from a conversation into a Spec issue after light quality gates. |
 
 ### Model-invoked

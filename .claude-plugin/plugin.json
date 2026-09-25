@@ -45,6 +45,7 @@
     "./skills/orchestration/report-issue",
     "./skills/orchestration/research-idea",
     "./skills/orchestration/setup-project",
+    "./skills/orchestration/triage-issues",
     "./skills/orchestration/write-spec"
   ]
 }
