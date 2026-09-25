@@ -15,6 +15,14 @@ A named issue whose `url` contains `/pull/`, or whose `state` is not `OPEN`, is 
 
 Each `comments` entry has `author`, `body` and `createdAt`.
 
+## Routing
+
+Read in step 5. After the route is set, remove the triage labels from the issue:
+
+`gh issue edit <n> --remove-label needs-triage --remove-label needs-info`
+
+A label the issue does not carry makes `gh` fail; remove only the ones it has.
+
 ## The `needs-info` rule
 
 For each `needs-info` issue, take the newest comment whose body contains `Written by Claude during triage, reviewed by Daniel.` and the newest comment without it, by `createdAt`.
