@@ -37,11 +37,11 @@ Tell Daniel which issues were picked up, with number, title and why each is wait
 Triage asks Daniel nothing about an issue before it has looked at what the project already has. For each picked-up issue, in this order:
 
 1. **Existing behaviour.** Search the codebase (Glob, Grep, Read) by the issue's domain terms, their synonyms and the names in its title, and read what already does part of the asked job. A Bug is checked against the code that should produce the behaviour it reports.
-2. **Earlier rejections.** Search the closed issues that were closed as not planned by the issue's key terms, with the search in [references/tracker.md](references/tracker.md). An issue is an earlier rejection when it asks for the same thing, not merely the same area; read its close comment for the reason it gave.
+2. **Earlier rejections.** An earlier rejection is a closed issue with reason "not planned" or a research object with status `rejected` or `parked`. Search both by the issue's key terms, with the searches in [references/tracker.md](references/tracker.md): the closed issues, and the research objects under `research.path` from `.claude/64x-lunicorn.yml`. A hit is an earlier rejection when it asks for the same thing, not merely the same area; read its close comment or its README for the reason it gave.
 
-Report per issue, before any question to Daniel: the existing behaviour or context found, with file paths, and every earlier rejection by number and title with its reason. When a search finds nothing, say so: `no earlier rejection found`. Change nothing on the issue.
+Report per issue, before any question to Daniel: the existing behaviour or context found, with file paths, and every earlier rejection with its reason, by number and title for an issue, by directory name and status for a research object. When a search finds nothing, say so: `no earlier rejection found`. Change nothing on the issue.
 
-**Done when** every picked-up issue has its existing behaviour and earlier rejections reported, or the statement that none was found, before Daniel was asked anything about it.
+**Done when** every picked-up issue has its existing behaviour and earlier rejections, issues and research objects, reported, or the statement that none was found, before Daniel was asked anything about it.
 
 ## 10. Report
 

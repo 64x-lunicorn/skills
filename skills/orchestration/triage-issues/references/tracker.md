@@ -23,6 +23,8 @@ Read in step 3. Run one search per issue with its key terms (two to four words f
 
 `reason:"not planned"` limits the result to issues closed as not planned. Repeat with a synonym when the first terms find nothing. A closed issue of the same request is named with its number, title and the reason in its close comment.
 
+Research objects are searched too: list the directories under `research.path` (`research/` unless the setup says otherwise), read each `README.md` front matter and keep those with `status: rejected` or `status: parked`, then match their title and text against the same key terms. A matching object is named with its directory name, status and the reason its README gives. Without a research directory, say `no research objects`.
+
 ## The `needs-info` rule
 
 For each `needs-info` issue, take the newest comment whose body contains `Written by Claude during triage, reviewed by Daniel.` and the newest comment without it, by `createdAt`.
