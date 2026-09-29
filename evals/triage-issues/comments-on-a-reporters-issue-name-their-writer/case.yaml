@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'Comments on a reporter''s issue name their writer'
 description: 'Spec #26. Issue #219 was filed by a reporter; every comment triage posts on it carries the line naming Claude as writer and Daniel as reviewer.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -14,3 +14,7 @@ graders:
   - type: 'llm'
     name: 'every comment carries the writer line'
     criteria: 'Every comment this run posts on issue #219 contains, word for word, the line "Written by Claude during triage, reviewed by Daniel."'
+  - type: 'regex'
+    name: 'a comment is posted on 219'
+    target: { source: 'file', path: 'gh-calls.log' }
+    pattern: 'issue comment 219'
