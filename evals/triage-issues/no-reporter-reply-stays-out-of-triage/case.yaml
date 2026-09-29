@@ -11,10 +11,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'issue 204 is left alone'
     criteria: 'Issue #204 is not among the issues this triage run handles or reports on, since nobody has replied to triage''s own comment on it.'

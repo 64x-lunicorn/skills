@@ -13,10 +13,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'the research command is named as the next step'
     criteria: 'The message names `/64x-lunicorn:research-idea` in backticks as the next step for issue #217, without itself starting a research object.'

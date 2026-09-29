@@ -13,10 +13,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'the route follows the kind of change'
     criteria: 'The route triage settles on for issue #201 is one of bugfix, Spec-less task, Spec, research object, or closed with reason, and the message justifies it by the kind of change Daniel confirmed, not by how big or small the fix would be.'

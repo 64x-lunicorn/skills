@@ -118,6 +118,18 @@ describe("CLI", () => {
     expect(result.stdout).toContain("1 of 1 scenario(s) passed.");
   });
 
+  it("serves the gh shim from the checkout, the only place outside the workspace an eval run's sandbox can read", () => {
+    const root = repoWithRunnableCase();
+    const shim = path.join(import.meta.dirname, "..", "bin", "gh");
+    // Exits 0 only if the gh that answers first on PATH is the checkout's own shim, not a copy elsewhere.
+    const env = addStubClaudeRunning(root, [`[ "$(command -v gh)" = "${shim}" ]`]);
+
+    const result = run(root, [], env);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("1 of 1 scenario(s) passed.");
+  });
+
   it("puts the curl stand-in ahead of the real curl on PATH, so a scenario can fake the GitHub REST reads", () => {
     const root = repoWithRunnableCase();
     fs.mkdirSync(path.join(root, ".gh"), { recursive: true });

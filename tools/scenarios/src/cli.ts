@@ -1,36 +1,22 @@
 import { spawnSync } from "node:child_process";
-import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { type ScenarioCase, evalArgs, loadCases, selectScenarios } from "./cases.ts";
 
 const root = path.resolve(".");
 const { cases, notRunnable } = selectScenarios(loadCases(root), process.argv.slice(2));
 
-/** Source directory of the `gh` shim and the `curl` stand-in, next to this file on disk regardless of the run's cwd. */
-const ghShimSource = path.join(import.meta.dirname, "..", "bin");
-
-/** Commands the scenario runner fakes, each an executable in `ghShimSource`. */
-const FAKED_COMMANDS = ["gh", "curl"];
-
-/**
- * Files of the `gh` shim and the `curl` stand-in, copied together so the module they share and
- * their local `package.json` always travel with them.
- */
-const GH_SHIM_FILES = [...FAKED_COMMANDS, "github-fixture.js", "package.json"];
+/** Directory of the `gh` shim and the `curl` stand-in, next to this file in the checkout. */
+const ghShimDir = path.join(import.meta.dirname, "..", "bin");
 
 /**
  * Puts the `gh` shim and the `curl` stand-in ahead of the real commands on PATH, so a scenario
  * that exercises the GitHub tracker or the GitHub REST API never reaches the network
- * (architecture issues #39 and #101). Copied to a directory outside the repo because a
- * `claude plugin eval` run's Bash tool cannot read the checkout that started it.
+ * (architecture issues #39 and #101). Served in place: a `claude plugin eval` run's sandbox
+ * reads the plugin checkout under test, but not `$TMPDIR` or `/tmp`, so a copy there is
+ * skipped on PATH and the real `gh` answers.
  */
 function envWithGhShim(): NodeJS.ProcessEnv {
-  const shimDir = path.join(os.tmpdir(), "64x-scenarios", "bin");
-  fs.mkdirSync(shimDir, { recursive: true });
-  for (const file of GH_SHIM_FILES) fs.copyFileSync(path.join(ghShimSource, file), path.join(shimDir, file));
-  for (const command of FAKED_COMMANDS) fs.chmodSync(path.join(shimDir, command), 0o755);
-  return { ...process.env, PATH: `${shimDir}${path.delimiter}${process.env.PATH}` };
+  return { ...process.env, PATH: `${ghShimDir}${path.delimiter}${process.env.PATH}` };
 }
 
 /** Runs one scenario through `claude plugin eval`; true when it passed. */
