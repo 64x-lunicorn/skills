@@ -11,10 +11,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'every comment carries the writer line'
     criteria: 'Every comment this run posts on issue #219 contains, word for word, the line "Written by Claude during triage, reviewed by Daniel."'

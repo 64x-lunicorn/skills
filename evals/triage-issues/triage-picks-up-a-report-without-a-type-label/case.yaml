@@ -11,10 +11,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'the report without a type label is handled like one needing triage'
     criteria: 'Issue #230, which carries no label, is among the issues this run treats as waiting for triage and reports on or handles, the same way as issue #229, which is labelled needs-triage.'

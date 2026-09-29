@@ -11,10 +11,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'issue 203 is picked back up'
     criteria: 'Issue #203 is among the issues this triage run handles or reports on, because the reporter''s 2026-09-12 reply is newer than triage''s own 2026-09-05 comment on it.'

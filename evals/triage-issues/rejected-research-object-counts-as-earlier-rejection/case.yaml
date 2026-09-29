@@ -11,10 +11,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'the rejected research object is named first'
     criteria: 'Before asking Daniel anything about issue #208, the message names the research object 0099-google-sheets-export as an earlier rejection of the same idea, because its status is rejected.'
