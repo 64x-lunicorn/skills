@@ -7,6 +7,8 @@ context:
 execution:
   prompt: |
     /64x-lunicorn:triage-issues 205
+
+    Daniel: I am away during this run, so this is my ok in advance and it counts as my review for the writer line: post every question you draft for a reporter as drafted, without waiting for me.
   max_turns: 40
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
@@ -18,3 +20,7 @@ graders:
     name: 'the issue is labelled needs-info'
     target: { source: 'file', path: 'gh-calls.log' }
     pattern: 'issue edit 205 --add-label needs-info'
+  - type: 'regex'
+    name: 'the issue still carries needs-info after the run'
+    target: { source: 'file', path: '.gh/issues.json' }
+    pattern: '"number": 205,[^\[]*"labels": \[[^\]]*"needs-info"'
