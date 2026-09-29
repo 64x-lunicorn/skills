@@ -91,3 +91,7 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Triage**: the activity Daniel starts by command that turns waiting issues into a route. It handles the issues Daniel names, or without names everything waiting: unlabelled issues, `needs-triage`, and `needs-info` with a reporter reply since the last triage.
 
 **Kind of change**: what an issue asks for, one of new domain behaviour, broken behaviour, no behaviour change, or an open feasibility question. The only thing triage routes by, never the size of the change.
+
+**External issue**: an issue a reporter filed through the Bug or Request template. Every comment triage posts on one ends with the line "Written by Claude during triage, reviewed by Daniel."
+
+**Internal issue**: an issue created by the project's own skills: bugfix, task, Spec, architecture issue, wayfinder. It carries no writer line.

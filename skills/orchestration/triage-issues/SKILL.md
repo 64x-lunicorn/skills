@@ -32,6 +32,18 @@ Tell Daniel which issues were picked up, with number, title and why each is wait
 
 **Done when** Daniel has the list of picked-up issues with the reason for each, or was told that none is waiting.
 
+## 4. Ask the reporter
+
+For every picked-up issue that cannot be routed without information only its reporter has, such as the steps that show a bug, when it happens, or what the reporter expected instead, ask the reporter on the issue. Guessing the missing part routes the issue on an invention, and Daniel cannot answer for the reporter.
+
+- Ask one specific question about what is missing, never a mere acknowledgement, in the question text of [references/comments.md](references/comments.md).
+- Post it and set `needs-info` with the commands in the Asking section of [references/tracker.md](references/tracker.md).
+- Tell Daniel the question as posted. The issue takes no further step in this run; the reporter's reply brings it back through step 2.
+
+Every comment triage posts on an external issue, a Bug or Request filed by a reporter, in this step and every later one, uses its text from [references/comments.md](references/comments.md) and ends with the line `Written by Claude during triage, reviewed by Daniel.`: the reporter learns who wrote the answer, and step 2 finds the last triage by that line. Internal issues, which the project's own skills create, never carry it.
+
+**Done when** every picked-up issue that lacks information from its reporter carries `needs-info` and a question comment ending with the writer line, and Daniel has seen each question.
+
 ## 5. Route by kind of change
 
 Decide the route of every picked-up issue from its kind of change, never from its size: a small change to new domain behaviour still needs a Spec, and a large refactor still needs none. The kinds and their routes:
