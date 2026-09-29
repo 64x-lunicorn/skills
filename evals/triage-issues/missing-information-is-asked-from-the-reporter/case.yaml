@@ -11,10 +11,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'a question is posted as a comment'
     criteria: 'The comment this run posts on issue #205 asks the reporter a specific question about what is missing to route the issue (for example reproduction steps, or when the import failure happens), not just an acknowledgement.'

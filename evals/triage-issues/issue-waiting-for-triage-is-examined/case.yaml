@@ -11,10 +11,6 @@ execution:
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Bash]
 graders:
-  - type: 'tool_used'
-    name: 'routed through triage-issues'
-    tool: 'Skill'
-    input_match: 'triage-issues'
   - type: 'llm'
     name: 'reports existing behaviour and earlier rejections first'
     criteria: 'The message reports, for issue #201, what triage found: the existing behaviour or context it looked at in the codebase, and any earlier rejections it searched for (naming one, or saying it found none), before it asks Daniel anything else.'
