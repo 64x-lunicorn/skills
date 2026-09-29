@@ -32,6 +32,29 @@ Tell Daniel which issues were picked up, with number, title and why each is wait
 
 **Done when** Daniel has the list of picked-up issues with the reason for each, or was told that none is waiting.
 
+## 3. Examine each picked-up issue
+
+Triage asks Daniel nothing about an issue before it has looked at what the project already has. For each picked-up issue, in this order:
+
+1. **Existing behaviour.** Search the codebase and docs (Glob, Grep, Read) by the issue's domain terms, their synonyms and the names in its title, and read what already does part of the asked job. A Bug is checked against the code that should produce the behaviour it reports.
+2. **Earlier rejections.** An earlier rejection is a closed issue with reason "not planned" or a research object with status `rejected` or `parked`. Search both by the issue's key terms, with the searches in [references/tracker.md](references/tracker.md): the closed issues, and the research objects under `research.path` from `.claude/64x-lunicorn.yml`. A hit is an earlier rejection when it asks for the same thing, not merely the same area; read its close comment or its README for the reason it gave.
+3. **Duplicates.** Search open and closed issues by the same key terms, with the duplicates search in [references/tracker.md](references/tracker.md), because an open issue asking for the same thing is neither rejected nor found by the rejection search.
+
+Print this block for every picked-up issue, always, even when the searches found nothing, because Daniel judges the route by it and a finding left out looks like a search never done:
+
+```
+Examination of #<n> "<title>"
+- Existing behaviour: <what already does part of the job, with file paths, or that none exists>
+- Earlier rejections: <every hit with its reason, by number and title for an issue, by directory name and status for a research object, each marked `same request` or `same area only`, or `no earlier rejection found`; `no research objects` appended when the project has no research directory>
+- Duplicates: <every other issue asking for the same thing, by number, title and state, or `no duplicate found`>
+```
+
+A hit that is only in the same area is listed too, marked so, because Daniel decides whether it covers this issue; `no earlier rejection found` is written only when the searches returned no hit at all.
+
+Print the blocks at the top of the first message that asks Daniel anything about the issue, above that question and never folded into it or its recommended answer, where Daniel would read only a reason and miss the finding. A block printed in an earlier message is printed again there, since that message is the one Daniel answers. Change nothing on the issue.
+
+**Done when** every picked-up issue has its existing behaviour, earlier rejections, issues and research objects, and duplicates reported, or the statement that none was found, before Daniel was asked anything about it.
+
 ## 4. Ask the reporter
 
 For every picked-up issue that cannot be routed without information only its reporter has, such as the steps that show a bug, when it happens, or what the reporter expected instead, ask the reporter on the issue. Guessing the missing part routes the issue on an invention, and Daniel cannot answer for the reporter.
@@ -57,7 +80,7 @@ Decide the route of every picked-up issue not asked in step 4 from its kind of c
 | Open feasibility question (spike) | research object |
 | Rejected, out of scope or duplicate | closed with reason |
 
-Ask Daniel which kind it is, through `interview-user`, one issue at a time, with a recommended kind and the reason for it taken from what the examination found. Daniel decides: a reporter's label or wording is evidence, not the answer.
+The first question about an issue comes below its step 3 block. Ask Daniel which kind it is, through `interview-user`, one issue at a time, with a recommended kind and the reason for it taken from what the examination found. Daniel decides: a reporter's label or wording is evidence, not the answer.
 
 Then set the route:
 
