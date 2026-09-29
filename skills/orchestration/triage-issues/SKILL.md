@@ -39,7 +39,17 @@ Triage asks Daniel nothing about an issue before it has looked at what the proje
 1. **Existing behaviour.** Search the codebase (Glob, Grep, Read) by the issue's domain terms, their synonyms and the names in its title, and read what already does part of the asked job. A Bug is checked against the code that should produce the behaviour it reports.
 2. **Earlier rejections.** An earlier rejection is a closed issue with reason "not planned" or a research object with status `rejected` or `parked`. Search both by the issue's key terms, with the searches in [references/tracker.md](references/tracker.md): the closed issues, and the research objects under `research.path` from `.claude/64x-lunicorn.yml`. A hit is an earlier rejection when it asks for the same thing, not merely the same area; read its close comment or its README for the reason it gave.
 
-Report per issue, before any question to Daniel: the existing behaviour or context found, with file paths, and every earlier rejection with its reason, by number and title for an issue, by directory name and status for a research object. When a search finds nothing, say so: `no earlier rejection found`. Change nothing on the issue.
+Print this block for every picked-up issue, always, even when both searches found nothing, because Daniel judges the route by it and a finding left out looks like a search never done:
+
+```
+Examination of #<n> "<title>"
+- Existing behaviour: <what already does part of the job, with file paths, or that none exists>
+- Earlier rejections: <every hit with its reason, by number and title for an issue, by directory name and status for a research object, each marked `same request` or `same area only`, or `no earlier rejection found`>
+```
+
+A hit that is only in the same area is listed too, marked so, because Daniel decides whether it covers this issue; `no earlier rejection found` is written only when the searches returned no hit at all.
+
+Print the blocks at the top of the same message that asks the first question of step 5, above that question and never folded into it or its recommended answer, where Daniel would read only a reason and miss the finding. A block printed in an earlier message is printed again there, since that message is the one Daniel answers. Change nothing on the issue.
 
 **Done when** every picked-up issue has its existing behaviour and earlier rejections, issues and research objects, reported, or the statement that none was found, before Daniel was asked anything about it.
 
@@ -56,7 +66,7 @@ Decide the route of every picked-up issue from its kind of change, never from it
 | Open feasibility question (spike) | research object |
 | Rejected, out of scope or duplicate | closed with reason |
 
-Ask Daniel which kind it is, through `interview-user`, one issue at a time, with a recommended kind and the reason for it taken from what the examination found. Daniel decides: a reporter's label or wording is evidence, not the answer.
+Ask only below the step 3 blocks. Ask Daniel which kind it is, through `interview-user`, one issue at a time, with a recommended kind and the reason for it taken from what the examination found. Daniel decides: a reporter's label or wording is evidence, not the answer.
 
 Then set the route:
 
