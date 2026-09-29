@@ -31,6 +31,15 @@ Duplicates are searched with the same key terms, open and closed issues alike, l
 
 A hit asking for the same thing is named with its number, title and state.
 
+## Asking
+
+Read in step 4. Write the comment to a file in the scratchpad, writer line last, and post it from there, because backticks and quotes in the text break when passed inline in a shell:
+
+1. `gh issue comment <n> --body-file <file>`
+2. `gh issue edit <n> --add-label needs-info --remove-label needs-triage`
+
+Leave out `--remove-label needs-triage` when the issue does not carry it, for example an unlabelled issue; `gh` fails on a label the issue lacks.
+
 ## Routing
 
 Read in step 5. After the route is set, remove the triage labels from the issue:

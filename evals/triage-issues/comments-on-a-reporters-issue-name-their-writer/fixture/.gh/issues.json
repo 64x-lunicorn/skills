@@ -310,8 +310,8 @@
   },
   {
     "number": 219,
-    "title": "Notifications arrive twice",
-    "body": "Every notification shows up twice in the bell menu.",
+    "title": "Notifications sometimes arrive twice",
+    "body": "Sometimes a notification shows up twice. Not sure when or where, it just happens now and then.",
     "state": "OPEN",
     "stateReason": "",
     "author": {
@@ -323,24 +323,6 @@
       },
       {
         "name": "needs-triage"
-      }
-    ],
-    "comments": [],
-    "createdAt": "2026-08-15T09:00:00Z",
-    "updatedAt": "2026-09-01T09:00:00Z"
-  },
-  {
-    "number": 220,
-    "title": "Notifications de-duplicated by id",
-    "body": "> Bugfix for Bug #219.\n\n## Diagnosis\n\nCommand: `node scripts/notify.js --seed fixtures/dup.json`\nRoot cause: the bell menu appends every delivery event instead of upserting by notification id (`src/notify/render.js:41`).\n\n## Acceptance criteria\n\n```gherkin\nFeature: Notifications are not duplicated\n\n  Scenario: A redelivered notification does not appear twice\n    Given a notification already shown once\n    When the same notification is redelivered\n    Then the bell menu still shows it once\n```\n\n## Implementation notes\n\n- Seam: `src/notify/render.js`, dedupe by notification id before appending to the list.\n",
-    "state": "OPEN",
-    "stateReason": "",
-    "author": {
-      "login": "reporter1"
-    },
-    "labels": [
-      {
-        "name": "bugfix"
       }
     ],
     "comments": [],

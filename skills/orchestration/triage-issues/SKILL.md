@@ -55,9 +55,21 @@ Print the blocks at the top of the first message that asks Daniel anything about
 
 **Done when** every picked-up issue has its existing behaviour, earlier rejections, issues and research objects, and duplicates reported, or the statement that none was found, before Daniel was asked anything about it.
 
+## 4. Ask the reporter
+
+For every picked-up issue that cannot be routed without information only its reporter has, such as the steps that show a bug, when it happens, or what the reporter expected instead, ask the reporter on the issue. Guessing the missing part routes the issue on an invention, and Daniel cannot answer for the reporter.
+
+- Ask one specific question about what is missing, never a mere acknowledgement, in the question text of [references/comments.md](references/comments.md).
+- Show Daniel the drafted question and post it only after his ok, since the writer line says he reviewed it. A change he asks for goes into the draft before it is posted.
+- Post it and set `needs-info` with the commands in the Asking section of [references/tracker.md](references/tracker.md). The issue takes no further step in this run; the reporter's reply brings it back through step 2.
+
+Every comment triage posts on an external issue, a Bug or Request filed by a reporter, in this step and every later one, uses its text from [references/comments.md](references/comments.md) and ends with the line `Written by Claude during triage, reviewed by Daniel.`: the reporter learns who wrote the answer, and step 2 finds the last triage by that line. Internal issues, which the project's own skills create, never carry it.
+
+**Done when** every picked-up issue that lacks information from its reporter carries `needs-info` and a question comment ending with the writer line, each posted after Daniel's ok.
+
 ## 5. Route by kind of change
 
-Decide the route of every picked-up issue from its kind of change, never from its size: a small change to new domain behaviour still needs a Spec, and a large refactor still needs none. The kinds and their routes:
+Decide the route of every picked-up issue not asked in step 4 from its kind of change, never from its size: a small change to new domain behaviour still needs a Spec, and a large refactor still needs none. The kinds and their routes:
 
 | Kind of change | Route |
 |---|---|
@@ -78,7 +90,7 @@ Then set the route:
 - Remove `needs-triage` and `needs-info` from the issue, and set no status label: the route is what steps 6 to 9 attach to, and a lingering triage label would put the issue back in the next run. Follow the Routing section of [references/tracker.md](references/tracker.md).
 - **Bugfix, Spec-less task, closed with reason:** the route is recorded; the later steps carry it out.
 
-**Done when** every picked-up issue has exactly one route with its kind of change confirmed by Daniel, and the issues routed to a Spec or a research object have the next command named.
+**Done when** every picked-up issue not asked in step 4 has exactly one route with its kind of change confirmed by Daniel, and the issues routed to a Spec or a research object have the next command named.
 
 ## 10. Report
 

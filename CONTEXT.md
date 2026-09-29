@@ -93,3 +93,7 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Kind of change**: what an issue asks for, one of new domain behaviour, broken behaviour, no behaviour change, or an open feasibility question. The only thing triage routes by, never the size of the change.
 
 **Earlier rejection**: a closed issue with reason "not planned", or a research object with status `rejected` or `parked`.
+
+**External issue**: an issue a reporter filed through the Bug or Request template. Every comment triage posts on one ends with the line "Written by Claude during triage, reviewed by Daniel."
+
+**Internal issue**: an issue created by the project's own skills: bugfix, task, Spec, architecture issue, wayfinder. It carries no writer line.
