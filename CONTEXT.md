@@ -28,8 +28,6 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 
 **Promotion**: a research object passes the quality gates and becomes an epic or spec. The object is frozen and linked both ways.
 
-**Earlier rejection**: a closed issue with reason "not planned", or a research object with status rejected or parked. Triage names it before asking Daniel anything about an issue asking for the same thing.
-
 **Spec**: an issue labelled `spec` describing domain behaviour and one functional change, with a Mermaid domain flow and Gherkin acceptance criteria. Never implemented directly; the work happens in its sub-issues (ADR 0006).
 
 **Technical notes**: statements about how to build a change that `design-spec` keeps out of a Spec. They are posted as a comment on the Spec and are input for the architecture issue.
@@ -93,3 +91,5 @@ The words this project uses with one fixed meaning, one paragraph each. Code, is
 **Triage**: the activity Daniel starts by command that turns waiting issues into a route. It handles the issues Daniel names, or without names everything waiting: unlabelled issues, `needs-triage`, and `needs-info` with a reporter reply since the last triage.
 
 **Kind of change**: what an issue asks for, one of new domain behaviour, broken behaviour, no behaviour change, or an open feasibility question. The only thing triage routes by, never the size of the change.
+
+**Earlier rejection**: a closed issue with reason "not planned", or a research object with status `rejected` or `parked`.
