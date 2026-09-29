@@ -25,6 +25,14 @@ Read in step 3. Run one search per issue with its key terms (two to four words f
 
 Research objects are searched too: list the directories under `research.path` (`research/` unless the setup says otherwise), read each `README.md` front matter and keep those with `status: rejected` or `status: parked`, then match their title and text against the same key terms. A matching object is named with its directory name, status and the reason its README gives. Without a research directory, say `no research objects`.
 
+## Routing
+
+Read in step 5. After the route is set, remove the triage labels from the issue:
+
+`gh issue edit <n> --remove-label needs-triage --remove-label needs-info`
+
+A label the issue does not carry makes `gh` fail; remove only the ones it has.
+
 ## The `needs-info` rule
 
 For each `needs-info` issue, take the newest comment whose body contains `Written by Claude during triage, reviewed by Daniel.` and the newest comment without it, by `createdAt`.

@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'New domain behaviour is sent to a Spec'
 description: 'Spec #26. Daniel confirms issue #216 as clear new domain behaviour; triage names the Spec-drafting command as the next step and creates nothing itself.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
