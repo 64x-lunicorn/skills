@@ -1,6 +1,6 @@
 # Tracker operations
 
-Read in step 2. GitHub only; the commands need a logged-in `gh`.
+Read in steps 2 and 3. GitHub only; the commands need a logged-in `gh`.
 
 ## Pick-up queries
 
@@ -14,6 +14,22 @@ Read in step 2. GitHub only; the commands need a logged-in `gh`.
 A named issue whose `url` contains `/pull/`, or whose `state` is not `OPEN`, is left out with that reason and not handled.
 
 Each `comments` entry has `author`, `body` and `createdAt`.
+
+## Earlier rejections
+
+Read in step 3. Run one search per issue with its key terms (three to five distinctive words of its title):
+
+`gh issue list --state closed --search 'reason:"not planned" <key terms>' --limit 50 --json number,title,url,stateReason,closedAt,comments`
+
+`reason:"not planned"` limits the result to issues closed as not planned. Repeat with a synonym when the first terms find nothing. A closed issue of the same request is named with its number, title and the reason in its close comment.
+
+Research objects are searched too: list the directories under `research.path` (`research/` unless the setup says otherwise), read each `README.md` front matter and keep those with `status: rejected` or `status: parked`, then match their title and text against the same key terms. A matching object is named with its directory name, status and the reason its README gives. Without a research directory, the Earlier rejections line carries the note `no research objects`, for example `no earlier rejection found; no research objects`.
+
+Duplicates are searched with the same key terms, open and closed issues alike, leaving out the examined issue itself:
+
+`gh issue list --state all --search '<key terms> in:title,body' --limit 50 --json number,title,url,state`
+
+A hit asking for the same thing is named with its number, title and state.
 
 ## Routing
 

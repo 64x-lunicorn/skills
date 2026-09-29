@@ -1,7 +1,7 @@
 schema_version: '1.1'
 name: 'An issue waiting for triage is examined'
 description: 'Spec #26. Triage examines issue #201, labelled needs-triage, and reports what it found for it before asking Daniel anything.'
-tags: [scenario, pending]
+tags: [scenario]
 context:
   scaffold_script: scaffold.sh
 execution:
@@ -13,4 +13,4 @@ execution:
 graders:
   - type: 'llm'
     name: 'reports existing behaviour and earlier rejections first'
-    criteria: 'The message reports, for issue #201, what triage found: the existing behaviour or context it looked at in the codebase, and any earlier rejections it searched for (naming one, or saying it found none), before it asks Daniel anything else.'
+    criteria: 'The message reports, for issue #201, what triage found: the existing behaviour or context it looked at in the codebase, and that it searched for earlier rejections, before it asks Daniel anything else. The earlier-rejection search counts as reported when the message names an earlier rejection, says it found none, or reports a searched hit with its reason marked as not the same request (for example `same area only`); it does not have to name a same-area hit as a rejection of #201.'
